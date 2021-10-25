@@ -9,7 +9,7 @@ import 'package:new_motel/widgets/common_card.dart';
 
 class MapHotelListView extends StatelessWidget {
   final VoidCallback callback;
-  final HotelListData hotelData;
+  final RestaurantListData hotelData;
 
   const MapHotelListView(
       {Key? key, required this.hotelData, required this.callback})

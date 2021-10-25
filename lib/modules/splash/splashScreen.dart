@@ -42,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Container(
               foregroundDecoration: !appTheme.isLightMode
                   ? BoxDecoration(
-                      color: Theme.of(context).backgroundColor.withOpacity(0.4))
+                      color: Theme.of(context).backgroundColor.withOpacity(0.2))
                   : null,
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
@@ -55,25 +55,12 @@ class _SplashScreenState extends State<SplashScreen> {
                   child: SizedBox(),
                 ),
                 Center(
-                  child: Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(8.0),
-                      ),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                            color: Theme.of(context).dividerColor,
-                            offset: Offset(1.1, 1.1),
-                            blurRadius: 10.0),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(8.0),
-                      ),
-                      child: Image.asset(Localfiles.appIcon),
+                  child: CircleAvatar(
+                    radius: 52,
+                    backgroundColor: Color(0xFFAF8F61),
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: AssetImage(Localfiles.appIcon),
                     ),
                   ),
                 ),
@@ -81,7 +68,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   height: 16,
                 ),
                 Text(
-                  "Motel",
+                  "Tawelty",
                   textAlign: TextAlign.left,
                   style: TextStyles(context).getBoldStyle().copyWith(
                         fontSize: 24,
@@ -107,7 +94,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   opacity: isLoadText ? 1.0 : 0.0,
                   duration: Duration(milliseconds: 680),
                   child: CommonButton(
-                    backgroundColor: Color(0xFF1C3956),
+                    //backgroundColor: Color(0xFF1C3956),
                     padding: const EdgeInsets.only(
                         left: 48, right: 48, bottom: 8, top: 8),
                     buttonText: AppLocalizations(context).of("get_started"),

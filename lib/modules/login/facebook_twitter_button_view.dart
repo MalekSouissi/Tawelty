@@ -19,7 +19,8 @@ class FacebookTwitterButtonView extends StatelessWidget {
             child: CommonButton(
               padding: EdgeInsets.zero,
               backgroundColor: Color(0x0FF3C5799),
-              buttonTextWidget: _buttonTextUI(),
+              buttonTextWidget: _buttonTextUI(icon:Icon(FontAwesomeIcons.facebookF ,
+                  size: 20, color: Colors.white),text: "Facebook"),
             ),
           ),
           SizedBox(
@@ -28,8 +29,20 @@ class FacebookTwitterButtonView extends StatelessWidget {
           Expanded(
             child: CommonButton(
               padding: EdgeInsets.zero,
-              backgroundColor: Color(0x0FF05A9F0),
-              buttonTextWidget: _buttonTextUI(isFacebook: false),
+              backgroundColor: Color(0x0FF0077b5 ),
+              buttonTextWidget: _buttonTextUI(icon:Icon(FontAwesomeIcons.linkedinIn ,
+                  size: 20, color: Colors.white),text: "Linkedin"),
+            ),
+          ),
+          SizedBox(
+            width: 16,
+          ),
+          Expanded(
+            child: CommonButton(
+              padding: EdgeInsets.zero,
+              backgroundColor: Color(0x0FFdb3236 ),
+              buttonTextWidget: _buttonTextUI(icon: Icon(FontAwesomeIcons.google,
+                  size: 20, color: Colors.white),text: "Google"),
             ),
           ),
           SizedBox(
@@ -40,18 +53,17 @@ class FacebookTwitterButtonView extends StatelessWidget {
     );
   }
 
-  Widget _buttonTextUI({bool isFacebook: true}) {
+  Widget _buttonTextUI({required Icon icon,required String text}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Icon(isFacebook ? FontAwesomeIcons.facebookF : FontAwesomeIcons.twitter,
-            size: 20, color: Colors.white),
+        icon,
         SizedBox(
           width: 4,
         ),
         Text(
-          isFacebook ? "Facebook" : "Twitter",
+          text,
           style: TextStyle(
               fontWeight: FontWeight.w500, fontSize: 16, color: Colors.white),
         ),

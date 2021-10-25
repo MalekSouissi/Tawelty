@@ -7,7 +7,7 @@ import 'package:new_motel/widgets/common_card.dart';
 import 'package:new_motel/widgets/list_cell_animation_view.dart';
 
 class SerchView extends StatelessWidget {
-  final HotelListData hotelInfo;
+  final RestaurantListData hotelInfo;
   final AnimationController animationController;
   final Animation<double> animation;
 

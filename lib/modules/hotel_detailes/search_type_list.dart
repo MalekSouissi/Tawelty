@@ -11,7 +11,7 @@ class SearchTypeListView extends StatefulWidget {
 
 class _SearchTypeListViewState extends State<SearchTypeListView>
     with TickerProviderStateMixin {
-  List<HotelListData> hotelTypeList = HotelListData.hotelTypeList;
+  List<RestaurantListData> hotelTypeList = RestaurantListData.hotelTypeList;
 
   late AnimationController animationController;
 

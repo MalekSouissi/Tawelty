@@ -15,7 +15,7 @@ class PopularListView extends StatefulWidget {
 
 class _PopularListViewState extends State<PopularListView>
     with TickerProviderStateMixin {
-  var popularList = HotelListData.popularList;
+  var popularList = RestaurantListData.popularList;
   AnimationController? animationController;
 
   @override

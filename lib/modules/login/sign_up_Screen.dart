@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:new_motel/api/api.dart';
 import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
@@ -9,6 +12,7 @@ import 'package:new_motel/widgets/common_appbar_view.dart';
 import 'package:new_motel/widgets/common_button.dart';
 import 'package:new_motel/widgets/common_text_field_view.dart';
 import 'package:new_motel/widgets/remove_focuse.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -16,6 +20,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+
   String _errorEmail = '';
   TextEditingController _emailController = TextEditingController();
   String _errorPassword = '';
@@ -24,7 +29,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController _fnameController = TextEditingController();
   String _errorLName = '';
   TextEditingController _lnameController = TextEditingController();
-
+  bool _isLoading = false;
+  String token='';
+  int userId=0;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -108,7 +115,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         buttonText: AppLocalizations(context).of("sign_up"),
                         onTap: () {
                           if (_allValidation())
-                            NavigationServices(context).gotoTabScreen();
+                            _handleLogin();
+                            //NavigationServices(context).gotoTabScreen();
                         },
                       ),
                       Padding(
@@ -219,5 +227,53 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
     setState(() {});
     return isValid;
+  }
+
+  void _handleLogin() async {
+    setState(() {
+      _isLoading = true;
+    });
+    var data = {
+      'first_name':_fnameController.text,
+      'last_name': _lnameController.text,
+      'email': _emailController.text,
+      'password': _passwordController.text,
+      //'phone' : phoneController.text,
+    };
+    print(_fnameController.text);
+    print(_emailController.text);
+    print(_passwordController.text);
+
+    var res = await CallApi().postData(data, 'users/register');
+    var body = json.decode(res.body);
+    print(body);
+     if (body['Status'] == 200) {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    localStorage.setString('token', body['token']);
+    token = body['token'];
+    _getProfile();
+    //localStorage.setString('user', json.encode(body['user']));
+    NavigationServices(context).gotoTabScreen();
+     } else {
+       print(body['error']);
+     }
+
+    //}
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  void _getProfile()async{
+    var res = await CallApi().getProfile('users/profile',token);
+    var body = json.decode(res.body);
+    SharedPreferences localStorage1 = await SharedPreferences.getInstance();
+    localStorage1.setInt('id', json.decode(body['id'].toString()));
+    print(body['id']);
+    userId=body['id'];
+    // username=body['username'];
+    print(userId);
+    // print(body);
   }
 }

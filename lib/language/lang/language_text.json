@@ -1,9 +1,9 @@
 [
     {
         "text_id": "best_hotel_deals",
-        "en": "Best hotel deals for your holiday",
-        "fr": "Meilleures offres d'hôtels pour vos vacances",
-        "ar": "أفضل عروض الفنادق لقضاء عطلتك",
+        "en": "Best restaurant deals for your day",
+        "fr": "Meilleures offres de restaurants pour vos jours",
+        "ar": "أفضل عروض المطاعم لقضاء يومك",
         "ja": "あなたの休日のための最高のホテルのお得な情報"
     },
     {
@@ -22,8 +22,8 @@
     },
     {
         "text_id": "plan_your_trips",
-        "en": "Plan your trips",
-        "fr": "Planifiez vos voyages",
+        "en": "share with friends",
+        "fr": "Partager avec des amis",
         "ar": "خطط لرحلاتك",
         "ja": "あなたの旅行を計画する"
     },
@@ -50,8 +50,8 @@
     },
     {
         "text_id": "best_travelling_all_time",
-        "en": "Best travelling all time",
-        "fr": "Meilleur voyage de tous les temps",
+        "en": "Best VIP experience",
+        "fr": "Meilleur experience VIP",
         "ar": "أفضل السفر طوال الوقت",
         "ja": "常に最高の旅行"
     },
@@ -176,22 +176,22 @@
     },
     {
         "text_id": "hotel_data",
-        "en": "Hotel",
-        "fr": "Hôtel",
-        "ar": "الفندق",
+        "en": "Restaurant",
+        "fr": "Restaurant",
+        "ar": "مطعم",
         "ja": "ホテル"
     },
     {
         "text_id": "Backpacker_data",
-        "en": "Backpacker",
-        "fr": "Randonneuse",
+        "en": "Beach Bar",
+        "fr": "Beach Bar",
         "ar": "الرحال",
         "ja": "バックパッカー"
     },
     {
         "text_id": "Resort_data",
-        "en": "Resort",
-        "fr": "Recours",
+        "en": "Tea Room",
+        "fr": "Salon de thé",
         "ar": "ملجأ",
         "ja": "リゾート"
     },
@@ -204,8 +204,8 @@
     },
     {
         "text_id": "apartment",
-        "en": "Apartment",
-        "fr": "Appartement",
+        "en": "Lounge",
+        "fr": "Lounge",
         "ar": "شقة",
         "ja": "アパート"
     },
@@ -532,6 +532,36 @@
         "ja": "プール"
     },
     {
+    "text_id": "cheque_text",
+    "en": "cheque",
+    "fr": "chèque"
+},
+    {
+        "text_id": "reservation_text",
+        "en": "Reservation required",
+        "fr": "Exige reservation"
+    },
+    {
+        "text_id": "alcohol_text",
+        "en": "Alcohol",
+        "fr": "Alcohol"
+    },
+    {
+        "text_id": "shisha_text",
+        "en": "shisha",
+        "fr": "shisha"
+    },
+    {
+        "text_id": "TPE_text",
+        "en": "TPE",
+        "fr": "TPE"
+    },
+    {
+        "text_id": "karaoke_text",
+        "en": "karaoke",
+        "fr": "karaoke"
+    },
+    {
         "text_id": "pet_friendlly",
         "en": "Pet Friendlly",
         "fr": "Animaux acceptés",
@@ -544,6 +574,46 @@
         "fr": "Wifi gratuit",
         "ar": "واى فاى مجانى",
         "ja": "無料のWifi"
+    },
+    {
+        "text_id": "Cuisine_tunisienne",
+        "en": "Tunisian",
+        "fr": "Tunisienne"
+    },
+    {
+        "text_id": "Cuisine_italienne",
+        "en": "Italien",
+        "fr": "Italienne"
+    },
+    {
+        "text_id": "Cuisine_française",
+        "en": "Frensh",
+        "fr": "Française"
+    },
+    {
+        "text_id": "Cuisine_asiatique",
+        "en": "Asian",
+        "fr": "Asiatique"
+    },
+    {
+        "text_id": "Cuisine_mexicaine",
+        "en": "Mexican",
+        "fr": "Mexicaine"
+    },
+    {
+        "text_id": "Cuisine_europeene",
+        "en": "Europeon",
+        "fr": "Europeene"
+    },
+    {
+        "text_id": "Cuisine_mer",
+        "en": "Sea food",
+        "fr": "Fruit de mer"
+    },
+    {
+        "text_id": "Cuisine_steak",
+        "en": "Steak",
+        "fr": "Steak"
     },
     {
         "text_id": "Less_than",

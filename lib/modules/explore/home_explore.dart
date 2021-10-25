@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:new_motel/api/api_Response.dart';
 import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
@@ -28,12 +29,16 @@ class HomeExploreScreen extends StatefulWidget {
 
 class _HomeExploreScreenState extends State<HomeExploreScreen>
     with TickerProviderStateMixin {
-  var hotelList = HotelListData.hotelList;
+  RestaurantListData restaurantListData=RestaurantListData();
   late ScrollController controller;
   late AnimationController _animationController;
   var sliderImageHieght = 0.0;
+  List<RestaurantListData> hotelList=[];
+
   @override
   void initState() {
+    fetchRestaurants();
+
     _animationController =
         AnimationController(duration: Duration(milliseconds: 0), vsync: this);
     widget.animationController.forward();
@@ -59,6 +64,11 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
         }
       });
     super.initState();
+  }
+
+  fetchRestaurants()async{
+    hotelList=await restaurantListData.fetchRestaurants();
+    print(hotelList);
   }
 
   @override
@@ -237,7 +247,6 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
   }
 
   Widget getDealListView(int index) {
-    var hotelList = HotelListData.hotelList;
     List<Widget> list = [];
     hotelList.forEach((f) {
       var animation = Tween(begin: 0.0, end: 1.0).animate(

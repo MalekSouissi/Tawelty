@@ -16,6 +16,9 @@ class FiltersScreen extends StatefulWidget {
 class _FiltersScreenState extends State<FiltersScreen> {
   List<PopularFilterListData> popularFilterListData =
       PopularFilterListData.popularFList;
+
+  List<PopularFilterListData> cuisineFilterListData =
+      PopularFilterListData.cuisineFList;
   List<PopularFilterListData> accomodationListData =
       PopularFilterListData.accomodationList;
 
@@ -51,6 +54,16 @@ class _FiltersScreenState extends State<FiltersScreen> {
                     children: <Widget>[
                       // hotel price filter
                       priceBarFilter(),
+                      Divider(
+                        height: 1,
+                      ),
+                      // facilitate filter in hotel
+                      popularFilter(),
+                      Divider(
+                        height: 1,
+                      ),
+                      // facilitate filter in hotel
+                      popularFilter(),
                       Divider(
                         height: 1,
                       ),
@@ -251,9 +264,9 @@ class _FiltersScreenState extends State<FiltersScreen> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(right: 16, left: 16),
+          padding: const EdgeInsets.only(right: 8, left: 8),
           child: Column(
-            children: getPList(),
+            children: getCList(),
           ),
         ),
         SizedBox(
@@ -329,7 +342,72 @@ class _FiltersScreenState extends State<FiltersScreen> {
     }
     return noList;
   }
-
+  List<Widget> getCList() {
+    List<Widget> noList = [];
+    var cout = 0;
+    final columCount = 2;
+    for (var i = 0; i < cuisineFilterListData.length / columCount; i++) {
+      List<Widget> listUI = [];
+      for (var i = 0; i < columCount; i++) {
+        try {
+          final date = cuisineFilterListData[cout];
+          listUI.add(
+            Expanded(
+              child: Row(
+                children: <Widget>[
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                      onTap: () {
+                        setState(() {
+                          date.isSelected = !date.isSelected;
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8.0, top: 8, bottom: 8, right: 0),
+                        child: Row(
+                          children: <Widget>[
+                            Icon(
+                              date.isSelected
+                                  ? Icons.check_box
+                                  : Icons.check_box_outline_blank,
+                              color: date.isSelected
+                                  ? Theme.of(context).primaryColor
+                                  : Colors.grey.withOpacity(0.6),
+                            ),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            FittedBox(
+                              fit: BoxFit.cover,
+                              child: Text(
+                                AppLocalizations(context).of(date.titleTxt),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+          cout += 1;
+        } catch (e) {
+        }
+      }
+      noList.add(Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: listUI,
+      ));
+    }
+    return noList;
+  }
   Widget priceBarFilter() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,

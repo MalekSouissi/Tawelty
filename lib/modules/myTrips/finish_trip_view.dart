@@ -14,7 +14,7 @@ class FinishTripView extends StatefulWidget {
 }
 
 class _FinishTripViewState extends State<FinishTripView> {
-  var hotelList = HotelListData.hotelList;
+  var hotelList = RestaurantListData.hotelList;
 
   @override
   void initState() {

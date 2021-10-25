@@ -60,7 +60,7 @@ class NavigationServices {
     return await _pushMaterialPageRoute(ForgotPasswordScreen());
   }
 
-  Future<dynamic> gotoHotelDetailes(HotelListData hotelData) async {
+  Future<dynamic> gotoHotelDetailes(RestaurantListData hotelData) async {
     return await _pushMaterialPageRoute(HotelDetailes(
       hotelData: hotelData,
     ));

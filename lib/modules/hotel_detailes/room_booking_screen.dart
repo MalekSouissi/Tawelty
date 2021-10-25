@@ -14,7 +14,7 @@ class RoomBookingScreen extends StatefulWidget {
 
 class _RoomBookingScreenState extends State<RoomBookingScreen>
     with TickerProviderStateMixin {
-  List<HotelListData> romeList = HotelListData.romeList;
+  List<RestaurantListData> romeList = RestaurantListData.romeList;
   late AnimationController animationController;
 
   @override

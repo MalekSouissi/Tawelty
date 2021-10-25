@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_motel/api/api.dart';
 import 'package:new_motel/constants/helper.dart';
 import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/utils/validator.dart';
@@ -69,7 +70,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             EdgeInsets.only(left: 24, right: 24, bottom: 16),
                         buttonText: AppLocalizations(context).of("send"),
                         onTap: () {
-                          if (_allValidation()) Navigator.pop(context);
+                          if (_allValidation()){
+                            _sendResetPasswordEmail();
+                            //Navigator.pop(context);
+
+                          }
                         },
                       ),
                     ],
@@ -93,6 +98,26 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 
+  _sendResetPasswordEmail() async {
+    print(_emailController.text);
+    // if (_formkey.currentState.validate()) {
+    //   _formkey.currentState.save();
+    await CallApi().forgetPassword(_emailController.text).then((value) {
+      showSnackbarMessage(value['message'], value['ok'] ? true : false);
+      _emailController.clear();
+    });
+    //}
+  }
+
+  showSnackbarMessage(String message, bool isSuccess) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      behavior: SnackBarBehavior.floating,
+      content: CustomMessageDialog.instance.showMessageDialog(
+          context: context, isSuccess: isSuccess, message: message),
+      duration: Duration(milliseconds: Styles.instance.snackbarMessageDuration),
+    ));
+  }
+
   bool _allValidation() {
     bool isValid = true;
     if (_emailController.text.trim().isEmpty) {
@@ -107,4 +132,67 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     setState(() {});
     return isValid;
   }
+}
+
+class CustomMessageDialog {
+  static CustomMessageDialog _instance = CustomMessageDialog._initialize();
+  static CustomMessageDialog get instance {
+    if (_instance == null) _instance = CustomMessageDialog._initialize();
+    return _instance;
+  }
+
+  Widget showMessageDialog(
+      {required BuildContext context, required String message, required bool isSuccess}) {
+    return Container(
+      child: Row(
+        children: [
+          Flexible(
+            flex: 1,
+            child: Icon(
+              isSuccess ? Icons.done : Icons.error_outline,
+              color: isSuccess
+                  ? Styles.instance.successIconColor
+                  : Styles.instance.errorIconColor,
+              size: Styles.instance.messageDialogIconSize,
+            ),
+          ),
+          const SizedBox(width: 15),
+          Flexible(
+            flex: 3,
+            child: Text(
+              message,
+              style: TextStyle(fontSize: 17.5, fontWeight: FontWeight.w500),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  CustomMessageDialog._initialize();
+}
+
+class Styles {
+  static Styles _instance = Styles._initialize();
+  static Styles get instance {
+    if (_instance == null) _instance = Styles._initialize();
+    return _instance;
+  }
+
+  Styles._initialize();
+
+  TextStyle defaultButtonTextStyle =
+      TextStyle(fontSize: 18, color: Colors.white);
+  TextStyle defaultTitleStyle =
+      TextStyle(fontSize: 18, color: Colors.black, letterSpacing: 1.3);
+  Color defaultPrefixIconColor = Colors.white;
+  double defaultPrefixIconSize = 32.0;
+  Color formPrefixIconColor = Colors.black;
+  TextStyle snackbarTitleStyle =
+      TextStyle(fontSize: 17, color: Colors.white, letterSpacing: 1.1);
+
+  Color successIconColor = Colors.green;
+  Color errorIconColor = Colors.red;
+  double messageDialogIconSize = 24;
+  int snackbarMessageDuration = 1300;
 }

@@ -5,7 +5,7 @@ import 'package:new_motel/models/hotel_list_data.dart';
 
 class CategoryView extends StatelessWidget {
   final VoidCallback callback;
-  final HotelListData popularList;
+  final RestaurantListData popularList;
   final AnimationController animationController;
   final Animation<double> animation;
 

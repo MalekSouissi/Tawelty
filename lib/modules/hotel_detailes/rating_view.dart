@@ -7,7 +7,7 @@ import '../../models/hotel_list_data.dart';
 // import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class RatingView extends StatelessWidget {
-  final HotelListData hotelData;
+  final RestaurantListData hotelData;
 
   const RatingView({Key? key, required this.hotelData}) : super(key: key);
 

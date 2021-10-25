@@ -26,7 +26,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     with TickerProviderStateMixin {
   late AnimationController animationController;
   late AnimationController _animationController;
-  var hotelList = HotelListData.hotelList;
+  var hotelList = RestaurantListData.hotelList;
   ScrollController scrollController = new ScrollController();
   int room = 1;
   int ad = 2;

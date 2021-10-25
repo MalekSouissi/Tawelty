@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 class HotelListViewData extends StatelessWidget {
   final bool isShowDate;
   final VoidCallback callback;
-  final HotelListData hotelData;
+  final RestaurantListData hotelData;
   final AnimationController animationController;
   final Animation<double> animation;
 

@@ -16,7 +16,7 @@ class ThemeProvider extends ChangeNotifier {
   FontFamilyType get fontType => _fontType;
   FontFamilyType _fontType = FontFamilyType.WorkSans;
   ColorType get colorType => _colorType;
-  ColorType _colorType = ColorType.Verdigris;
+  ColorType _colorType = ColorType.DarkBlue;
   LanguageType get languageType => _languageType;
   LanguageType _languageType = LanguageType.en;
 

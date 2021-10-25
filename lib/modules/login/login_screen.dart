@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:new_motel/api/api.dart';
 import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/modules/login/facebook_twitter_button_view.dart';
 import 'package:new_motel/routes/route_names.dart';
@@ -7,6 +10,7 @@ import 'package:new_motel/widgets/common_appbar_view.dart';
 import 'package:new_motel/widgets/common_button.dart';
 import 'package:new_motel/widgets/common_text_field_view.dart';
 import 'package:new_motel/widgets/remove_focuse.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -18,7 +22,9 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _emailController = TextEditingController();
   String _errorPassword = '';
   TextEditingController _passwordController = TextEditingController();
-
+  bool _isLoading = false;
+  String token='';
+  int userId=0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,8 +88,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: EdgeInsets.only(left: 24, right: 24, bottom: 16),
                       buttonText: AppLocalizations(context).of("login"),
                       onTap: () {
-                        if (_allValidation())
-                          NavigationServices(context).gotoTabScreen();
+                        if (_allValidation()) {
+                        _login();
+                          // NavigationServices(context).gotoTabScreen();
+                        }
+
                       },
                     ),
                   ],
@@ -123,6 +132,83 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
       ),
     );
+  }
+
+  void _login() async{
+
+    setState(() {
+      _isLoading = true;
+    });
+    var data = {
+
+      'email': _emailController.text,
+      'password': _passwordController.text,
+      //'phone' : phoneController.text,
+    };
+    print(_emailController.text);
+    print(_passwordController.text);
+
+    var res = await CallApi().postData(data, 'users/login');
+    // var body = json.decode(res.body);
+    print(res.body);
+    var body = jsonDecode(res.body.toString());
+    print(body);
+    //if(body['status']==200){
+      if(body['token']!=null){
+        SharedPreferences localStorage = await SharedPreferences.getInstance();
+        localStorage.setString('token', body['token']);
+        token=body['token'];
+        _getProfile();
+        print(body);
+        NavigationServices(context).gotoTabScreen();
+      } else{
+       await showError(body['error']);
+      ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+        content: Text(body['error'].toString()),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            // Some code to undo the change.
+          },
+        ),
+      ));
+      print(body['error']);
+    }
+
+
+    setState(() {
+      _isLoading = false;
+    });
+
+  }
+
+  showError(msg) {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text('Done'),
+          content: Text(msg.toString()),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        ));
+  }
+
+  void _getProfile()async{
+    var res = await CallApi().getProfile('users/profile',token);
+    var body = json.decode(res.body);
+    SharedPreferences localStorage1 = await SharedPreferences.getInstance();
+    localStorage1.setInt('id', json.decode(body['id'].toString()));
+    print(body['id']);
+    userId=body['id'];
+    // username=body['username'];
+    print(userId);
+    // print(body);
   }
 
   bool _allValidation() {

@@ -8,7 +8,7 @@ enum FontFamilyType {
 }
 
 enum ColorType {
-  Verdigris,
+  DarkBlue,
   Malibu,
   DarkSkyBlue,
   BilobaFlower,

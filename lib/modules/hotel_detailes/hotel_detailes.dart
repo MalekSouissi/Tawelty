@@ -16,7 +16,7 @@ import 'hotel_roome_list.dart';
 import 'rating_view.dart';
 
 class HotelDetailes extends StatefulWidget {
-  final HotelListData hotelData;
+  final RestaurantListData hotelData;
 
   const HotelDetailes({Key? key, required this.hotelData}) : super(key: key);
   @override
@@ -166,7 +166,7 @@ class _HotelDetailesState extends State<HotelDetailes>
                 // feedback&Review data view
                 for (var i = 0; i < 2; i++)
                   ReviewsView(
-                    reviewsList: HotelListData.reviewsList[i],
+                    reviewsList: RestaurantListData.reviewsList[i],
                     animation: animationController,
                     animationController: animationController,
                     callback: () {},
@@ -343,7 +343,7 @@ class _HotelDetailesState extends State<HotelDetailes>
     );
   }
 
-  Widget _backgraoundImageUI(HotelListData hotelData) {
+  Widget _backgraoundImageUI(RestaurantListData hotelData) {
     return Positioned(
       top: 0,
       left: 0,

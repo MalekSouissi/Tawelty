@@ -8,7 +8,7 @@ import 'package:new_motel/widgets/list_cell_animation_view.dart';
 
 class ReviewsView extends StatelessWidget {
   final VoidCallback callback;
-  final HotelListData reviewsList;
+  final RestaurantListData reviewsList;
   final AnimationController animationController;
   final Animation<double> animation;
 

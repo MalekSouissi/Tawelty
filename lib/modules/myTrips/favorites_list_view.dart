@@ -13,7 +13,7 @@ class FavoritesListView extends StatefulWidget {
 }
 
 class _FavoritesListViewState extends State<FavoritesListView> {
-  var hotelList = HotelListData.hotelList;
+  var hotelList = RestaurantListData.hotelList;
 
   @override
   void initState() {

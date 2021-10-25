@@ -7,7 +7,7 @@ import 'package:new_motel/widgets/common_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class RoomeBookView extends StatefulWidget {
-  final HotelListData roomData;
+  final RestaurantListData roomData;
   final AnimationController animationController;
   final Animation<double> animation;
 

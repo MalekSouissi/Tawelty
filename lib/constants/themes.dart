@@ -16,7 +16,7 @@ class AppTheme {
   // colors
   static Color get primaryColor {
     ColorType _colortypedata = applicationcontext == null
-        ? ColorType.Verdigris
+        ? ColorType.DarkBlue
         : applicationcontext!.read<ThemeProvider>().colorType;
 
     return getColor(_colortypedata);
@@ -80,8 +80,8 @@ class AppTheme {
 // we also get some Light and Dark color variants
   static Color getColor(ColorType _colordata) {
     switch (_colordata) {
-      case ColorType.Verdigris:
-        return isLightMode ? Color(0xFF4FBE9F) : Color(0xFF4FBE9F);
+      case ColorType.DarkBlue:
+        return isLightMode ? Color(0xFF1C3956) : Color(0xFFAF8F61);
       case ColorType.Malibu:
         return isLightMode ? Color(0xFF5DCAEC) : Color(0xFF5DCAEC);
       case ColorType.DarkSkyBlue:

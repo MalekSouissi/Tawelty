@@ -17,7 +17,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen>
     with TickerProviderStateMixin {
-  List<HotelListData> lastsSearchesList = HotelListData.lastsSearchesList;
+  List<RestaurantListData> lastsSearchesList = RestaurantListData.lastsSearchesList;
 
   late AnimationController animationController;
 

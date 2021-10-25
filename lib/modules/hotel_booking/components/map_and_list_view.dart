@@ -7,7 +7,7 @@ import 'package:new_motel/modules/hotel_booking/components/time_date_view.dart';
 import 'package:new_motel/routes/route_names.dart';
 
 class MapAndListView extends StatelessWidget {
-  final List<HotelListData> hotelList;
+  final List<RestaurantListData> hotelList;
   final Widget searchBarUI;
 
   const MapAndListView(

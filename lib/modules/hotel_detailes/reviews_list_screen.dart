@@ -10,7 +10,7 @@ class ReviewsListScreen extends StatefulWidget {
 
 class _ReviewsListScreenState extends State<ReviewsListScreen>
     with TickerProviderStateMixin {
-  List<HotelListData> reviewsList = HotelListData.reviewsList;
+  List<RestaurantListData> reviewsList = RestaurantListData.reviewsList;
   late AnimationController animationController;
   @override
   void initState() {

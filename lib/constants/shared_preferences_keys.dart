@@ -66,7 +66,7 @@ class SharedPreferencesKeys {
     if (index != null) {
       return ColorType.values[index];
     } else {
-      return ColorType.Verdigris; // Default we set Verdigris
+      return ColorType.DarkBlue; // Default we set Verdigris
     }
   }
 

@@ -13,7 +13,7 @@ class UpcomingListView extends StatefulWidget {
 }
 
 class _UpcomingListViewState extends State<UpcomingListView> {
-  var hotelList = HotelListData.hotelList;
+  var hotelList = RestaurantListData.hotelList;
 
   @override
   void initState() {
