@@ -14,18 +14,30 @@ class FinishTripView extends StatefulWidget {
 }
 
 class _FinishTripViewState extends State<FinishTripView> {
-  var hotelList = RestaurantListData.hotelList;
+  var hotelList = [];
+bool showAddress=false;
+
+  fetchRestaurant()async{
+    hotelList= await RestaurantListData().fetchRestaurants();
+
+    setState(() {
+
+      showAddress = true;
+    });
+  }
+
 
   @override
   void initState() {
-    widget.animationController.forward();
+    fetchRestaurant();
+   // widget.animationController.forward();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: ListView.builder(
+      child: showAddress?ListView.builder(
         itemCount: hotelList.length,
         padding: EdgeInsets.only(top: 8, bottom: 16),
         scrollDirection: Axis.vertical,
@@ -48,7 +60,7 @@ class _FinishTripViewState extends State<FinishTripView> {
             isShowDate: (index % 2) != 0,
           );
         },
-      ),
+      ):Text('fuck me'),
     );
   }
 }

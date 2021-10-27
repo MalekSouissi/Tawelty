@@ -225,8 +225,8 @@
     },
     {
         "text_id": "accommodation",
-        "en": "Accommodation",
-        "fr": "Hébergement",
+        "en": "reservation",
+        "fr": "réservation",
         "ar": "إقامة",
         "ja": "宿泊施設"
     },
@@ -475,6 +475,21 @@
         "ar": "مرشح شعبي",
         "ja": "人気のフィルター"
     },
+
+    {
+        "text_id": "cuisine filter",
+        "en": "Kitchen",
+        "fr": "Cuisine",
+        "ar": "مرشح شعبي",
+        "ja": "人気のフィルター"
+    },
+    {
+        "text_id": "ambiance filter",
+        "en": "Ambiance",
+        "fr": "Ambiance",
+        "ar": "مرشح شعبي",
+        "ja": "人気のフィルター"
+    },
     {
         "text_id": "distance from city",
         "en": "Distance from city center",
@@ -614,6 +629,27 @@
         "text_id": "Cuisine_steak",
         "en": "Steak",
         "fr": "Steak"
+    },
+
+    {
+        "text_id": "Festive_text",
+        "en": "Festive",
+        "fr": "Festive"
+    },
+    {
+        "text_id": "Familiale_text",
+        "en": "Family",
+        "fr": "Familiale"
+    },
+    {
+        "text_id": "music_text",
+        "en": "Live music",
+        "fr": "Live music"
+    },
+    {
+        "text_id": "Business_text",
+        "en": "Business",
+        "fr": "Business"
     },
     {
         "text_id": "Less_than",

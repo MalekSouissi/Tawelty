@@ -33,11 +33,10 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
   late ScrollController controller;
   late AnimationController _animationController;
   var sliderImageHieght = 0.0;
-  List<RestaurantListData> hotelList=[];
 
   @override
   void initState() {
-    fetchRestaurants();
+    fetchRestaurant();
 
     _animationController =
         AnimationController(duration: Duration(milliseconds: 0), vsync: this);
@@ -66,9 +65,16 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
     super.initState();
   }
 
-  fetchRestaurants()async{
-    hotelList=await restaurantListData.fetchRestaurants();
-    print(hotelList);
+  var hotelList = [];
+  bool showAddress=false;
+
+  fetchRestaurant()async{
+    hotelList= await RestaurantListData().fetchRestaurants();
+
+    setState(() {
+
+      showAddress = true;
+    });
   }
 
   @override
@@ -268,9 +274,9 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
     });
     return Padding(
       padding: const EdgeInsets.only(top: 8),
-      child: Column(
-        children: list,
-      ),
+      child: showAddress?Column(
+        children: list
+      ):Container(),
     );
   }
 

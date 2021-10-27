@@ -13,10 +13,20 @@ class UpcomingListView extends StatefulWidget {
 }
 
 class _UpcomingListViewState extends State<UpcomingListView> {
-  var hotelList = RestaurantListData.hotelList;
+  var hotelList = [];
+  bool showAddress=false;
 
+  fetchRestaurant()async{
+    hotelList= await RestaurantListData().fetchRestaurants();
+
+    setState(() {
+
+      showAddress = true;
+    });
+  }
   @override
   void initState() {
+    fetchRestaurant();
     widget.animationController.forward();
     super.initState();
   }
@@ -24,7 +34,7 @@ class _UpcomingListViewState extends State<UpcomingListView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: ListView.builder(
+      child: showAddress?ListView.builder(
         itemCount: hotelList.length,
         padding: EdgeInsets.only(top: 8, bottom: 16),
         scrollDirection: Axis.vertical,
@@ -47,7 +57,7 @@ class _UpcomingListViewState extends State<UpcomingListView> {
             isShowDate: true,
           );
         },
-      ),
+      ):Container(),
     );
   }
 }

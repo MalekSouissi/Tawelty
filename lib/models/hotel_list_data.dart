@@ -74,8 +74,11 @@ class RestaurantListData {
     );
   }
 
+
+
   static const API = 'http://37.187.198.241:3000/';
   static List<RestaurantListData> hotelList=[];
+  List finalList=[];
 
   fetchRestaurants() async {
     final response = await http.get(

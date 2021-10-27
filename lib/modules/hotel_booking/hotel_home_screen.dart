@@ -26,18 +26,25 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     with TickerProviderStateMixin {
   late AnimationController animationController;
   late AnimationController _animationController;
-  var hotelList = RestaurantListData.hotelList;
+  List<RestaurantListData> hotelList=[];
   ScrollController scrollController = new ScrollController();
   int room = 1;
   int ad = 2;
   DateTime startDate = DateTime.now();
   DateTime endDate = DateTime.now().add(Duration(days: 5));
   bool _isShowMap = false;
-
+  RestaurantListData restaurantListData=RestaurantListData();
   final searchBarHieght = 158.0;
   final filterBarHieght = 52.0;
+
+  fetchRestaurants()async{
+    hotelList=await restaurantListData.fetchRestaurants();
+    print(hotelList);
+  }
+
   @override
   void initState() {
+    fetchRestaurants();
     animationController = AnimationController(
         duration: Duration(milliseconds: 1000), vsync: this);
     _animationController =

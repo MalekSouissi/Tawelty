@@ -2,8 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
+import 'package:new_motel/models/hotel_list_data.dart';
+import 'package:new_motel/modules/hotel_booking/result_filter/result_screen.dart';
 import 'package:new_motel/widgets/common_appbar_view.dart';
 import 'package:new_motel/widgets/common_button.dart';
+import 'package:translator/translator.dart';
 import '../../../models/popular_filter_list.dart';
 import 'range_slider_view.dart';
 import 'slider_view.dart';
@@ -14,16 +17,47 @@ class FiltersScreen extends StatefulWidget {
 }
 
 class _FiltersScreenState extends State<FiltersScreen> {
+  final translator = GoogleTranslator();
+  FilterListData filterListData=FilterListData();
   List<PopularFilterListData> popularFilterListData =
       PopularFilterListData.popularFList;
-
   List<PopularFilterListData> cuisineFilterListData =
       PopularFilterListData.cuisineFList;
+  List<PopularFilterListData> ambianceFilterListData =
+      PopularFilterListData.ambianceFList;
   List<PopularFilterListData> accomodationListData =
       PopularFilterListData.accomodationList;
 
+  List<FilterListData> ambiancesList=[];
+  List<FilterListData> generalsList=[];
+  List<FilterListData> cuisinesList=[];
+
+  List finalList= RestaurantListData().finalList;
+  List resultList=[];
+
   RangeValues _values = RangeValues(100, 600);
   double distValue = 50.0;
+  fetchAmbiances()async{
+    ambiancesList=await filterListData.fetchAmbiances();
+    print(ambiancesList);
+  }
+  fetchGenerals()async{
+    generalsList=await filterListData.fetchGenerals();
+    print(generalsList);
+  }
+
+  fetchCuisines()async{
+    cuisinesList=await filterListData.fetchCuisines();
+    print(cuisinesList);
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    fetchAmbiances();
+    fetchGenerals();
+   // fetchCuisines();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,16 +96,11 @@ class _FiltersScreenState extends State<FiltersScreen> {
                       Divider(
                         height: 1,
                       ),
-                      // facilitate filter in hotel
-                      popularFilter(),
+                      cuisineFilter(),
                       Divider(
                         height: 1,
                       ),
-                      // facilitate filter in hotel
-                      popularFilter(),
-                      Divider(
-                        height: 1,
-                      ),
+                      ambianceFilter(),
                       //hotel distance from city
                       distanceViewUI(),
                       Divider(
@@ -94,7 +123,10 @@ class _FiltersScreenState extends State<FiltersScreen> {
                   bottom: 16 + MediaQuery.of(context).padding.bottom,
                   top: 8),
               child: CommonButton(
-                buttonText: AppLocalizations(context).of("Apply_text"),
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>ResultPageView(resultList: finalList,)));
+                },
+                buttonText: AppLocalizations(context).of("Apply_text")+('( '+finalList.length.toString()+' )'),
               ),
             )
           ],
@@ -216,6 +248,29 @@ class _FiltersScreenState extends State<FiltersScreen> {
     }
   }
 
+  searchByFilter(String text)async{
+    var translation = await translator
+        .translate(text, from: 'en', to: 'fr');
+ print(translation.toString());
+    if (text != '') {
+      //finalList.clear();
+    ambiancesList.forEach((element) {
+      if(element.type.toLowerCase().contains(translation.text.substring(0, 4).toLowerCase())){
+        setState(() {
+          finalList.add(element.restaurantId);
+        });
+      }
+    });
+      print(finalList);
+
+    } else {
+      setState(() {
+        print(finalList.length);
+        //finalList.clear();
+        //resultList.addAll(finalList);
+      });
+    }
+  }
   Widget distanceViewUI() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -245,7 +300,6 @@ class _FiltersScreenState extends State<FiltersScreen> {
       ],
     );
   }
-
   Widget popularFilter() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -266,6 +320,35 @@ class _FiltersScreenState extends State<FiltersScreen> {
         Padding(
           padding: const EdgeInsets.only(right: 8, left: 8),
           child: Column(
+            children: getPList(),
+          ),
+        ),
+        SizedBox(
+          height: 8,
+        )
+      ],
+    );
+  }
+  Widget cuisineFilter() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding:
+          const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
+          child: Text(
+            AppLocalizations(context).of("cuisine filter"),
+            textAlign: TextAlign.left,
+            style: TextStyle(
+                color: Colors.grey,
+                fontSize: MediaQuery.of(context).size.width > 360 ? 18 : 16,
+                fontWeight: FontWeight.normal),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 8, left: 8),
+          child: Column(
             children: getCList(),
           ),
         ),
@@ -275,7 +358,35 @@ class _FiltersScreenState extends State<FiltersScreen> {
       ],
     );
   }
-
+  Widget ambianceFilter() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding:
+          const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
+          child: Text(
+            AppLocalizations(context).of("ambiance filter"),
+            textAlign: TextAlign.left,
+            style: TextStyle(
+                color: Colors.grey,
+                fontSize: MediaQuery.of(context).size.width > 360 ? 18 : 16,
+                fontWeight: FontWeight.normal),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 8, left: 8),
+          child: Column(
+            children: getAList(),
+          ),
+        ),
+        SizedBox(
+          height: 8,
+        )
+      ],
+    );
+  }
   List<Widget> getPList() {
     List<Widget> noList = [];
     var cout = 0;
@@ -296,6 +407,8 @@ class _FiltersScreenState extends State<FiltersScreen> {
                       onTap: () {
                         setState(() {
                           date.isSelected = !date.isSelected;
+                          if(date.isSelected)
+                            searchByFilter(date.titleTxt);
                         });
                       },
                       child: Padding(
@@ -362,6 +475,76 @@ class _FiltersScreenState extends State<FiltersScreen> {
                       onTap: () {
                         setState(() {
                           date.isSelected = !date.isSelected;
+                          if(date.isSelected)
+                            searchByFilter(date.titleTxt);
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8.0, top: 8, bottom: 8, right: 0),
+                        child: Row(
+                          children: <Widget>[
+                            Icon(
+                              date.isSelected
+                                  ? Icons.check_box
+                                  : Icons.check_box_outline_blank,
+                              color: date.isSelected
+                                  ? Theme.of(context).primaryColor
+                                  : Colors.grey.withOpacity(0.6),
+                            ),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            FittedBox(
+                              fit: BoxFit.cover,
+                              child: Text(
+                                AppLocalizations(context).of(date.titleTxt),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+          cout += 1;
+        } catch (e) {
+        }
+      }
+      noList.add(Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: listUI,
+      ));
+    }
+    return noList;
+  }
+  List<Widget> getAList() {
+    List<Widget> noList = [];
+    var cout = 0;
+    final columCount = 2;
+    for (var i = 0; i < ambianceFilterListData.length / columCount; i++) {
+      List<Widget> listUI = [];
+      for (var i = 0; i < columCount; i++) {
+        try {
+          final date = ambianceFilterListData[cout];
+          listUI.add(
+            Expanded(
+              child: Row(
+                children: <Widget>[
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                      onTap: () {
+                        setState(() {
+                          date.isSelected = !date.isSelected;
+                          if(date.isSelected)
+                          searchByFilter(date.titleTxt);
                         });
                       },
                       child: Padding(

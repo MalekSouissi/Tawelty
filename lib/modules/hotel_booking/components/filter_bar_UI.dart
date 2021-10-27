@@ -2,9 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
+import 'package:new_motel/models/hotel_list_data.dart';
 import 'package:new_motel/routes/route_names.dart';
 
-class FilterBarUI extends StatelessWidget {
+class FilterBarUI extends StatefulWidget {
+
+  @override
+  State<FilterBarUI> createState() => _FilterBarUIState();
+}
+
+class _FilterBarUIState extends State<FilterBarUI> {
+  RestaurantListData restaurantListData=RestaurantListData();
+  List<RestaurantListData> finalList=[];
+  List resultList=[];
+
+  fetchRestaurants()async{
+    finalList=await restaurantListData.fetchRestaurants();
+    print(finalList.length);
+  }
+@override
+  void initState() {
+    // TODO: implement initState
+fetchRestaurants();
+resultList = RestaurantListData().finalList;
+print(resultList.length);
+  super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,7 +42,7 @@ class FilterBarUI extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    "530",
+                    finalList.length.toString(),
                     style: TextStyles(context).getRegularStyle(),
                   ),
                 ),

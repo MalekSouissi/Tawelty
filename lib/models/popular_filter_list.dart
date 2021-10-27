@@ -1,3 +1,8 @@
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+
+
 class PopularFilterListData {
   String titleTxt;
   bool isSelected;
@@ -18,15 +23,15 @@ class PopularFilterListData {
     ),
     PopularFilterListData(
       titleTxt: 'alcohol_text',
-      isSelected: true,
+      isSelected: false,
     ),
     PopularFilterListData(
       titleTxt: 'karaoke_text',
-      isSelected: true,
+      isSelected: false,
     ),
     PopularFilterListData(
       titleTxt: 'TPE_text',
-      isSelected: true,
+      isSelected: false,
     ),
     PopularFilterListData(
       titleTxt: 'pet_friendlly',
@@ -57,15 +62,15 @@ class PopularFilterListData {
     ),
     PopularFilterListData(
       titleTxt: 'Cuisine_française',
-      isSelected: true,
+      isSelected: false,
     ),
     PopularFilterListData(
       titleTxt: 'Cuisine_asiatique',
-      isSelected: true,
+      isSelected: false,
     ),
     PopularFilterListData(
       titleTxt: 'Cuisine_mexicaine',
-      isSelected: true,
+      isSelected: false,
     ),
     PopularFilterListData(
       titleTxt: 'Cuisine_europeene',
@@ -85,6 +90,24 @@ class PopularFilterListData {
     ),
   ];
 
+  static List<PopularFilterListData> ambianceFList = [
+    PopularFilterListData(
+      titleTxt: 'Festive_text',
+      isSelected: false,
+    ),
+    PopularFilterListData(
+      titleTxt: 'Familiale_text',
+      isSelected: false,
+    ),
+    PopularFilterListData(
+      titleTxt: 'music_text',
+      isSelected: false,
+    ),
+    PopularFilterListData(
+      titleTxt: 'Business_text',
+      isSelected: false,
+    ),
+  ];
 
   static List<PopularFilterListData> accomodationList = [
     PopularFilterListData(
@@ -96,11 +119,11 @@ class PopularFilterListData {
       isSelected: false,
     ),
     PopularFilterListData(
-      titleTxt: 'Home_text',
-      isSelected: true,
+      titleTxt: 'Backpacker_data',
+      isSelected: false,
     ),
     PopularFilterListData(
-      titleTxt: 'villa_data',
+      titleTxt: 'guest_house',
       isSelected: false,
     ),
     PopularFilterListData(
@@ -112,4 +135,124 @@ class PopularFilterListData {
       isSelected: false,
     ),
   ];
+}
+
+class FilterListData{
+  String id;
+  String type;
+  String restaurantId;
+
+
+  FilterListData(
+      {
+        this.id='',
+        this.type='',
+        this.restaurantId=''});
+
+  Map<String, dynamic> toJson() {
+    return {
+      'type': type,
+      'RestaurantId':restaurantId,
+    };
+  }
+  factory FilterListData.fromJson(Map<String, dynamic> item) {
+    return FilterListData(
+      id: item['id'].toString(),
+      type: item['type'],
+      restaurantId: item['RestaurantId'].toString(),
+    );
+  }
+
+
+  static const API = 'http://37.187.198.241:3000/';
+  // static List<FilterListData> ambiances=[];
+  // static List<FilterListData> generals=[];
+  // static List<FilterListData> cuisines=[];
+  // static List<FilterListData> types=[];
+
+  fetchAmbiances() async {
+    final response = await http.get(
+        Uri.parse(API + 'ambiances'));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      final jsonData = json.decode(response.body);
+      final floors = <FilterListData>[];
+      for (var item in jsonData) {
+        floors.add(FilterListData.fromJson(item));
+      }
+      print(floors);
+      return floors;
+      //return RestaurantListData.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+
+  fetchCuisines() async {
+    final response = await http.get(
+        Uri.parse(API + 'cuisines'));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      final jsonData = json.decode(response.body);
+      final floors = <FilterListData>[];
+      for (var item in jsonData) {
+        floors.add(FilterListData.fromJson(item));
+      }
+      print(floors);
+      return floors;
+      //return RestaurantListData.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+  fetchGenerals() async {
+    final response = await http.get(
+        Uri.parse(API + 'generals'));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      final jsonData = json.decode(response.body);
+      final floors = <FilterListData>[];
+      for (var item in jsonData) {
+        floors.add(FilterListData.fromJson(item));
+      }
+      print(floors);
+      return floors;
+      //return RestaurantListData.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+  fetchtypes() async {
+    final response = await http.get(
+        Uri.parse(API + 'etablissements'));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      final jsonData = json.decode(response.body);
+      final floors = <FilterListData>[];
+      for (var item in jsonData) {
+        floors.add(FilterListData.fromJson(item));
+      }
+      print(floors);
+      return floors;
+      //return RestaurantListData.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
 }

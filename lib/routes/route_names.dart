@@ -3,6 +3,7 @@ import 'package:new_motel/models/hotel_list_data.dart';
 import 'package:new_motel/modules/bottom_tab/bottom_tab_screen.dart';
 import 'package:new_motel/modules/hotel_booking/filter_screen/filters_screen.dart';
 import 'package:new_motel/modules/hotel_booking/hotel_home_screen.dart';
+import 'package:new_motel/modules/hotel_booking/result_filter/result_screen.dart';
 import 'package:new_motel/modules/hotel_detailes/hotel_detailes.dart';
 import 'package:new_motel/modules/hotel_detailes/reviews_list_screen.dart';
 import 'package:new_motel/modules/hotel_detailes/room_booking_screen.dart';
@@ -120,6 +121,7 @@ class NavigationServices {
   Future<dynamic> gotoHowDoScreen() async {
     return await _pushMaterialPageRoute(HowDoScreen());
   }
+
 
 //   void gotoHotelDetailesPage(String hotelname) async {
 //     await _pushMaterialPageRoute(HotelDetailes(hotelName: hotelname));
