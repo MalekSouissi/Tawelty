@@ -6,15 +6,45 @@ import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/widgets/common_appbar_view.dart';
 import 'package:new_motel/widgets/common_card.dart';
 import 'package:new_motel/widgets/remove_focuse.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/setting_list_data.dart';
 
 class EditProfile extends StatefulWidget {
+
   @override
   _EditProfileState createState() => _EditProfileState();
 }
 
 class _EditProfileState extends State<EditProfile> {
+  var user;
+
+  void _getUserInfo() async {
+    SharedPreferences localStorage1 = await SharedPreferences.getInstance();
+    var userId = localStorage1.getInt('id');
+    print(userId);
+    setState(() {
+      user = userId;
+      fetchUser(user);
+      print(user);
+    });
+  }
+
   List<SettingsListData> userInfoList = SettingsListData.userInfoList;
+  SettingsListData settingslistdata=SettingsListData();
+  List<SettingsListData> UserProfil=[];
+
+  fetchUser(user)async{
+    UserProfil=await settingslistdata.GetUserProfil(user.toString());
+    print(UserProfil);
+  }
+
+  @override
+  void initState() {
+    _getUserInfo();
+    // TODO: implement initState
+    super.initState();
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +59,10 @@ class _EditProfileState extends State<EditProfile> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              TextButton(onPressed: (){
+                _getUserInfo();
+
+              }, child: Text('Button')),
               CommonAppbarView(
                 iconData: Icons.arrow_back,
                 titleText: AppLocalizations(context).of("edit_profile"),

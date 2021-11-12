@@ -16,6 +16,7 @@ class _RoomBookingScreenState extends State<RoomBookingScreen>
     with TickerProviderStateMixin {
   List<RestaurantListData> romeList = RestaurantListData.romeList;
   late AnimationController animationController;
+RestaurantListData restaurantListdata = RestaurantListData();
 
   @override
   void initState() {
@@ -37,7 +38,8 @@ class _RoomBookingScreenState extends State<RoomBookingScreen>
         children: <Widget>[
           getAppBarUI(),
           Expanded(
-            child: ListView.builder(
+            child: RoomeBookView(restaurantId: restaurantListdata.id,),
+            /*ListView.builder(
               padding: EdgeInsets.all(0.0),
               itemCount: romeList.length,
               itemBuilder: (context, index) {
@@ -50,12 +52,12 @@ class _RoomBookingScreenState extends State<RoomBookingScreen>
                 animationController.forward();
                 //room book view and room data
                 return RoomeBookView(
-                  roomData: romeList[index],
+                  *//*roomData: romeList[index],
                   animation: animation,
-                  animationController: animationController,
+                  animationController: animationController,*//*
                 );
               },
-            ),
+            )*/
           ),
         ],
       ),

@@ -1,9 +1,7 @@
 import 'dart:convert';
 
-import 'package:new_motel/api/api_Response.dart';
 import 'package:new_motel/constants/localfiles.dart';
 import 'package:new_motel/models/room_data.dart';
-import 'package:new_motel/services/restaurantListData.services.dart';
 import 'package:http/http.dart' as http;
 
 class RestaurantListData {
@@ -101,9 +99,6 @@ class RestaurantListData {
       throw Exception('Failed to load album');
     }
   }
-
-
-
 
   static List<RestaurantListData> popularList = [
     RestaurantListData(

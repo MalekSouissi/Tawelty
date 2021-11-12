@@ -1224,5 +1224,26 @@
         "fr": "Le nom de famille ne peut pas être vide",
         "ar": "لا يمكن أن يكون الاسم الأخير فارغًا",
         "ja": "姓を空にすることはできません"
+    },
+    {
+        "text_id": "choose date",
+        "en": "Choose a date",
+        "fr": "Choisir une date",
+        "ar": "اختر التاريخ",
+        "ja": "日付を選択してください"
+    },
+    {
+        "text_id": "choose time",
+        "en": "Choose a time",
+        "fr": "Choisir une heure",
+        "ar": "اختر الوقت",
+        "ja": "時間を選択してください"
+    },
+    {
+        "text_id": "guest number",
+        "en": "Choose a time",
+        "fr": "Choisir une heure",
+        "ar": "اختر الوقت",
+        "ja": "時間を選択してください"
     }
 ]

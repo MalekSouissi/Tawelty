@@ -1,8 +1,19 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart' as http;
+
 
 class SettingsListData {
+
+  String id;
+  String first_name;
+  String last_name;
+  String email;
+  String password;
+
   String titleTxt;
   String subTxt;
   IconData iconData;
@@ -13,7 +24,53 @@ class SettingsListData {
     this.isSelected = false,
     this.subTxt = '',
     this.iconData = Icons.supervised_user_circle,
+    this.email = '',
+    this.first_name = '',
+    this.last_name = '',
+    this.password = '',
+    this.id = '',
+
   });
+
+  factory SettingsListData.fromJson(Map<String, dynamic> item) {
+    return SettingsListData(
+
+      titleTxt: item['NomResto'],
+      subTxt: 'adresse',
+      isSelected: true,
+      id: item['id'].toString(),
+      // description: item['Description'],
+      // userId: item['UserId'],
+      // //etat: item['etat'],
+      // //cuisine: item['cuisine'],
+      // temps_ouverture: DateTime.parse(item['temps_ouverture']),
+      // temps_fermeture: DateTime.parse(item['temps_fermeture']),
+      // createdAt: DateTime.parse(item['createdAt']),
+      // updatedAt:
+      // item['updatedAt'] != null ? DateTime.parse(item['updatedAt']) : DateTime.parse(item['updatedAt']),
+    );
+  }
+
+  static const API = 'http://37.187.198.241:3000/';
+  static List<SettingsListData> UserProfil=[];
+
+  GetUserProfil(String userId) async {
+    final response = await http.get(
+        Uri.parse(API + 'users/' + userId));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      final jsonData = json.decode(response.body);
+      print(jsonData);
+      return jsonData;
+      //return RestaurantListData.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
 
   List<SettingsListData> getCountryListFromJson(Map<String, dynamic> json) {
     List<SettingsListData> countryList = [];
