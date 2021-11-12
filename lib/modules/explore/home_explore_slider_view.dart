@@ -33,17 +33,17 @@ class _HomeExploreSliderViewState extends State<HomeExploreSliderView> {
     pageViewModelData.add(PageViewData(
       titleText: 'cape Town',
       subText: 'five_star',
-      assetsImage: Localfiles.explore_2,
+      assetsImage: Localfiles.restau_2,
     ));
     pageViewModelData.add(PageViewData(
       titleText: 'find_best_deals',
       subText: 'five_star',
-      assetsImage: Localfiles.explore_1,
+      assetsImage: Localfiles.restau_3,
     ));
     pageViewModelData.add(PageViewData(
       titleText: 'find_best_deals',
       subText: 'five_star',
-      assetsImage: Localfiles.explore_3,
+      assetsImage: Localfiles.restau_5,
     ));
 
     sliderTimer = Timer.periodic(Duration(seconds: 4), (timer) {

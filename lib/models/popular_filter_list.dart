@@ -18,7 +18,7 @@ class PopularFilterListData {
       isSelected: false,
     ),
     PopularFilterListData(
-      titleTxt: 'free_Parking',
+      titleTxt: 'Parking',
       isSelected: false,
     ),
     PopularFilterListData(
@@ -53,27 +53,27 @@ class PopularFilterListData {
 
   static List<PopularFilterListData> cuisineFList = [
     PopularFilterListData(
-      titleTxt: 'Cuisine_tunisienne',
+      titleTxt: 'tunisienne',
       isSelected: false,
     ),
     PopularFilterListData(
-      titleTxt: 'Cuisine_italienne',
+      titleTxt: 'italienne',
       isSelected: false,
     ),
     PopularFilterListData(
-      titleTxt: 'Cuisine_française',
+      titleTxt: 'française',
       isSelected: false,
     ),
     PopularFilterListData(
-      titleTxt: 'Cuisine_asiatique',
+      titleTxt: 'asiatique',
       isSelected: false,
     ),
     PopularFilterListData(
-      titleTxt: 'Cuisine_mexicaine',
+      titleTxt: 'mexicaine',
       isSelected: false,
     ),
     PopularFilterListData(
-      titleTxt: 'Cuisine_europeene',
+      titleTxt: 'europeene',
       isSelected: false,
     ),
     // PopularFilterListData(
@@ -81,11 +81,11 @@ class PopularFilterListData {
     //   isSelected: false,
     // ),
     PopularFilterListData(
-      titleTxt: 'Cuisine_mer',
+      titleTxt: 'fruit de mer',
       isSelected: false,
     ),
     PopularFilterListData(
-      titleTxt: 'Cuisine_steak',
+      titleTxt: 'steak',
       isSelected: false,
     ),
   ];
@@ -158,7 +158,7 @@ class FilterListData{
   factory FilterListData.fromJson(Map<String, dynamic> item) {
     return FilterListData(
       id: item['id'].toString(),
-      type: item['type'],
+      type: item['type']!=null?item['type']:'type',
       restaurantId: item['RestaurantId'].toString(),
     );
   }

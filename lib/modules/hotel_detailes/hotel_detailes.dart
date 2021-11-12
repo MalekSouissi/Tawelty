@@ -7,6 +7,7 @@ import 'package:new_motel/constants/localfiles.dart';
 import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
+import 'package:new_motel/modules/hotel_booking/components/restaurant_carousel.dart';
 import 'package:new_motel/modules/hotel_detailes/review_data_view.dart';
 import 'package:new_motel/routes/route_names.dart';
 import 'package:new_motel/widgets/common_button.dart';
@@ -371,10 +372,7 @@ class _HotelDetailesState extends State<HotelDetailes>
                           top: 0,
                           child: Container(
                             width: MediaQuery.of(context).size.width,
-                            child: Image.asset(
-                              hotelData.imagePath,
-                              fit: BoxFit.cover,
-                            ),
+                            child: ProfilePicture(restaurantId: widget.hotelData.id,)
                           ),
                         ),
                       ],
@@ -536,14 +534,17 @@ class _HotelDetailesState extends State<HotelDetailes>
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    widget.hotelData.subTxt,
-                    style: TextStyles(context).getRegularStyle().copyWith(
-                          fontSize: 14,
-                          color: isInList
-                              ? Theme.of(context).disabledColor.withOpacity(0.5)
-                              : Colors.white,
-                        ),
+                  Expanded(
+                    flex:4,
+                    child: Text(
+                      widget.hotelData.subTxt,
+                      style: TextStyles(context).getRegularStyle().copyWith(
+                            fontSize: 14,
+                            color: isInList
+                                ? Theme.of(context).disabledColor.withOpacity(0.5)
+                                : Colors.white,
+                          ),
+                    ),
                   ),
                   SizedBox(
                     width: 4,
@@ -564,6 +565,7 @@ class _HotelDetailesState extends State<HotelDetailes>
                         ),
                   ),
                   Expanded(
+                    flex: 2,
                     child: Text(
                       AppLocalizations(context).of("km_to_city"),
                       overflow: TextOverflow.ellipsis,
@@ -614,31 +616,31 @@ class _HotelDetailesState extends State<HotelDetailes>
             ],
           ),
         ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            Text(
-              "\$${widget.hotelData.perNight}",
-              textAlign: TextAlign.left,
-              style: TextStyles(context).getBoldStyle().copyWith(
-                    fontSize: 22,
-                    color: isInList
-                        ? Theme.of(context).textTheme.bodyText1!.color
-                        : Colors.white,
-                  ),
-            ),
-            Text(
-              AppLocalizations(context).of("per_night"),
-              style: TextStyles(context).getRegularStyle().copyWith(
-                    fontSize: 14,
-                    color: isInList
-                        ? Theme.of(context).disabledColor
-                        : Colors.white,
-                  ),
-            ),
-          ],
-        ),
+        // Column(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   crossAxisAlignment: CrossAxisAlignment.end,
+        //   children: <Widget>[
+        //     Text(
+        //       "\$${widget.hotelData.perNight}",
+        //       textAlign: TextAlign.left,
+        //       style: TextStyles(context).getBoldStyle().copyWith(
+        //             fontSize: 22,
+        //             color: isInList
+        //                 ? Theme.of(context).textTheme.bodyText1!.color
+        //                 : Colors.white,
+        //           ),
+        //     ),
+        //     Text(
+        //       AppLocalizations(context).of("per_night"),
+        //       style: TextStyles(context).getRegularStyle().copyWith(
+        //             fontSize: 14,
+        //             color: isInList
+        //                 ? Theme.of(context).disabledColor
+        //                 : Colors.white,
+        //           ),
+        //     ),
+        //   ],
+        // ),
       ],
     );
   }

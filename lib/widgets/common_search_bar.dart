@@ -7,13 +7,16 @@ class CommonSearchBar extends StatelessWidget {
   final bool enabled, ishsow;
   final double height;
   final IconData? iconData;
-
+  final Function? onchanged;
+ final TextEditingController? controller;
   const CommonSearchBar(
       {Key? key,
       this.text,
+        this.onchanged,
       this.enabled = false,
       this.height = 48,
       this.iconData,
+        this.controller,
       this.ishsow = true})
       : super(key: key);
   @override
@@ -40,10 +43,13 @@ class CommonSearchBar extends StatelessWidget {
                   : SizedBox(),
               Expanded(
                 child: TextField(
+                  controller: controller,
                   maxLines: 1,
                   enabled: enabled,
-                  onChanged: (String txt) {},
                   cursorColor: Theme.of(context).primaryColor,
+                  onChanged: (String text){
+                    onchanged!(text);
+                  },
                   decoration: new InputDecoration(
                       contentPadding: EdgeInsets.all(0),
                       errorText: null,

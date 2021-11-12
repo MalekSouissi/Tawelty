@@ -21,9 +21,7 @@ class _FavoritesListViewState extends State<FavoritesListView> {
 
   fetchRestaurant()async{
     hotelList= await RestaurantListData().fetchRestaurants();
-
     setState(() {
-
       showAddress = true;
     });
   }

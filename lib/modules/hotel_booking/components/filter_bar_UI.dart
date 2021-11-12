@@ -6,28 +6,31 @@ import 'package:new_motel/models/hotel_list_data.dart';
 import 'package:new_motel/routes/route_names.dart';
 
 class FilterBarUI extends StatefulWidget {
-
+  final List resultList;
+  FilterBarUI({required this.resultList});
   @override
   State<FilterBarUI> createState() => _FilterBarUIState();
 }
 
 class _FilterBarUIState extends State<FilterBarUI> {
-  RestaurantListData restaurantListData=RestaurantListData();
-  List<RestaurantListData> finalList=[];
-  List resultList=[];
+  RestaurantListData restaurantListData = RestaurantListData();
+  List<RestaurantListData> finalList = [];
+  List resultList = [];
 
-  fetchRestaurants()async{
-    finalList=await restaurantListData.fetchRestaurants();
+  fetchRestaurants() async {
+    finalList = await restaurantListData.fetchRestaurants();
     print(finalList.length);
   }
-@override
+
+  @override
   void initState() {
     // TODO: implement initState
-fetchRestaurants();
-resultList = RestaurantListData().finalList;
-print(resultList.length);
-  super.initState();
+    fetchRestaurants();
+    resultList = RestaurantListData().finalList;
+    print(resultList.length);
+    super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,7 +45,7 @@ print(resultList.length);
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    finalList.length.toString(),
+                    widget.resultList.length.toString(),
                     style: TextStyles(context).getRegularStyle(),
                   ),
                 ),

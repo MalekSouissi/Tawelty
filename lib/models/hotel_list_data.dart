@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:new_motel/api/api_Response.dart';
 import 'package:new_motel/constants/localfiles.dart';
+import 'package:new_motel/models/restaurant_files.dart';
 import 'package:new_motel/models/room_data.dart';
 import 'package:new_motel/services/restaurantListData.services.dart';
 import 'package:http/http.dart' as http;
@@ -39,6 +39,7 @@ class RestaurantListData {
     this.peopleSleeps,
   });
 
+
   // Map<String, dynamic> toJson() {
   //   return {
   //     //"id":id,
@@ -53,7 +54,7 @@ class RestaurantListData {
     return RestaurantListData(
       imagePath: Localfiles.hotel_1,
       titleTxt: item['NomResto'],
-      subTxt: 'adresse',
+      subTxt: item['adresse']!= null?item['adresse']:'adresse',
       dist: 2.0,
       reviews: 80,
       rating: 4.4,
@@ -74,7 +75,29 @@ class RestaurantListData {
     );
   }
 
+  List<File> floors=[];
 
+
+  fetchRestaurantFiles(String id) async {
+    final response = await http.get(
+        Uri.parse(API + 'file/info/'+id));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      final jsonData = json.decode(response.body);
+      for (var item in jsonData) {
+        floors.add(File.fromJson(item));
+      }
+      print(floors);
+      return floors;
+      //return RestaurantListData.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
 
   static const API = 'http://37.187.198.241:3000/';
   static List<RestaurantListData> hotelList=[];
@@ -107,27 +130,27 @@ class RestaurantListData {
 
   static List<RestaurantListData> popularList = [
     RestaurantListData(
-      imagePath: Localfiles.popular_1,
-      titleTxt: 'Paris',
+      imagePath: Localfiles.restau_2,
+      titleTxt: 'vue sur mer',
     ),
     RestaurantListData(
-      imagePath: Localfiles.popular_2,
+      imagePath: Localfiles.restau_6,
       titleTxt: 'Spain',
     ),
     RestaurantListData(
-      imagePath: Localfiles.popular_3,
+      imagePath: Localfiles.restau_5,
       titleTxt: 'Vernazza',
     ),
     RestaurantListData(
-      imagePath: Localfiles.popular_4,
+      imagePath: Localfiles.restau_3,
       titleTxt: 'London',
     ),
     RestaurantListData(
-      imagePath: Localfiles.popular_5,
+      imagePath: Localfiles.restau_1,
       titleTxt: 'Venice',
     ),
     RestaurantListData(
-      imagePath: Localfiles.popular_6,
+      imagePath: Localfiles.restau_4,
       titleTxt: 'Diamond Head',
     ),
   ];
