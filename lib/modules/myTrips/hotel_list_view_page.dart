@@ -7,11 +7,13 @@ import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/logic/providers/theme_provider.dart';
 import 'package:new_motel/models/enum.dart';
 import 'package:new_motel/models/hotel_list_data.dart';
+import 'package:new_motel/models/restaurant_files.dart';
+import 'package:new_motel/modules/hotel_booking/components/restaurant_carousel.dart';
 import 'package:new_motel/widgets/common_card.dart';
 import 'package:new_motel/widgets/list_cell_animation_view.dart';
 import 'package:provider/provider.dart';
 
-class HotelListViewPage extends StatelessWidget {
+class HotelListViewPage extends StatefulWidget {
   final bool isShowDate;
   final VoidCallback callback;
   final RestaurantListData hotelData;
@@ -28,12 +30,20 @@ class HotelListViewPage extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<HotelListViewPage> createState() => _HotelListViewPageState();
+}
+
+class _HotelListViewPageState extends State<HotelListViewPage> {
+
+
+
+  @override
   Widget build(BuildContext context) {
     return ListCellAnimationView(
-      animation: animation,
-      animationController: animationController,
+      animation: widget.animation,
+      animationController: widget.animationController,
       child: Padding(
-        padding: EdgeInsets.only(left: 24, right: 24, top: 8, bottom: 16),
+        padding: EdgeInsets.only(left: 24, right: 24, top: 8, bottom: 8),
         child: CommonCard(
           color: AppTheme.backgroundColor,
           child: ClipRRect(
@@ -44,14 +54,13 @@ class HotelListViewPage extends StatelessWidget {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
+                      //ProfileCarousel(restaurantId: widget.hotelData.id,),
                       AspectRatio(
                         aspectRatio: 0.90,
-                        child: Image.asset(
-                          hotelData.imagePath,
-                          fit: BoxFit.cover,
-                        ),
+                        child:ProfilePicture(restaurantId: widget.hotelData.id,)
                       ),
                       Expanded(
+                        flex: 8,
                         child: Container(
                           padding: EdgeInsets.all(
                               MediaQuery.of(context).size.width >= 360
@@ -62,7 +71,7 @@ class HotelListViewPage extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                hotelData.titleTxt,
+                                widget.hotelData.titleTxt,
                                 maxLines: 2,
                                 textAlign: TextAlign.left,
                                 style:
@@ -72,105 +81,103 @@ class HotelListViewPage extends StatelessWidget {
                                 overflow: TextOverflow.ellipsis,
                               ),
                               Text(
-                                hotelData.subTxt,
+                                widget.hotelData.subTxt,
                                 style: TextStyles(context)
                                     .getDescriptionStyle()
                                     .copyWith(
                                       fontSize: 14,
                                     ),
                               ),
-                              Expanded(
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: <Widget>[
-                                              Icon(
-                                                FontAwesomeIcons.mapMarkerAlt,
-                                                size: 12,
-                                                color: Theme.of(context)
-                                                    .primaryColor,
-                                              ),
-                                              Text(
-                                                " ${hotelData.dist.toStringAsFixed(1)} ",
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyles(context)
-                                                    .getDescriptionStyle()
-                                                    .copyWith(
-                                                      fontSize: 14,
-                                                    ),
-                                              ),
-                                              Expanded(
-                                                child: Text(
-                                                  AppLocalizations(context)
-                                                      .of("km_to_city"),
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  style: TextStyles(context)
-                                                      .getDescriptionStyle()
-                                                      .copyWith(
-                                                        fontSize: 14,
-                                                      ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Helper.ratingStar(),
-                                        ],
-                                      ),
-                                    ),
-                                    FittedBox(
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 8),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: <Widget>[
-                                            Text(
-                                              "\$${hotelData.perNight}",
-                                              textAlign: TextAlign.left,
-                                              style: TextStyles(context)
-                                                  .getBoldStyle()
-                                                  .copyWith(fontSize: 22),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: context
-                                                              .read<
-                                                                  ThemeProvider>()
-                                                              .languageType ==
-                                                          LanguageType.ar
-                                                      ? 2.0
-                                                      : 0.0),
-                                              child: Text(
-                                                AppLocalizations(context)
-                                                    .of("per_night"),
-                                                style: TextStyles(context)
-                                                    .getDescriptionStyle()
-                                                    .copyWith(
-                                                      fontSize: 14,
-                                                    ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              // Expanded(
+                              //   child: Row(
+                              //     crossAxisAlignment: CrossAxisAlignment.end,
+                              //     children: <Widget>[
+                              //       Column(
+                              //         mainAxisAlignment:
+                              //             MainAxisAlignment.end,
+                              //         crossAxisAlignment:
+                              //             CrossAxisAlignment.start,
+                              //         children: <Widget>[
+                              //           Row(
+                              //             crossAxisAlignment:
+                              //                 CrossAxisAlignment.center,
+                              //             children: <Widget>[
+                              //               Icon(
+                              //                 FontAwesomeIcons.mapMarkerAlt,
+                              //                 size: 12,
+                              //                 color: Theme.of(context)
+                              //                     .primaryColor,
+                              //               ),
+                              //               Text(
+                              //                 " ${widget.hotelData.dist.toStringAsFixed(1)} ",
+                              //                 overflow: TextOverflow.ellipsis,
+                              //                 style: TextStyles(context)
+                              //                     .getDescriptionStyle()
+                              //                     .copyWith(
+                              //                       fontSize: 14,
+                              //                     ),
+                              //               ),
+                              //               Expanded(
+                              //                 child: Text(
+                              //                   AppLocalizations(context)
+                              //                       .of("km_to_city"),
+                              //                   overflow:
+                              //                       TextOverflow.ellipsis,
+                              //                   style: TextStyles(context)
+                              //                       .getDescriptionStyle()
+                              //                       .copyWith(
+                              //                         fontSize: 14,
+                              //                       ),
+                              //                 ),
+                              //               ),
+                              //             ],
+                              //           ),
+                              //           Helper.ratingStar(),
+                              //         ],
+                              //       ),
+                              //       Expanded(
+                              //         child: Padding(
+                              //           padding:
+                              //               const EdgeInsets.only(right: 8),
+                              //           child: Column(
+                              //             mainAxisAlignment:
+                              //                 MainAxisAlignment.center,
+                              //             crossAxisAlignment:
+                              //                 CrossAxisAlignment.end,
+                              //             children: <Widget>[
+                              //               Text(
+                              //                 "\$${widget.hotelData.perNight}",
+                              //                 textAlign: TextAlign.left,
+                              //                 style: TextStyles(context)
+                              //                     .getBoldStyle()
+                              //                     .copyWith(fontSize: 22),
+                              //               ),
+                              //               Padding(
+                              //                 padding: EdgeInsets.only(
+                              //                     top: context
+                              //                                 .read<
+                              //                                     ThemeProvider>()
+                              //                                 .languageType ==
+                              //                             LanguageType.ar
+                              //                         ? 2.0
+                              //                         : 0.0),
+                              //                 child: Text(
+                              //                   AppLocalizations(context)
+                              //                       .of("per_night"),
+                              //                   style: TextStyles(context)
+                              //                       .getDescriptionStyle()
+                              //                       .copyWith(
+                              //                         fontSize: 14,
+                              //                       ),
+                              //                 ),
+                              //               ),
+                              //             ],
+                              //           ),
+                              //         ),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
@@ -185,7 +192,7 @@ class HotelListViewPage extends StatelessWidget {
                           Theme.of(context).primaryColor.withOpacity(0.1),
                       onTap: () {
                         try {
-                          callback();
+                          widget.callback();
                         } catch (e) {}
                       },
                     ),

@@ -5,6 +5,7 @@ import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/models/hotel_list_data.dart';
+import 'package:new_motel/modules/hotel_booking/components/restaurant_carousel.dart';
 import 'package:new_motel/widgets/common_card.dart';
 
 class MapHotelListView extends StatelessWidget {
@@ -32,10 +33,11 @@ class MapHotelListView extends StatelessWidget {
                   children: <Widget>[
                     AspectRatio(
                       aspectRatio: 0.90,
-                      child: Image.asset(
-                        hotelData.imagePath,
-                        fit: BoxFit.cover,
-                      ),
+                      // child: Image.asset(
+                      //   hotelData.imagePath,
+                      //   fit: BoxFit.cover,
+                      // ),
+                      child: ProfilePicture(restaurantId: hotelData.id,),
                     ),
                     Expanded(
                       child: Container(

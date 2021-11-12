@@ -533,7 +533,7 @@
         "ja": "無料の朝食"
     },
     {
-        "text_id": "free_Parking",
+        "text_id": "Parking",
         "en": "Free Parking",
         "fr": "Parking gratuit",
         "ar": "موقف سيارات مجاني",
@@ -591,42 +591,42 @@
         "ja": "無料のWifi"
     },
     {
-        "text_id": "Cuisine_tunisienne",
+        "text_id": "tunisienne",
         "en": "Tunisian",
         "fr": "Tunisienne"
     },
     {
-        "text_id": "Cuisine_italienne",
+        "text_id": "italienne",
         "en": "Italien",
         "fr": "Italienne"
     },
     {
-        "text_id": "Cuisine_française",
+        "text_id": "française",
         "en": "Frensh",
         "fr": "Française"
     },
     {
-        "text_id": "Cuisine_asiatique",
+        "text_id": "asiatique",
         "en": "Asian",
         "fr": "Asiatique"
     },
     {
-        "text_id": "Cuisine_mexicaine",
+        "text_id": "mexicaine",
         "en": "Mexican",
         "fr": "Mexicaine"
     },
     {
-        "text_id": "Cuisine_europeene",
+        "text_id": "europeene",
         "en": "Europeon",
         "fr": "Europeene"
     },
     {
-        "text_id": "Cuisine_mer",
+        "text_id": "fruie de mer",
         "en": "Sea food",
         "fr": "Fruit de mer"
     },
     {
-        "text_id": "Cuisine_steak",
+        "text_id": "steak",
         "en": "Steak",
         "fr": "Steak"
     },

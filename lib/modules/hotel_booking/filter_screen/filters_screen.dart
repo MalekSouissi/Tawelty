@@ -55,7 +55,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
     // TODO: implement initState
     fetchAmbiances();
     fetchGenerals();
-   // fetchCuisines();
+    fetchCuisines();
     super.initState();
   }
 

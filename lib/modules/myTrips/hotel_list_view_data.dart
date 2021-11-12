@@ -7,6 +7,7 @@ import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/logic/providers/theme_provider.dart';
 import 'package:new_motel/models/enum.dart';
 import 'package:new_motel/models/hotel_list_data.dart';
+import 'package:new_motel/modules/hotel_booking/components/restaurant_carousel.dart';
 import 'package:new_motel/widgets/common_card.dart';
 import 'package:new_motel/widgets/list_cell_animation_view.dart';
 import 'package:provider/provider.dart';
@@ -51,13 +52,11 @@ class HotelListViewData extends StatelessWidget {
                   height: 150,
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                    child: AspectRatio(
-                      aspectRatio: 1.0,
-                      child: Image.asset(
-                        hotelData.imagePath,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                    // child: AspectRatio(
+                    //   aspectRatio: 1.0,
+                    //   child: ProfileCarousel(restaurantId: hotelData.id,)
+                    // ),
+                    child: ProfilePicture(restaurantId: hotelData.id,),
                   ),
                 ),
               ),

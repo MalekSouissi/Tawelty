@@ -46,6 +46,12 @@ dependencies:
     ndialog: ^4.1.0
     permission_handler:
     translator: ^0.1.7
+    mapbox_search: any
+    mapbox_search_flutter: any
+    geolocator: any
+    geocoder:
+    geocoding: ^2.0.0
+    carousel_slider: ^3.0.0
 
 dev_dependencies:
     flutter_test:

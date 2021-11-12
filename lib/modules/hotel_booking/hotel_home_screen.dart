@@ -7,6 +7,7 @@ import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/logic/providers/theme_provider.dart';
 import 'package:new_motel/models/enum.dart';
 import 'package:new_motel/modules/hotel_booking/components/filter_bar_UI.dart';
+import 'package:new_motel/modules/hotel_booking/components/getLocation.dart';
 import 'package:new_motel/modules/hotel_booking/components/map_and_list_view.dart';
 import 'package:new_motel/modules/hotel_booking/components/time_date_view.dart';
 import 'package:new_motel/modules/myTrips/hotel_list_view.dart';
@@ -27,6 +28,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   late AnimationController animationController;
   late AnimationController _animationController;
   List<RestaurantListData> hotelList=[];
+  List<RestaurantListData> _foundRestaurants=[];
+  List _foundRestaurants1=RestaurantListData().finalList;
   ScrollController scrollController = new ScrollController();
   int room = 1;
   int ad = 2;
@@ -38,7 +41,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   final filterBarHieght = 52.0;
 
   fetchRestaurants()async{
-    hotelList=await restaurantListData.fetchRestaurants();
+    hotelList=await RestaurantListData().fetchRestaurants();
     print(hotelList);
   }
 
@@ -89,7 +92,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 _getAppBarUI(),
                 _isShowMap
                     ? MapAndListView(
-                        hotelList: hotelList,
+                        hotelList: _foundRestaurants,
                         searchBarUI: _getSearchBarUI(),
                       )
                     : Expanded(
@@ -99,15 +102,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                               color: AppTheme.scaffoldBackgroundColor,
                               child: ListView.builder(
                                 controller: scrollController,
-                                itemCount: hotelList.length,
+                                itemCount: _foundRestaurants.length,
                                 padding: EdgeInsets.only(
                                   top: 8 + 158 + 52.0,
                                 ),
                                 scrollDirection: Axis.vertical,
                                 itemBuilder: (context, index) {
-                                  var count = hotelList.length > 10
+                                  var count = _foundRestaurants.length > 10
                                       ? 10
-                                      : hotelList.length;
+                                      : _foundRestaurants.length;
                                   var animation = Tween(begin: 0.0, end: 1.0)
                                       .animate(CurvedAnimation(
                                           parent: animationController,
@@ -119,9 +122,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                     callback: () {
                                       NavigationServices(context)
                                           .gotoRoomBookingScreen(
-                                              hotelList[index].titleTxt);
+                                          _foundRestaurants[index].titleTxt);
                                     },
-                                    hotelData: hotelList[index],
+                                    hotelData: _foundRestaurants[index],
                                     animation: animation,
                                     animationController: animationController,
                                   );
@@ -146,12 +149,13 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                             //hotel search view
                                             _getSearchBarUI(),
                                             // time date and number of rooms view
-                                            TimeDateView(),
+                                            //TimeDateView(),
+                                            LocationListView(),
                                           ],
                                         ),
                                       ),
                                       //hotel price & facilitate  & distance
-                                      FilterBarUI(),
+                                      FilterBarUI(resultList: _foundRestaurants,),
                                     ],
                                   ),
                                 );
@@ -167,7 +171,22 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       ),
     );
   }
+  void _runFilter(String enteredKeyword) {
+    List<RestaurantListData> results = [];
+    if (enteredKeyword.isEmpty) {
+      // if the search field is empty or only contains white-space, we'll display all users
+      results = hotelList;
+    } else {
+      results = hotelList
+          .where((restaurant) => restaurant.titleTxt.toLowerCase()
+          .contains(enteredKeyword.toLowerCase()))
+          .toList();
+    }
 
+    setState(() {
+      _foundRestaurants = results;
+    });
+  }
   Widget _getSearchBarUI() {
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
@@ -181,6 +200,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 color: AppTheme.backgroundColor,
                 radius: 36,
                 child: CommonSearchBar(
+                  onchanged: (String text){
+                    _runFilter(text);
+                  },
                   enabled: true,
                   ishsow: false,
                   text: "London...",
@@ -209,7 +231,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
       ),
     );
   }
-
   Widget _getAppBarUI() {
     return Padding(
       padding: EdgeInsets.only(
