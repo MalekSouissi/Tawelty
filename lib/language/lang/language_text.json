@@ -29,9 +29,9 @@
     },
     {
         "text_id": "book_one_of_your",
-        "en": "book one of your unique hotel to\nescape the ordinary",
+        "en": "book one of your unique restaurants to\nescape the ordinary",
         "fr": "réservez l'un de vos hôtels uniques pour\n néchapper à l'ordinaire",
-        "ar": "احجز أحد فنادقك الفريدة \n لتتخطى المألوف",
+        "ar": "احجز أحد مطاعمك الفريدة \n لتتخطى المألوف",
         "ja": "普通のホテルを\nするためにあなたのユニークなホテルの1つを予約する"
     },
     {
@@ -52,7 +52,7 @@
         "text_id": "best_travelling_all_time",
         "en": "Best VIP experience",
         "fr": "Meilleur experience VIP",
-        "ar": "أفضل السفر طوال الوقت",
+        "ar": "أفضل المطاعم طوال الوقت",
         "ja": "常に最高の旅行"
     },
     {
@@ -148,9 +148,9 @@
     },
     {
         "text_id": "trips",
-        "en": "Trips",
-        "fr": "voyages",
-        "ar": "رحلات",
+        "en": "Restaurants",
+        "fr": "Restaurants",
+        "ar": "مطاعم",
         "ja": "旅行"
     },
     {
@@ -227,7 +227,7 @@
         "text_id": "accommodation",
         "en": "reservation",
         "fr": "réservation",
-        "ar": "إقامة",
+        "ar": "حجز",
         "ja": "宿泊施設"
     },
     {
@@ -267,16 +267,16 @@
     },
     {
         "text_id": "view_hotel",
-        "en": "View Hotel",
-        "fr": "Voir l'hôtel",
-        "ar": "عرض الفندق",
+        "en": "View Restaurant",
+        "fr": "Voir le restaurant",
+        "ar": "عرض المطعم",
         "ja": "ホテルを見る"
     },
     {
         "text_id": "hotel found",
-        "en": "Hotel found",
-        "fr": "Hôtel trouvé",
-        "ar": "وجدت الفندق",
+        "en": "Restaurant found",
+        "fr": "Restaurant trouvé",
+        "ar": "وجدت المطعم",
         "ja": "ホテルが見つかりました"
     },
     {
@@ -421,9 +421,9 @@
     },
     {
         "text_id": "My_Trips",
-        "en": "My Trip",
-        "fr": "Mon voyage",
-        "ar": "رحلتي",
+        "en": "My restaurants",
+        "fr": "Mes restaurants",
+        "ar": "مطاعمي",
         "ja": "私の旅行"
     },
     {
@@ -449,9 +449,9 @@
     },
     {
         "text_id": "hotel_found",
-        "en": "Hotel Found",
+        "en": "Restaurant Found",
         "fr": "Hôtel trouvé",
-        "ar": "العثور على فندق",
+        "ar": "العثور على مطعم",
         "ja": "ホテルが見つかりました"
     },
     {
