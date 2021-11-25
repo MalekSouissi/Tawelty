@@ -260,9 +260,9 @@
     },
     {
         "text_id": "five_star",
-        "en": "Extraordinary five-star\noutdoor activites",
-        "fr": "Activités d'extérieur \nextraordinaires",
-        "ar": "أنشطة غير عادية من فئة الخمس نجوم \nفي الهواء الطلق",
+        "en": "Extraordinary five-star\nrestaurants",
+        "fr": "Restaurants extraordinaires",
+        "ar": "مطاعم من فئة الخمس نجوم ",
         "ja": "並外れた5つ星の\n屋外アクティビティ"
     },
     {
@@ -288,9 +288,9 @@
     },
     {
         "text_id": "popular_destination",
-        "en": "Popular Destination",
-        "fr": "Destination populaire",
-        "ar": "الوجهات المشهورة",
+        "en": "Upcoming events",
+        "fr": "Évènements à venir",
+        "ar": "الأحداث القادمة",
         "ja": "人気の目的地"
     },
     {
@@ -372,9 +372,9 @@
     },
     {
         "text_id": "room",
-        "en": "Room",
-        "fr": "Chambre",
-        "ar": "غرفة",
+        "en": "Food",
+        "fr": "Nourriture",
+        "ar": "الأكل",
         "ja": "ルーム"
     },
     {
@@ -386,14 +386,14 @@
     },
     {
         "text_id": "location",
-        "en": "Location",
-        "fr": "Emplacement",
-        "ar": "موقع",
+        "en": "Atmospheres",
+        "fr": "Ambiances",
+        "ar": "أجواء",
         "ja": "ロケーション"
     },
     {
         "text_id": "price",
-        "en": "Prcie",
+        "en": "Price",
         "fr": "Prix",
         "ar": "سعر",
         "ja": "価格"
@@ -1066,9 +1066,9 @@
     },
     {
         "text_id": "number_room",
-        "en": "Number of Room",
-        "fr": "Nombre de chambre",
-        "ar": "عدد الغرف",
+        "en": "Number of People",
+        "fr": "Nombre de personne",
+        "ar": "عدد الأشخاص",
         "ja": "部屋数"
     },
     {
