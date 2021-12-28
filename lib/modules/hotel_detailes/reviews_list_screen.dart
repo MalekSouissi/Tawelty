@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:new_motel/models/avis.dart';
 import 'package:new_motel/modules/hotel_detailes/review_data_view.dart';
+import 'package:new_motel/services/avis.services.dart';
 import 'package:new_motel/widgets/common_appbar_view.dart';
 import '../../models/hotel_list_data.dart';
 
@@ -11,11 +13,14 @@ class ReviewsListScreen extends StatefulWidget {
 class _ReviewsListScreenState extends State<ReviewsListScreen>
     with TickerProviderStateMixin {
   List<RestaurantListData> reviewsList = RestaurantListData.reviewsList;
+  AvisServices avisServices = AvisServices();
   late AnimationController animationController;
+  bool _isLoading = false;
   @override
   void initState() {
     animationController = AnimationController(
         duration: Duration(milliseconds: 2000), vsync: this);
+    fetchReviews();
     super.initState();
   }
 
@@ -23,6 +28,18 @@ class _ReviewsListScreenState extends State<ReviewsListScreen>
   void dispose() {
     animationController.dispose();
     super.dispose();
+  }
+
+  fetchReviews() async {
+    setState(() {
+      _isLoading = true;
+    });
+    var reviews = await avisServices.getListAvis();
+    print(reviews);
+    print('hello');
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -35,11 +52,13 @@ class _ReviewsListScreenState extends State<ReviewsListScreen>
           CommonAppbarView(
             iconData: Icons.close,
             onBackClick: () {
-              Navigator.pop(context);
+              //Navigator.pop(context);
+              print('hello');
+              fetchReviews();
             },
             titleText: "Review(20)",
           ),
-          // animation of Review and feedback data 
+          // animation of Review and feedback data
           Expanded(
             child: ListView.builder(
               physics: BouncingScrollPhysics(),

@@ -77,6 +77,27 @@
         "ja": "またはメールでログイン"
     },
     {
+        "text_id": "get_reservation",
+        "en": "Get reservation",
+        "fr": "Obtenir une réservation"
+    },
+    {
+        "text_id": "confirm_reservation",
+        "en": "confirm reservation",
+        "fr": "Confirmer la réservation"
+    },
+    {
+        "text_id": "download",
+        "en": "Download",
+        "fr": "Télécharger"
+    },
+
+    {
+        "text_id": "reservation_txt",
+        "en": "Your reservation is added succesfully,download your voucher",
+        "fr": "Votre réservation est ajoutée avec succès, téléchargez votre bon"
+    },
+    {
         "text_id": "your_mail",
         "en": "Your email",
         "fr": "Votre email",
@@ -175,35 +196,35 @@
         "ja": "探す"
     },
     {
-        "text_id": "hotel_data",
+        "text_id": "Restaurant",
         "en": "Restaurant",
         "fr": "Restaurant",
         "ar": "مطعم",
         "ja": "ホテル"
     },
     {
-        "text_id": "Backpacker_data",
+        "text_id": "Beach_Bar",
         "en": "Beach Bar",
         "fr": "Beach Bar",
         "ar": "الرحال",
         "ja": "バックパッカー"
     },
     {
-        "text_id": "Resort_data",
+        "text_id": "Salon_de_thé",
         "en": "Tea Room",
         "fr": "Salon de thé",
         "ar": "ملجأ",
         "ja": "リゾート"
     },
     {
-        "text_id": "villa_data",
+        "text_id": "villa",
         "en": "Villa",
         "fr": "Villa",
         "ar": "فيلا",
         "ja": "ヴィラ"
     },
     {
-        "text_id": "apartment",
+        "text_id": "Lounge",
         "en": "Lounge",
         "fr": "Lounge",
         "ar": "شقة",
@@ -243,6 +264,11 @@
         "fr": "Dernières recherches",
         "ar": "عمليات البحث الأخيرة",
         "ja": "最後の検索"
+    },
+    {
+        "text_id": "Result",
+        "en": "Result",
+        "fr": "Resultats"
     },
     {
         "text_id": "clear_all",
@@ -621,7 +647,7 @@
         "fr": "Europeene"
     },
     {
-        "text_id": "fruie de mer",
+        "text_id": "fruit de mer",
         "en": "Sea food",
         "fr": "Fruit de mer"
     },

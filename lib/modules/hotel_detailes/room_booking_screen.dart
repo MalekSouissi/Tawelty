@@ -4,9 +4,9 @@ import 'package:new_motel/modules/hotel_detailes/room_book_view.dart';
 import '../../models/hotel_list_data.dart';
 
 class RoomBookingScreen extends StatefulWidget {
-  final String hotelName;
+  final RestaurantListData hotelData;
 
-  const RoomBookingScreen({Key? key, required this.hotelName})
+  const RoomBookingScreen({Key? key, required this.hotelData})
       : super(key: key);
   @override
   _RoomBookingScreenState createState() => _RoomBookingScreenState();
@@ -16,7 +16,7 @@ class _RoomBookingScreenState extends State<RoomBookingScreen>
     with TickerProviderStateMixin {
   List<RestaurantListData> romeList = RestaurantListData.romeList;
   late AnimationController animationController;
-RestaurantListData restaurantListdata = RestaurantListData();
+// RestaurantListData restaurantListdata = RestaurantListData();
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ RestaurantListData restaurantListdata = RestaurantListData();
         children: <Widget>[
           getAppBarUI(),
           Expanded(
-            child: RoomeBookView(restaurantId: restaurantListdata.id,),
+            child: RoomeBookView(restaurantId: widget.hotelData.id,),
             /*ListView.builder(
               padding: EdgeInsets.all(0.0),
               itemCount: romeList.length,
@@ -108,7 +108,7 @@ RestaurantListData restaurantListdata = RestaurantListData();
           Expanded(
             child: Center(
               child: Text(
-                widget.hotelName,
+                widget.hotelData.titleTxt,
                 style: TextStyles(context).getTitleStyle(),
                 overflow: TextOverflow.ellipsis,
               ),

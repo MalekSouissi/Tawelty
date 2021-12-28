@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:new_motel/constants/localfiles.dart';
+import 'package:new_motel/constants/shared_preferences_keys.dart';
 import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
@@ -17,6 +18,11 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
   var user;
+  String url='';
+  String fname='';
+  String lname='';
+  String email='';
+  bool show=false;
 
   void _getUserInfo() async {
     SharedPreferences localStorage1 = await SharedPreferences.getInstance();
@@ -24,7 +30,7 @@ class _EditProfileState extends State<EditProfile> {
     print(userId);
     setState(() {
       user = userId;
-      fetchUser(user);
+      fetchUser();
       print(user);
     });
   }
@@ -33,14 +39,26 @@ class _EditProfileState extends State<EditProfile> {
   SettingsListData settingslistdata=SettingsListData();
   List<SettingsListData> UserProfil=[];
 
-  fetchUser(user)async{
-    UserProfil=await settingslistdata.GetUserProfil(user.toString());
-    print(UserProfil);
+  // fetchUser(user)async{
+  //   UserProfil=await settingslistdata.GetUserProfil(user.toString());
+  //   print(UserProfil);
+  // }
+
+  fetchUser()async{
+    fname=(await SharedPreferencesKeys().getStringData(key: 'fname'))!;
+    lname=await SharedPreferencesKeys().getStringData(key: 'lname') as String;
+    email=(await SharedPreferencesKeys().getStringData(key: 'email'))!;
+    url= await SharedPreferencesKeys().getStringData(key: 'pdp') as String;
+    setState(() {
+      show=true;
+    });
   }
 
   @override
   void initState() {
-    _getUserInfo();
+   // _getUserInfo();
+
+   fetchUser();
     // TODO: implement initState
     super.initState();
 
@@ -169,7 +187,7 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(60.0)),
-                    child: Image.asset(Localfiles.userImage),
+                    child: show?Image.network(url,fit: BoxFit.cover,):Image.asset(Localfiles.userImage),
                   ),
                 ),
                 Positioned(

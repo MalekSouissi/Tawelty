@@ -115,11 +115,11 @@ class PopularFilterListData {
       isSelected: false,
     ),
     PopularFilterListData(
-      titleTxt: 'apartment',
+      titleTxt: 'Lounge',
       isSelected: false,
     ),
     PopularFilterListData(
-      titleTxt: 'Backpacker_data',
+      titleTxt: 'Beach_Bar',
       isSelected: false,
     ),
     PopularFilterListData(
@@ -127,11 +127,11 @@ class PopularFilterListData {
       isSelected: false,
     ),
     PopularFilterListData(
-      titleTxt: 'hotel_data',
+      titleTxt: 'Restaurant',
       isSelected: false,
     ),
     PopularFilterListData(
-      titleTxt: 'Resort_data',
+      titleTxt: 'Salon_de_thé',
       isSelected: false,
     ),
   ];
@@ -234,7 +234,7 @@ class FilterListData{
       throw Exception('Failed to load album');
     }
   }
-  fetchtypes() async {
+  fetchTypes() async {
     final response = await http.get(
         Uri.parse(API + 'etablissements'));
 

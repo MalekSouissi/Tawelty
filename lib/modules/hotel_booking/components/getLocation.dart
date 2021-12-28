@@ -31,6 +31,7 @@ class _LocationListViewState extends State<LocationListView> {
       : applicationcontext!.read<ThemeProvider>().languageType;
   String value = 'hamamet';
   List<String> results = [];
+  List<RestaurantListData> resultRestaurant=[];
   List finalResults = RestaurantListData().finalList;
 
   List<String> list = [
@@ -119,7 +120,6 @@ class _LocationListViewState extends State<LocationListView> {
       print(first.countryName);
       setState(() {
         value=first.countryName.toString();
-
       });
     }
     return address;
@@ -127,7 +127,6 @@ class _LocationListViewState extends State<LocationListView> {
   fetchRestaurant()async{
     restaurantList= await RestaurantListData().fetchRestaurants();
     setState(() {
-
       showAddress = true;
     });
   }
@@ -142,13 +141,15 @@ class _LocationListViewState extends State<LocationListView> {
           print(restaurantList[i].titleTxt);
           print(restaurantList[i].id);
           results.add(restaurantList[i].id);
-          setState(() {
-            finalResults.add(restaurantList[i].id);
-          });
+          resultRestaurant.add(restaurantList[i]);
         }
       }
     }
+    setState(() {
+      restaurantList=resultRestaurant;
+    });
     print(results);
+    return results;
   }
 
   @override

@@ -103,4 +103,16 @@ class ThemeProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  // bool _isLoggedIn = false;
+  //
+  // void checkIfLoggedIn() async{
+  //   var token = await SharedPreferencesKeys().getTokenData(key: 'token');
+  //   if(token!=null){
+  //
+  //     notifyListeners();
+  //   }
+  // }
+
+
 }

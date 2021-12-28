@@ -52,7 +52,7 @@ class RestaurantListData {
     return RestaurantListData(
       imagePath: Localfiles.hotel_1,
       titleTxt: item['NomResto'],
-      subTxt: item['adresse']!= null?item['adresse']:'adresse',
+      subTxt: item['adresse']!= null?item['adresse']:'R. Sidi Dhrif, la Corniche، Av. Sidi Dhrif, La Marsa 2078',
       dist: 2.0,
       reviews: 80,
       rating: 4.4,
@@ -261,17 +261,17 @@ class RestaurantListData {
   static List<RestaurantListData> hotelTypeList = [
     RestaurantListData(
       imagePath: Localfiles.hotel_Type_1,
-      titleTxt: 'hotel_data',
+      titleTxt: 'Restaurant',
       isSelected: false,
     ),
     RestaurantListData(
       imagePath: Localfiles.hotel_Type_2,
-      titleTxt: 'Backpacker_data',
+      titleTxt: 'Beach_Bar',
       isSelected: false,
     ),
     RestaurantListData(
       imagePath: Localfiles.hotel_Type_3,
-      titleTxt: 'Resort_data',
+      titleTxt: 'Salon_de_thé',
       isSelected: false,
     ),
     // RestaurantListData(
@@ -281,7 +281,7 @@ class RestaurantListData {
     // ),
     RestaurantListData(
       imagePath: Localfiles.hotel_Type_5,
-      titleTxt: 'apartment',
+      titleTxt: 'Lounge',
       isSelected: false,
     ),
     RestaurantListData(

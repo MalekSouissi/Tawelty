@@ -29,7 +29,6 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   late AnimationController _animationController;
   List<RestaurantListData> hotelList=[];
   List<RestaurantListData> _foundRestaurants=[];
-  List _foundRestaurants1=RestaurantListData().finalList;
   ScrollController scrollController = new ScrollController();
   int room = 1;
   int ad = 2;
@@ -39,10 +38,13 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   RestaurantListData restaurantListData=RestaurantListData();
   final searchBarHieght = 158.0;
   final filterBarHieght = 52.0;
-
+  bool showAdress=false;
   fetchRestaurants()async{
-    hotelList=await RestaurantListData().fetchRestaurants();
-    print(hotelList);
+    _foundRestaurants=await RestaurantListData().fetchRestaurants();
+    print(_foundRestaurants);
+    setState(() {
+      showAdress=true;
+    });
   }
 
   @override
@@ -93,7 +95,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                 _isShowMap
                     ? MapAndListView(
                         hotelList: _foundRestaurants,
-                        searchBarUI: _getSearchBarUI(),
+                        // searchBarUI: _getSearchBarUI(),
                       )
                     : Expanded(
                         child: Stack(
@@ -120,9 +122,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                   animationController.forward();
                                   return HotelListView(
                                     callback: () {
-                                      NavigationServices(context)
-                                          .gotoRoomBookingScreen(
-                                          _foundRestaurants[index].titleTxt);
+                                      NavigationServices(context).gotoHotelDetailes(_foundRestaurants[index]);
                                     },
                                     hotelData: _foundRestaurants[index],
                                     animation: animation,
@@ -175,9 +175,9 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
     List<RestaurantListData> results = [];
     if (enteredKeyword.isEmpty) {
       // if the search field is empty or only contains white-space, we'll display all users
-      results = hotelList;
+      results = _foundRestaurants;
     } else {
-      results = hotelList
+      results = _foundRestaurants
           .where((restaurant) => restaurant.titleTxt.toLowerCase()
           .contains(enteredKeyword.toLowerCase()))
           .toList();

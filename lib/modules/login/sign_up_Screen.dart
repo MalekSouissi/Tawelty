@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:new_motel/api/api.dart';
+import 'package:new_motel/constants/shared_preferences_keys.dart';
 import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
@@ -32,6 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _isLoading = false;
   String token='';
   int userId=0;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -247,15 +248,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
     var res = await CallApi().postData(data, 'users/register');
     var body = json.decode(res.body);
     print(body);
-     if (body['Status'] == 200) {
-    SharedPreferences localStorage = await SharedPreferences.getInstance();
-    localStorage.setString('token', body['token']);
-    token = body['token'];
-    _getProfile();
-    //localStorage.setString('user', json.encode(body['user']));
-    NavigationServices(context).gotoTabScreen();
-     } else {
+    if(body['token']!=null){
+      // SharedPreferences localStorage = await SharedPreferences.getInstance();
+      // localStorage.setString('token', body['token']);
+      SharedPreferencesKeys().setTokenData(key: 'token', token: body['token']);
+      token=body['token'];
+      _getProfile();
+      print(body);
+      NavigationServices(context).gotoTabScreen();
+    }else {
        print(body['error']);
+       ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+         content: Text(body['error'].toString()),
+         action: SnackBarAction(
+           label: 'Undo',
+           onPressed: () {
+             // Some code to undo the change.
+           },
+         ),
+       ));
      }
 
     //}

@@ -2,12 +2,16 @@ import 'dart:ui';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geocoder/geocoder.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 import 'package:new_motel/constants/helper.dart';
 import 'package:new_motel/constants/localfiles.dart';
 import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/modules/hotel_booking/components/restaurant_carousel.dart';
+import 'package:new_motel/modules/hotel_detailes/hotel_photos.dart';
 import 'package:new_motel/modules/hotel_detailes/review_data_view.dart';
 import 'package:new_motel/routes/route_names.dart';
 import 'package:new_motel/widgets/common_button.dart';
@@ -36,9 +40,48 @@ class _HotelDetailesState extends State<HotelDetailes>
   late AnimationController animationController;
   var imageHieght = 0.0;
   late AnimationController _animationController;
+  GoogleMapController? _controller;
+  late BitmapDescriptor customIcon;
+  bool isMapCreated = false;
+  String? _mapStyle;
+  List<Marker> allMarkers = [];
+  bool show = false;
+  var coordinates;
 
+  getCoordinates(var query) async {
+    var addresses = [];
+    var first;
+    addresses = await Geocoder.local.findAddressesFromQuery(query);
+    first = await addresses.first;
+    coordinates=await first.coordinates;
+    print("${first.countryName} : ${first.coordinates},${first.featureName}");
+    setState(() {
+    show=true;
+    });
+    return coordinates;
+  }
+  void setCustomMapPin() async {
+    customIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/image/icon/marker.png');
+  }
+  setMarker(query)async{
+    Coordinates coordinates= await getCoordinates(query);
+    allMarkers.add(Marker(
+        icon: BitmapDescriptor.defaultMarkerWithHue(
+          BitmapDescriptor.hueViolet,
+        ),
+        markerId: MarkerId(widget.hotelData.titleTxt),
+        draggable: false,
+        infoWindow:
+        InfoWindow(title: widget.hotelData.titleTxt, snippet: widget.hotelData.subTxt),
+        position: LatLng(coordinates.latitude,coordinates.longitude)));
+  }
   @override
   void initState() {
+    getCoordinates(widget.hotelData.subTxt);
+    setCustomMapPin();
+     setMarker(widget.hotelData.subTxt);
     animationController = AnimationController(
         duration: Duration(milliseconds: 2000), vsync: this);
     _animationController =
@@ -158,7 +201,7 @@ class _HotelDetailesState extends State<HotelDetailes>
                     "room_photo", 'view_all', Icons.arrow_forward, () {}),
 
                 // Hotel inside photo view
-                HotelRoomeList(),
+                HotelPhotosList(restaurantId:widget.hotelData.id),
                 _getPhotoReviewUi("reviews", 'view_all', Icons.arrow_forward,
                     () {
                   NavigationServices(context).gotoReviewsListScreen();
@@ -181,22 +224,44 @@ class _HotelDetailesState extends State<HotelDetailes>
                   children: <Widget>[
                     AspectRatio(
                       aspectRatio: 1.5,
-                      child: Image.asset(
-                        Localfiles.mapImage,
-                        fit: BoxFit.cover,
+                      child: GoogleMap(
+                        mapType: MapType.normal,
+                        initialCameraPosition: CameraPosition(
+                            target: LatLng(coordinates.latitude,coordinates.longitude), zoom: 16.0),
+
+                        // markers: markers,
+                        onTap: (pos) {
+                          print(pos);
+                          Marker m = Marker(
+                              markerId: MarkerId('1'), icon: customIcon, position: pos);
+                          setState(() {
+                            allMarkers.add(m);
+                          });
+                        },
+                        markers: Set.from(allMarkers),
+                        onMapCreated: (GoogleMapController controller) {
+                          _controller = controller;
+                          _controller!.setMapStyle(_mapStyle);
+                        },
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 34, right: 10),
-                      child: CommonCard(
-                        color: AppTheme.primaryColor,
-                        radius: 36,
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Icon(
-                            FontAwesomeIcons.mapPin,
-                            color: Theme.of(context).backgroundColor,
-                            size: 28,
+                    InkWell(
+                      onTap: ()async{
+                        await MapsLauncher.launchQuery(
+                            widget.hotelData.titleTxt);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 34, right: 10),
+                        child: CommonCard(
+                          color: AppTheme.primaryColor,
+                          radius: 36,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Icon(
+                              FontAwesomeIcons.mapPin,
+                              color: Theme.of(context).backgroundColor,
+                              size: 28,
+                            ),
                           ),
                         ),
                       ),
@@ -210,7 +275,7 @@ class _HotelDetailesState extends State<HotelDetailes>
                     buttonText: AppLocalizations(context).of("book_now"),
                     onTap: () {
                       NavigationServices(context)
-                          .gotoRoomBookingScreen(widget.hotelData.titleTxt);
+                          .gotoRoomBookingScreen(widget.hotelData);
                     },
                   ),
                 ),
@@ -419,7 +484,7 @@ class _HotelDetailesState extends State<HotelDetailes>
                                           onTap: () {
                                             NavigationServices(context)
                                                 .gotoRoomBookingScreen(
-                                                    widget.hotelData.titleTxt);
+                                                    widget.hotelData);
                                           }),
                                     ),
                                   ],

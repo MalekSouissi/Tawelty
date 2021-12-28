@@ -5,30 +5,48 @@ import 'package:new_motel/motel_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesKeys {
-//   _setStringData({required String key, required String text}) async {
-//     SharedPreferences prefs = await SharedPreferences.getInstance();
-//     await prefs.setString(key, text);
-//   }
+  setStringData({required String key, required String text}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(key, text);
+  }
 
   _setIntData({required String key, required int id}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt(key, id);
   }
 
+  setTokenData({required String key, required String token}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString(key, token);
+  }
+
+
+
 //   _setBoolData({required String key, required bool text}) async {
 //     SharedPreferences prefs = await SharedPreferences.getInstance();
 //     await prefs.setBool(key, text);
 //   }
 
-//   Future<String?> _getStringData({required String key}) async {
-//     SharedPreferences prefs = await SharedPreferences.getInstance();
-//     return prefs.getString(key);
-//   }
+  Future<String?> getStringData({required String key}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(key);
+  }
 
   Future<int?> _getIntData({required String key}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getInt(key);
   }
+  Future<String?> getTokenData({required String key}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(key);
+  }
+
+   removeTokenData({required String key}) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.remove(key);
+  }
+
+
 
 //   Future<bool?> _getBoolData({required String key}) async {
 //     SharedPreferences prefs = await SharedPreferences.getInstance();

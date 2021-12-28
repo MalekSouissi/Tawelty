@@ -13,6 +13,14 @@ class TextStyles {
         );
   }
 
+  TextStyle getTitle2Style() {
+    return Theme.of(context).textTheme.headline6!.copyWith(
+      fontSize: 20,
+      color: AppTheme.primaryTextColor,
+    );
+  }
+
+
   TextStyle getDescriptionStyle() {
     return Theme.of(context).textTheme.bodyText1!.copyWith(
           color: AppTheme.secondaryTextColor,
@@ -24,6 +32,12 @@ class TextStyles {
           fontSize: 16,
           color: AppTheme.primaryTextColor,
         );
+  }
+  TextStyle getHintStyle() {
+    return Theme.of(context).textTheme.bodyText1!.copyWith(
+      fontSize: 20,
+      color: AppTheme.primaryTextColor,
+    );
   }
 
   TextStyle getBoldStyle() {

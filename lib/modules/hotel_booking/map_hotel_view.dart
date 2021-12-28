@@ -32,7 +32,7 @@ class MapHotelListView extends StatelessWidget {
                 Row(
                   children: <Widget>[
                     AspectRatio(
-                      aspectRatio: 0.90,
+                      aspectRatio: 0.60,
                       // child: Image.asset(
                       //   hotelData.imagePath,
                       //   fit: BoxFit.cover,
@@ -115,33 +115,33 @@ class MapHotelListView extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 8),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      Text(
-                                        "\$${hotelData.perNight}",
-                                        textAlign: TextAlign.left,
-                                        style: TextStyles(context)
-                                            .getBoldStyle()
-                                            .copyWith(
-                                              fontSize: 22,
-                                            ),
-                                      ),
-                                      Text(
-                                        AppLocalizations(context)
-                                            .of("per_night"),
-                                        style: TextStyles(context)
-                                            .getDescriptionStyle()
-                                            .copyWith(
-                                              fontSize: 14,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                // Padding(
+                                //   padding: const EdgeInsets.only(right: 8),
+                                //   child: Column(
+                                //     mainAxisAlignment: MainAxisAlignment.center,
+                                //     crossAxisAlignment: CrossAxisAlignment.end,
+                                //     children: <Widget>[
+                                //       Text(
+                                //         "\$${hotelData.perNight}",
+                                //         textAlign: TextAlign.left,
+                                //         style: TextStyles(context)
+                                //             .getBoldStyle()
+                                //             .copyWith(
+                                //               fontSize: 22,
+                                //             ),
+                                //       ),
+                                //       Text(
+                                //         AppLocalizations(context)
+                                //             .of("per_night"),
+                                //         style: TextStyles(context)
+                                //             .getDescriptionStyle()
+                                //             .copyWith(
+                                //               fontSize: 14,
+                                //             ),
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
                               ],
                             ),
                           ],

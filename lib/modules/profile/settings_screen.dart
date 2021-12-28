@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:new_motel/constants/helper.dart';
+import 'package:new_motel/constants/shared_preferences_keys.dart';
 import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
@@ -517,7 +518,14 @@ class _SettingsScreenState extends State<SettingsScreen> with Helper {
       isYesOrNoPopup: true,
     );
     if (isOk) {
-      NavigationServices(context).gotoSplashScreen();
+      logout();
     }
+  }
+
+
+  void logout() async {
+     await SharedPreferencesKeys().removeTokenData(key: 'token');
+     NavigationServices(context).gotoSplashScreen();
+
   }
 }

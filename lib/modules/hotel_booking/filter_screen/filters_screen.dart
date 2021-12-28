@@ -31,6 +31,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
   List<FilterListData> ambiancesList=[];
   List<FilterListData> generalsList=[];
   List<FilterListData> cuisinesList=[];
+  List<FilterListData> typeList=[];
 
   List finalList= RestaurantListData().finalList;
   List resultList=[];
@@ -50,12 +51,18 @@ class _FiltersScreenState extends State<FiltersScreen> {
     cuisinesList=await filterListData.fetchCuisines();
     print(cuisinesList);
   }
+  fetchTypes()async{
+    typeList=await FilterListData().fetchTypes();
+    print(typeList);
+
+  }
   @override
   void initState() {
     // TODO: implement initState
     fetchAmbiances();
     fetchGenerals();
     fetchCuisines();
+    fetchTypes();
     super.initState();
   }
 
@@ -195,6 +202,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
                         : Colors.grey.withOpacity(0.6),
                     onChanged: (value) {
                       setState(() {
+                        searchByFilter(date.titleTxt, typeList);
                         checkAppPosition(i);
                       });
                     },
@@ -248,13 +256,13 @@ class _FiltersScreenState extends State<FiltersScreen> {
     }
   }
 
-  searchByFilter(String text)async{
+  searchByFilter(String text,List list)async{
     var translation = await translator
         .translate(text, from: 'en', to: 'fr');
  print(translation.toString());
     if (text != '') {
       //finalList.clear();
-    ambiancesList.forEach((element) {
+    list.forEach((element) {
       if(element.type.toLowerCase().contains(translation.text.substring(0, 4).toLowerCase())){
         setState(() {
           finalList.add(element.restaurantId);
@@ -408,7 +416,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
                         setState(() {
                           date.isSelected = !date.isSelected;
                           if(date.isSelected)
-                            searchByFilter(date.titleTxt);
+                            searchByFilter(date.titleTxt,generalsList);
                         });
                       },
                       child: Padding(
@@ -476,7 +484,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
                         setState(() {
                           date.isSelected = !date.isSelected;
                           if(date.isSelected)
-                            searchByFilter(date.titleTxt);
+                            searchByFilter(date.titleTxt,cuisinesList);
                         });
                       },
                       child: Padding(
@@ -544,7 +552,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
                         setState(() {
                           date.isSelected = !date.isSelected;
                           if(date.isSelected)
-                          searchByFilter(date.titleTxt);
+                          searchByFilter(date.titleTxt,ambiancesList);
                         });
                       },
                       child: Padding(

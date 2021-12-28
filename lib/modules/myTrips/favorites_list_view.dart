@@ -56,8 +56,7 @@ buildListView(List hotelList,animationController){
       //Favorites hotel data list and UI View
       return HotelListViewPage(
         callback: () {
-          NavigationServices(context)
-              .gotoRoomBookingScreen(hotelList[index].titleTxt);
+          NavigationServices(context).gotoHotelDetailes(hotelList[index]);
         },
         hotelData: hotelList[index],
         animation: animation,

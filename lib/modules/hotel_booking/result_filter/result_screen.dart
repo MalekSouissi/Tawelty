@@ -5,6 +5,7 @@ import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/logic/providers/theme_provider.dart';
 import 'package:new_motel/models/enum.dart';
 import 'package:new_motel/models/hotel_list_data.dart';
+import 'package:new_motel/modules/hotel_booking/components/map_and_list_view.dart';
 import 'package:new_motel/modules/myTrips/hotel_list_view_data.dart';
 import 'package:new_motel/routes/route_names.dart';
 import 'package:provider/src/provider.dart';
@@ -55,7 +56,10 @@ class _ResultPageViewState extends State<ResultPageView> with TickerProviderStat
       body: Column(
         children: [
           _getAppBarUI(),
-          Expanded(
+          _isShowMap? MapAndListView(
+            hotelList: showResult,
+            // searchBarUI: _getSearchBarUI(),
+          ):Expanded(
             child: Container(
              // height: 1000,
               child: showAddress?ListView.builder(
@@ -72,8 +76,7 @@ class _ResultPageViewState extends State<ResultPageView> with TickerProviderStat
                   //Finished hotel data list and UI View
                   return HotelListViewData(
                     callback: () {
-                      NavigationServices(context)
-                          .gotoRoomBookingScreen(showResult[index].titleTxt);
+                      NavigationServices(context).gotoHotelDetailes(showResult[index]);
                     },
                     hotelData: showResult[index],
                     animation: animation,

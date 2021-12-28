@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:new_motel/language/appLocalizations.dart';
+import 'package:new_motel/models/popular_filter_list.dart';
 import 'package:new_motel/widgets/common_card.dart';
+import 'package:translator/translator.dart';
 import '../../models/hotel_list_data.dart';
 
 class SearchTypeListView extends StatefulWidget {
@@ -12,14 +14,52 @@ class SearchTypeListView extends StatefulWidget {
 class _SearchTypeListViewState extends State<SearchTypeListView>
     with TickerProviderStateMixin {
   List<RestaurantListData> hotelTypeList = RestaurantListData.hotelTypeList;
-
+  List<FilterListData> typeList=[];
+  final translator = GoogleTranslator();
   late AnimationController animationController;
-
+  bool show=false;
+  List finalList=[];
   @override
   void initState() {
+    fetchTypes();
     animationController = AnimationController(
         duration: Duration(milliseconds: 2000), vsync: this);
     super.initState();
+  }
+
+
+  fetchTypes()async{
+    typeList=await FilterListData().fetchTypes();
+    print(typeList);
+    setState(() {
+      show=true;
+    });
+  }
+
+  searchByFilter(String text)async{
+    var translation = await translator
+        .translate(text, from: 'en', to: 'fr');
+    print(translation.toString());
+    if (text != '') {
+      //finalList.clear();
+      typeList.forEach((element) {
+        if(element.type.toLowerCase().contains(translation.text.substring(0, 4).toLowerCase())){
+          setState(() {
+            finalList.add(element.restaurantId);
+          });
+        }
+      });
+      print(finalList);
+      setState(() {
+        RestaurantListData().finalList=finalList;
+      });
+    } else {
+      setState(() {
+        print(finalList.length);
+        //finalList.clear();
+        //resultList.addAll(finalList);
+      });
+    }
   }
 
   @override
@@ -97,6 +137,7 @@ class _SearchTypeListViewState extends State<SearchTypeListView>
                                     .primaryColor
                                     .withOpacity(0.4),
                                 onTap: () {
+                                  searchByFilter(hotelTypeList[index].titleTxt);
                                   setState(() {
                                     hotelTypeList[index].isSelected =
                                         !hotelTypeList[index].isSelected;

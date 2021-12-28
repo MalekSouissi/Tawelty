@@ -1,3 +1,5 @@
+import 'package:new_motel/constants/shared_preferences_keys.dart';
+
 class User {
   int id;
   String first_name;
@@ -47,4 +49,5 @@ class User {
           : DateTime.parse(item['updatedAt']),
     );
   }
+
 }

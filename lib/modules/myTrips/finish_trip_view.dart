@@ -51,8 +51,7 @@ bool showAddress=false;
           //Finished hotel data list and UI View
           return HotelListViewData(
             callback: () {
-              NavigationServices(context)
-                  .gotoRoomBookingScreen(hotelList[index].titleTxt);
+              NavigationServices(context).gotoHotelDetailes(hotelList[index]);
             },
             hotelData: hotelList[index],
             animation: animation,

@@ -19,6 +19,7 @@ class BookWaitSeat {
   int userId;
   String random;
   String other;
+  String block;
 
   BookWaitSeat(
       {this.id = 0,
@@ -34,6 +35,7 @@ class BookWaitSeat {
       this.other = '',
       this.userId = 1,
       this.random = '',
+        this.block='',
       this.updatedAt});
 
   Client client = Client();
@@ -52,6 +54,7 @@ class BookWaitSeat {
       'UserId': userId,
       'random': random,
       'other': other,
+      'block':block,
     };
   }
 
@@ -68,6 +71,7 @@ class BookWaitSeat {
       fin: DateTime.parse(item['fin']),
       createdAt: DateTime.parse(item['createdAt']),
       random: item['random'],
+      block: item['block'],
       other: item['other'],
       updatedAt: item['updatedAt'] != null
           ? DateTime.parse(item['updatedAt'])

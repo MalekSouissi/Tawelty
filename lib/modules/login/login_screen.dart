@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:new_motel/api/api.dart';
+import 'package:new_motel/constants/shared_preferences_keys.dart';
 import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/modules/login/facebook_twitter_button_view.dart';
 import 'package:new_motel/routes/route_names.dart';
@@ -155,16 +156,19 @@ class _LoginScreenState extends State<LoginScreen> {
     print(body);
     //if(body['status']==200){
       if(body['token']!=null){
-        SharedPreferences localStorage = await SharedPreferences.getInstance();
-        localStorage.setString('token', body['token']);
+        // SharedPreferences localStorage = await SharedPreferences.getInstance();
+        // localStorage.setString('token', body['token']);
+        SharedPreferencesKeys().setTokenData(key: 'token', token: body['token']);
         token=body['token'];
         _getProfile();
         print(body);
         NavigationServices(context).gotoTabScreen();
       } else{
-       await showError(body['error']);
+
+       print(body);
+
       ScaffoldMessenger.of(context).showSnackBar( SnackBar(
-        content: Text(body['error'].toString()),
+        content: Text(body.toString()),
         action: SnackBarAction(
           label: 'Undo',
           onPressed: () {
@@ -172,7 +176,6 @@ class _LoginScreenState extends State<LoginScreen> {
           },
         ),
       ));
-      print(body['error']);
     }
 
 

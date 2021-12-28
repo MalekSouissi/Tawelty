@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:new_motel/constants/localfiles.dart';
+import 'package:new_motel/constants/shared_preferences_keys.dart';
 import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
@@ -20,9 +21,24 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   List<SettingsListData> userSettingsList = SettingsListData.userSettingsList;
+  String url='';
+  String fname='';
+  String lname='';
+  String email='';
+  bool show=false;
+  fetchUser()async{
+    fname=(await SharedPreferencesKeys().getStringData(key: 'fname'))!;
+    lname=await SharedPreferencesKeys().getStringData(key: 'lname') as String;
+    email=(await SharedPreferencesKeys().getStringData(key: 'email'))!;
+    url= await SharedPreferencesKeys().getStringData(key: 'pdp') as String;
+    setState(() {
+      show=true;
+    });
+  }
 
   @override
   void initState() {
+    fetchUser();
     widget.animationController.forward();
     super.initState();
   }
@@ -139,7 +155,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    AppLocalizations(context).of("amanda_text"),
+                    show?fname:AppLocalizations(context).of("amanda_text"),
                     style: new TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w700,
@@ -164,7 +180,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               height: 70,
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                child: Image.asset(Localfiles.userImage),
+                child:show?Image.network(url,fit: BoxFit.cover,):Image.asset(Localfiles.userImage),
               ),
             ),
           )
