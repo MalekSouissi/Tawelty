@@ -3,6 +3,7 @@ import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/models/hotel_list_data.dart';
+import 'package:new_motel/modules/hotel_detailes/replysectionpage.dart';
 import 'package:new_motel/widgets/common_card.dart';
 import 'package:new_motel/widgets/list_cell_animation_view.dart';
 
@@ -128,7 +129,12 @@ class ReviewsView extends StatelessWidget {
                   color: Colors.transparent,
                   child: InkWell(
                     borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ReplySectionPage()));
+                    },
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8),
                       child: Row(

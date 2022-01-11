@@ -57,6 +57,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
+  comment_box:
+    dependency: "direct main"
+    description:
+      name: comment_box
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.16"
   convert:
     dependency: transitive
     description:
@@ -71,6 +78,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
+  cupertino_icons:
+    dependency: transitive
+    description:
+      name: cupertino_icons
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.4"
   dio:
     dependency: "direct main"
     description:
