@@ -4,6 +4,7 @@ import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/logic/providers/theme_provider.dart';
 import 'package:new_motel/modules/bottom_tab/components/tab_button_UI.dart';
+import 'package:new_motel/modules/my_events/event_screen.dart';
 import 'package:new_motel/widgets/common_card.dart';
 import 'package:provider/provider.dart';
 import '../explore/home_explore.dart';
@@ -84,6 +85,13 @@ class _BottomTabScreenState extends State<BottomTabScreen>
               animationController: _animationController,
             );
           });
+        } else if (tabType == BottomBarType.Events) {
+          setState(() {
+            _indexView = MyEventsScreen(
+              animationController: _animationController,
+            );
+          });
+
         } else if (tabType == BottomBarType.Profile) {
           setState(() {
             _indexView = ProfileScreen(
@@ -120,6 +128,14 @@ class _BottomTabScreenState extends State<BottomTabScreen>
                 },
               ),
               TabButtonUI(
+                icon: FontAwesomeIcons.calendarCheck,
+                isSelected: tabType == BottomBarType.Events,
+                text: AppLocalizations(context).of("events"),
+                onTap: () {
+                  tabClick(BottomBarType.Events);
+                },
+              ),
+              TabButtonUI(
                 icon: FontAwesomeIcons.user,
                 isSelected: tabType == BottomBarType.Profile,
                 text: AppLocalizations(context).of("profile"),
@@ -138,4 +154,4 @@ class _BottomTabScreenState extends State<BottomTabScreen>
   }
 }
 
-enum BottomBarType { Explore, Trips, Profile }
+enum BottomBarType { Explore, Trips, Events, Profile }

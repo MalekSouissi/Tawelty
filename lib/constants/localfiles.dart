@@ -70,4 +70,5 @@ class Localfiles {
   static const String room_12 = BaseImageUrl + 'room_12.jpg';
   static const String birghtness = BaseImageUrl + 'birghtness.png';
   static const String parth = BaseImageUrl + 'parth.png';
+  static const String event_1 = BaseImageUrl + 'event_1.jpg';
 }

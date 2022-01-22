@@ -6,7 +6,6 @@ import 'package:geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:new_motel/constants/helper.dart';
-import 'package:new_motel/constants/localfiles.dart';
 import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
@@ -17,7 +16,6 @@ import 'package:new_motel/routes/route_names.dart';
 import 'package:new_motel/widgets/common_button.dart';
 import 'package:new_motel/widgets/common_card.dart';
 import '../../models/hotel_list_data.dart';
-import 'hotel_roome_list.dart';
 import 'rating_view.dart';
 
 class HotelDetailes extends StatefulWidget {

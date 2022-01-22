@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:new_motel/modules/myTrips/hotel_list_view.dart';
+import 'package:new_motel/models/hotel_list_data.dart';
+import 'package:new_motel/modules/my_events/hotel_list_view.dart';
 import 'package:new_motel/routes/route_names.dart';
-import '../../models/hotel_list_data.dart';
 
 class UpcomingListView extends StatefulWidget {
   final AnimationController animationController;
@@ -48,7 +48,7 @@ class _UpcomingListViewState extends State<UpcomingListView> {
           //Upcoming UI view and hotel list
           return HotelListView(
             callback: () {
-              NavigationServices(context).gotoHotelDetailes(hotelList[index]);
+              NavigationServices(context).gotoEventScreen(hotelList[index]);
             },
             hotelData: hotelList[index],
             animation: animation,

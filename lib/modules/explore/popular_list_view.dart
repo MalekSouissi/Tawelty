@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:new_motel/modules/explore/category_view.dart';
+import 'package:new_motel/routes/route_names.dart';
 import 'package:new_motel/widgets/bottom_top_move_animation_view.dart';
 import '../../models/hotel_list_data.dart';
+import 'category_view.dart';
 
 class PopularListView extends StatefulWidget {
+  final RestaurantListData hotelData;
   final Function(int) callBack;
   final AnimationController animationController;
   const PopularListView(
-      {Key? key, required this.callBack, required this.animationController})
+      {Key? key, required this.callBack, required this.animationController, required this.hotelData})
       : super(key: key);
   @override
   _PopularListViewState createState() => _PopularListViewState();
@@ -17,6 +19,7 @@ class _PopularListViewState extends State<PopularListView>
     with TickerProviderStateMixin {
   var popularList = RestaurantListData.popularList;
   AnimationController? animationController;
+
 
   @override
   void initState() {
@@ -68,7 +71,8 @@ class _PopularListViewState extends State<PopularListView>
                     animation: animation,
                     animationController: animationController!,
                     callback: () {
-                      widget.callBack(index);
+                      NavigationServices(context)
+                          .gotoEventScreen(widget.hotelData);
                     },
                   );
                 },

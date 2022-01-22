@@ -90,8 +90,6 @@ class _ProfileCarouselState extends State<ProfileCarousel> {
     );
   }
 
-
-
 }
 class Item1 extends StatelessWidget {
   final String url;
@@ -104,7 +102,6 @@ class Item1 extends StatelessWidget {
     );
   }
 }
-
 
 class ProfilePicture extends StatefulWidget {
   final String restaurantId;

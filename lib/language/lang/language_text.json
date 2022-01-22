@@ -453,13 +453,6 @@
         "ja": "私の旅行"
     },
     {
-        "text_id": "upcoming",
-        "en": "Upcoming",
-        "fr": "A venir",
-        "ar": "القادمة",
-        "ja": "今後の"
-    },
-    {
         "text_id": "finished",
         "en": "Finished",
         "fr": "finie",
@@ -1271,5 +1264,26 @@
         "fr": "Choisir une heure",
         "ar": "اختر الوقت",
         "ja": "時間を選択してください"
+    },
+    {
+        "text_id": "events",
+        "en": "Events",
+        "fr": "Évènements",
+        "ar": "الأحداث",
+        "ja": "人気の目的地"
+    },
+    {
+        "text_id": "upcoming",
+        "en": "Upcoming",
+        "fr": "A venir",
+        "ar": "القادمة",
+        "ja": "人気の目的地"
+    },
+    {
+        "text_id": "intersted",
+        "en": "interested",
+        "fr": "intéressé(e)",
+        "ar": "مهتم(ة)",
+        "ja": "人気の目的地"
     }
 ]

@@ -117,6 +117,7 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
                       padding: const EdgeInsets.only(top: 8),
                       //Popular Destinations animation view
                       child: PopularListView(
+                        hotelData: restaurantListData,
                         animationController: widget.animationController,
                         callBack: (index) {},
                       ),

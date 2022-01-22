@@ -144,7 +144,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
       width: 150,
       child: AspectRatio(
           aspectRatio: 2,
-          child:showAddress&&restaurantFiles.isNotEmpty?Image.network(restaurantFiles.first.url,fit: BoxFit.cover,):Image.asset(Localfiles.restau_4,fit: BoxFit.cover,)
+          child:showAddress&&restaurantFiles.isNotEmpty?Image.network(restaurantFiles.first.url,fit: BoxFit.cover,):Image.asset(Localfiles.event_1,fit: BoxFit.cover,)
       ),
     );
   }

@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter_facebook_auth_platform_interface/flutter_facebook_auth_platform_interface.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:new_motel/constants/shared_preferences_keys.dart';
-import 'package:new_motel/modules/bottom_tab/bottom_tab_screen.dart';
 import 'package:new_motel/routes/route_names.dart';
 import 'package:new_motel/widgets/common_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';

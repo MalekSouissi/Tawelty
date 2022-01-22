@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:new_motel/constants/helper.dart';
 import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
-import 'package:new_motel/logic/providers/theme_provider.dart';
-import 'package:new_motel/models/enum.dart';
 import 'package:new_motel/models/hotel_list_data.dart';
-import 'package:new_motel/models/restaurant_files.dart';
 import 'package:new_motel/modules/hotel_booking/components/restaurant_carousel.dart';
 import 'package:new_motel/widgets/common_card.dart';
 import 'package:new_motel/widgets/list_cell_animation_view.dart';
-import 'package:provider/provider.dart';
 
 class HotelListViewPage extends StatefulWidget {
   final bool isShowDate;

@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:new_motel/constants/helper.dart';
 import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
-import 'package:new_motel/logic/providers/theme_provider.dart';
-import 'package:new_motel/models/enum.dart';
 import 'package:new_motel/models/hotel_list_data.dart';
-import 'package:new_motel/modules/hotel_booking/components/restaurant_carousel.dart';
-import 'package:new_motel/widgets/common_card.dart';
+import 'package:new_motel/modules/my_events/restaurant_carousel.dart';
 import 'package:new_motel/widgets/list_cell_animation_view.dart';
-import 'package:provider/provider.dart';
 
-class HotelListView extends StatelessWidget {
+import 'common_card.dart';
+
+class HotelListView extends StatefulWidget {
   final bool isShowDate;
   final VoidCallback callback;
   final RestaurantListData hotelData;
@@ -29,39 +26,22 @@ class HotelListView extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<HotelListView> createState() => _HotelListViewState();
+}
+
+class _HotelListViewState extends State<HotelListView> {
+  bool isFav = false;
+
+  @override
   Widget build(BuildContext context) {
     return ListCellAnimationView(
-      animation: animation,
-      animationController: animationController,
+      animation: widget.animation,
+      animationController: widget.animationController,
       child: Padding(
         padding: const EdgeInsets.only(left: 24, right: 24, top: 8, bottom: 16),
         child: Column(
           children: <Widget>[
-            isShowDate
-                ? Padding(
-                    padding: const EdgeInsets.only(top: 12, bottom: 12),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          Helper.getDateText(hotelData.date!) + ', ',
-                          style: TextStyles(context)
-                              .getRegularStyle()
-                              .copyWith(fontSize: 14),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 2.0),
-                          child: Text(
-                            Helper.getRoomText(hotelData.roomData!),
-                            style: TextStyles(context)
-                                .getRegularStyle()
-                                .copyWith(fontSize: 14),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                : SizedBox(),
+            //code
             CommonCard(
               color: AppTheme.backgroundColor,
               radius: 16,
@@ -71,11 +51,11 @@ class HotelListView extends StatelessWidget {
                   children: <Widget>[
                     Column(
                       children: <Widget>[
-                        //ProfilePicture(restaurantId: hotelData.id,),
                         AspectRatio(
-                          aspectRatio: 2,
-                          child:ProfilePicture(restaurantId: hotelData.id,)
-                        ),
+                            aspectRatio: 2,
+                            child: ProfilePicture(
+                              restaurantId: widget.hotelData.id,
+                            )),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,124 +64,48 @@ class HotelListView extends StatelessWidget {
                               child: Container(
                                 child: Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 16, top: 8, bottom: 8, right: 8),
+                                      left: 16, top: 8, bottom: 5, right: 8),
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+
                                     children: <Widget>[
-                                      Text(
-                                        hotelData.titleTxt,
+                                     /* Text(
+                                        widget.hotelData.titleTxt,
                                         textAlign: TextAlign.left,
                                         style: TextStyles(context)
                                             .getBoldStyle()
                                             .copyWith(fontSize: 22),
+                                      ),*/
+                                      infos(
+                                        widget: widget,
+                                        icon: FontAwesomeIcons.calendar,
+                                        text: "24-26 January 2022",
                                       ),
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          Expanded(
-                                            flex:6,
-                                            child: Text(
-                                              hotelData.subTxt,
-                                              style: TextStyles(context)
-                                                  .getDescriptionStyle(),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 4,
-                                          ),
-                                          Expanded(
-                                            flex: 4,
-                                            child: Row(
-                                              children: [
-                                                Icon(
-                                                  FontAwesomeIcons.mapMarkerAlt,
-                                                  size: 12,
-                                                  color:
-                                                      Theme.of(context).primaryColor,
-                                                ),
-                                                Text(
-                                                  "${hotelData.dist.toStringAsFixed(1)}",
-                                                  overflow: TextOverflow.ellipsis,
-                                                  style: TextStyles(context)
-                                                      .getDescriptionStyle(),
-                                                ),
-                                                Expanded(
-                                                  child: Text(
-                                                    AppLocalizations(context)
-                                                        .of("km_to_city"),
-                                                    overflow: TextOverflow.ellipsis,
-                                                    style: TextStyles(context)
-                                                        .getDescriptionStyle(),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 4),
-                                        child: Row(
-                                          children: <Widget>[
-                                            Helper.ratingStar(),
-                                            Text(
-                                              " ${hotelData.reviews}",
-                                              style: TextStyles(context)
-                                                  .getDescriptionStyle(),
-                                            ),
-                                            Text(
-                                              AppLocalizations(context)
-                                                  .of("reviews"),
-                                              style: TextStyles(context)
-                                                  .getDescriptionStyle(),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                      SizedBox(height: 4,),
+                                      infos(
+                                        widget: widget,
+                                        icon: FontAwesomeIcons.clock,
+                                        text: "4PM-11PM",
+                                      )
                                     ],
                                   ),
                                 ),
                               ),
                             ),
-                            // Padding(
-                            //   padding: const EdgeInsets.only(
-                            //       right: 16, top: 8, left: 16),
-                            //   child: Column(
-                            //     mainAxisAlignment: MainAxisAlignment.center,
-                            //     crossAxisAlignment: CrossAxisAlignment.end,
-                            //     children: <Widget>[
-                            //       Text(
-                            //         "\$${hotelData.perNight}",
-                            //         textAlign: TextAlign.left,
-                            //         style: TextStyles(context)
-                            //             .getBoldStyle()
-                            //             .copyWith(fontSize: 22),
-                            //       ),
-                            //       Padding(
-                            //         padding: EdgeInsets.only(
-                            //             top: context
-                            //                         .read<ThemeProvider>()
-                            //                         .languageType ==
-                            //                     LanguageType.ar
-                            //                 ? 2.0
-                            //                 : 0.0),
-                            //         child: Text(
-                            //           AppLocalizations(context).of("per_night"),
-                            //           style: TextStyles(context)
-                            //               .getDescriptionStyle(),
-                            //         ),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
                           ],
                         ),
                       ],
+                    ),
+                    Positioned(
+                      top: 145,
+                      right: 0,
+                      bottom: 0,
+                      left: 15,
+                      child: Text(
+                          widget.hotelData.titleTxt,
+                          textAlign: TextAlign.left,
+                          style: TextStyles(context)
+                              .getBoldStyle()
+                              .copyWith(fontSize: 22 , color: AppTheme.whiteColor),),
                     ),
                     Positioned(
                       top: 0,
@@ -219,7 +123,7 @@ class HotelListView extends StatelessWidget {
                           ),
                           onTap: () {
                             try {
-                              callback();
+                              widget.callback();
                             } catch (e) {}
                           },
                         ),
@@ -238,13 +142,18 @@ class HotelListView extends StatelessWidget {
                             borderRadius: BorderRadius.all(
                               Radius.circular(32.0),
                             ),
-                            onTap: () {},
+                            onTap: () {
+                              setState(() {
+                                isFav = !isFav;
+                              });
+                            },
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Icon(
-                                Icons.favorite_border,
-                                color: Theme.of(context).primaryColor,
-                              ),
+                                  isFav
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
+                                  color: Theme.of(context).primaryColor),
                             ),
                           ),
                         ),
@@ -257,6 +166,47 @@ class HotelListView extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class infos extends StatelessWidget {
+  final IconData icon;
+  final String text;
+
+  const infos({
+    Key? key,
+    required this.widget,
+    required this.icon,
+    required this.text,
+  }) : super(key: key);
+
+  final HotelListView widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Expanded(
+          flex: 4,
+          child: Row(
+            children: [
+              Icon(
+                icon,
+                size: 15,
+                color: Theme.of(context).primaryColor,
+              ),
+              Text(
+                " " + text,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyles(context).getDescriptionStyle(),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

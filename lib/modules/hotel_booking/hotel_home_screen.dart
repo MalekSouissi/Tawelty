@@ -9,7 +9,6 @@ import 'package:new_motel/models/enum.dart';
 import 'package:new_motel/modules/hotel_booking/components/filter_bar_UI.dart';
 import 'package:new_motel/modules/hotel_booking/components/getLocation.dart';
 import 'package:new_motel/modules/hotel_booking/components/map_and_list_view.dart';
-import 'package:new_motel/modules/hotel_booking/components/time_date_view.dart';
 import 'package:new_motel/modules/myTrips/hotel_list_view.dart';
 import 'package:new_motel/routes/route_names.dart';
 import 'package:new_motel/widgets/common_card.dart';

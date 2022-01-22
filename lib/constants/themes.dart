@@ -119,10 +119,7 @@ class AppTheme {
     final ThemeData base = ThemeData.light();
 
     return base.copyWith(
-      colorScheme: colorScheme,
       primaryColor: primaryColor,
-      buttonColor: primaryColor,
-      accentColor: primaryColor,
       scaffoldBackgroundColor: scaffoldBackgroundColor,
       backgroundColor: backgroundColor,
       canvasColor: scaffoldBackgroundColor,
@@ -132,7 +129,7 @@ class AppTheme {
       textTheme: _buildTextTheme(base.textTheme),
       primaryTextTheme: _buildTextTheme(base.textTheme),
       platform: TargetPlatform.iOS,
-      visualDensity: VisualDensity.adaptivePlatformDensity,
+      visualDensity: VisualDensity.adaptivePlatformDensity, colorScheme: colorScheme.copyWith(secondary: primaryColor),
     );
   }
 
