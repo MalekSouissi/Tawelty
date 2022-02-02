@@ -30,8 +30,6 @@ class HotelListViewPage extends StatefulWidget {
 
 class _HotelListViewPageState extends State<HotelListViewPage> {
 
-
-
   @override
   Widget build(BuildContext context) {
     return ListCellAnimationView(

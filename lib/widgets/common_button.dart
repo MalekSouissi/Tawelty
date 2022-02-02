@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:new_motel/widgets/tap_effect.dart';
 import 'package:new_motel/constants/text_styles.dart';

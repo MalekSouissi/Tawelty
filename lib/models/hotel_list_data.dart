@@ -19,6 +19,7 @@ class RestaurantListData {
   int perNight;
   bool isSelected;
   PeopleSleeps? peopleSleeps;
+  String eventimagePath;
 
   RestaurantListData({
     this.id='',
@@ -35,6 +36,7 @@ class RestaurantListData {
     this.isSelected = false,
     this.date,
     this.peopleSleeps,
+    this.eventimagePath = Localfiles.event_1,
   });
 
 
@@ -61,6 +63,7 @@ class RestaurantListData {
       isSelected: true,
       date: DateText(1, 5),
       id: item['id'].toString(),
+      eventimagePath: Localfiles.event_1
       // description: item['Description'],
       // userId: item['UserId'],
       // //etat: item['etat'],

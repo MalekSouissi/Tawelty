@@ -3,7 +3,6 @@ import 'package:new_motel/models/hotel_list_data.dart';
 import 'package:new_motel/modules/bottom_tab/bottom_tab_screen.dart';
 import 'package:new_motel/modules/hotel_booking/filter_screen/filters_screen.dart';
 import 'package:new_motel/modules/hotel_booking/hotel_home_screen.dart';
-import 'package:new_motel/modules/hotel_booking/result_filter/result_screen.dart';
 import 'package:new_motel/modules/hotel_detailes/hotel_detailes.dart';
 import 'package:new_motel/modules/hotel_detailes/reviews_list_screen.dart';
 import 'package:new_motel/modules/hotel_detailes/room_booking_screen.dart';
@@ -12,6 +11,7 @@ import 'package:new_motel/modules/login/change_password.dart';
 import 'package:new_motel/modules/login/forgot_password.dart';
 import 'package:new_motel/modules/login/login_screen.dart';
 import 'package:new_motel/modules/login/sign_up_Screen.dart';
+import 'package:new_motel/modules/my_events/event_page_view.dart';
 import 'package:new_motel/modules/profile/country_screen.dart';
 import 'package:new_motel/modules/profile/currency_screen.dart';
 import 'package:new_motel/modules/profile/edit_profile.dart';
@@ -67,9 +67,16 @@ class NavigationServices {
     ));
   }
 
+  Future<dynamic> gotoEventScreen(RestaurantListData hotelData) async {
+    return await _pushMaterialPageRoute(EventViewPage(
+      hotelData: hotelData,
+    ));
+  }
+
   Future<dynamic> gotoSearchScreen() async {
     return await _pushMaterialPageRoute(SearchScreen());
   }
+
 
   Future<dynamic> gotoHotelHomeScreen() async {
     return await _pushMaterialPageRoute(HotelHomeScreen());

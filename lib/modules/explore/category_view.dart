@@ -1,20 +1,24 @@
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/models/hotel_list_data.dart';
 
 class CategoryView extends StatelessWidget {
-  final VoidCallback callback;
+  final Function callback;
   final RestaurantListData popularList;
   final AnimationController animationController;
   final Animation<double> animation;
 
   const CategoryView(
       {Key? key,
-      required this.popularList,
-      required this.animationController,
-      required this.animation,
-      required this.callback})
+        required this.popularList,
+        required this.animationController,
+        required this.animation,
+        required this.callback})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -36,7 +40,7 @@ class CategoryView extends StatelessWidget {
         },
         child: Padding(
           padding:
-              const EdgeInsets.only(left: 16, bottom: 24, top: 16, right: 8),
+          const EdgeInsets.only(left: 16, bottom: 24, top: 16, right: 8),
           child: Card(
             elevation: 8,
             shape: RoundedRectangleBorder(
@@ -54,6 +58,7 @@ class CategoryView extends StatelessWidget {
                   top: 0,
                   left: 0,
                   right: 0,
+                  bottom: 0,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.max,
@@ -63,23 +68,70 @@ class CategoryView extends StatelessWidget {
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
-                                AppTheme.secondaryTextColor.withOpacity(0.4),
-                                AppTheme.secondaryTextColor.withOpacity(0.0),
+                                AppTheme.primaryTextColor.withOpacity(0.4),
+                                AppTheme.primaryTextColor.withOpacity(0.1),
                               ],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
                             ),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8, bottom: 32, top: 8, right: 8),
-                            child: Text(
-                              popularList.titleTxt,
-                              style:
-                                  TextStyles(context).getBoldStyle().copyWith(
+                            padding: const EdgeInsets.all(8),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      popularList.titleTxt,
+                                      style: TextStyles(context)
+                                          .getBoldStyle()
+                                          .copyWith(
                                         fontSize: 24,
                                         color: AppTheme.whiteColor,
                                       ),
+                                    ),
+                                    Container(
+                                      height:
+                                      MediaQuery.of(context).size.height /
+                                          15,
+                                      width:
+                                      MediaQuery.of(context).size.height /
+                                          15,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius.circular(10),
+                                          color: Colors.white),
+                                      child: Center(
+                                        child: Text(
+                                          '24\noct',
+                                          style: TextStyles(context)
+                                              .getRegularStyle()
+                                              .copyWith(
+                                            fontSize: 15,
+                                            color: AppTheme.primaryColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    InfoCard(
+                                      dataIcon: FontAwesomeIcons.clock,
+                                      text: "4PM-11PM",
+                                    ),
+                                    SizedBox(height: 4,),
+                                    InfoCard(
+                                      dataIcon: FontAwesomeIcons.mapMarkerAlt,
+                                      text: "Av Habib Bourguiba",
+                                    ),
+                                  ],
+                                )
+                              ],
                             ),
                           ),
                         ),
@@ -91,6 +143,44 @@ class CategoryView extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class InfoCard extends StatelessWidget {
+
+  final IconData dataIcon;
+  final String text;
+
+  const InfoCard({
+    this.text : "",
+    required this.dataIcon,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        children: [
+          Icon(
+            dataIcon,
+            color:
+            AppTheme.whiteColor,
+            size: 15,
+          ),
+          Text(
+            " " + text,
+            style: TextStyles(context)
+                .getRegularStyle()
+                .copyWith(
+              fontSize: 15.75,
+              color: AppTheme.whiteColor,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
       ),
     );
   }

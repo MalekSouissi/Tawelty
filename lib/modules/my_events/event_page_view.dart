@@ -5,31 +5,24 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:maps_launcher/maps_launcher.dart';
-import 'package:new_motel/constants/helper.dart';
 import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
-import 'package:new_motel/models/avis.dart';
-import 'package:new_motel/models/favorite.dart';
-import 'package:new_motel/modules/hotel_booking/components/restaurant_carousel.dart';
-import 'package:new_motel/modules/hotel_detailes/hotel_photos.dart';
-import 'package:new_motel/modules/hotel_detailes/review_data_view.dart';
+import 'package:new_motel/modules/my_events/restaurant_carousel.dart';
 import 'package:new_motel/routes/route_names.dart';
-import 'package:new_motel/services/favorite.services.dart';
 import 'package:new_motel/widgets/common_button.dart';
 import 'package:new_motel/widgets/common_card.dart';
 import '../../models/hotel_list_data.dart';
-import 'rating_view.dart';
 
-class HotelDetailes extends StatefulWidget {
+class EventViewPage extends StatefulWidget {
   final RestaurantListData hotelData;
 
-  const HotelDetailes({Key? key, required this.hotelData}) : super(key: key);
+  const EventViewPage({Key? key, required this.hotelData}) : super(key: key);
   @override
-  _HotelDetailesState createState() => _HotelDetailesState();
+  _EventViewPageState createState() => _EventViewPageState();
 }
 
-class _HotelDetailesState extends State<HotelDetailes>
+class _EventViewPageState extends State<EventViewPage>
     with TickerProviderStateMixin {
   ScrollController scrollController = ScrollController(initialScrollOffset: 0);
   var hoteltext1 =
@@ -37,6 +30,7 @@ class _HotelDetailesState extends State<HotelDetailes>
   var hoteltext2 =
       "Featuring a fitness center, Grand Royale Park Hote is located in Sweden, 4.7 km frome National Museum a fitness center, Grand Royale Park Hote is located in Sweden, 4.7 km frome National Museum a fitness center, Grand Royale Park Hote is located in Sweden, 4.7 km frome National Museum";
   bool isFav = false;
+  bool isintrested = false;
   bool isReadless = false;
   late AnimationController animationController;
   var imageHieght = 0.0;
@@ -48,7 +42,6 @@ class _HotelDetailesState extends State<HotelDetailes>
   List<Marker> allMarkers = [];
   bool show = false;
   var coordinates;
-  FavoriteServices favoriteServices=FavoriteServices();
 
   getCoordinates(var query) async {
     var addresses = [];
@@ -58,7 +51,7 @@ class _HotelDetailesState extends State<HotelDetailes>
     coordinates=await first.coordinates;
     print("${first.countryName} : ${first.coordinates},${first.featureName}");
     setState(() {
-    show=true;
+      show=true;
     });
     return coordinates;
   }
@@ -83,7 +76,7 @@ class _HotelDetailesState extends State<HotelDetailes>
   void initState() {
     getCoordinates(widget.hotelData.subTxt);
     setCustomMapPin();
-     setMarker(widget.hotelData.subTxt);
+    setMarker(widget.hotelData.subTxt);
     animationController = AnimationController(
         duration: Duration(milliseconds: 2000), vsync: this);
     _animationController =
@@ -131,26 +124,15 @@ class _HotelDetailesState extends State<HotelDetailes>
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(left: 24, right: 24),
-                  // Hotel title and animation view
-                  child: getHotelDetails(isInList: true),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Divider(
-                    height: 1,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 24, right: 24),
                   child: Row(
                     children: <Widget>[
                       Expanded(
                         child: Text(
                           AppLocalizations(context).of("summary"),
                           style: TextStyles(context).getBoldStyle().copyWith(
-                                fontSize: 14,
-                                letterSpacing: 0.5,
-                              ),
+                            fontSize: 14,
+                            letterSpacing: 0.5,
+                          ),
                         ),
                       ),
                     ],
@@ -158,7 +140,7 @@ class _HotelDetailesState extends State<HotelDetailes>
                 ),
                 Padding(
                   padding:
-                      EdgeInsets.only(left: 24, right: 24, top: 4, bottom: 8),
+                  EdgeInsets.only(left: 24, right: 24, top: 4, bottom: 8),
                   child: RichText(
                     textAlign: TextAlign.justify,
                     text: TextSpan(
@@ -168,8 +150,8 @@ class _HotelDetailesState extends State<HotelDetailes>
                           style: TextStyles(context)
                               .getDescriptionStyle()
                               .copyWith(
-                                fontSize: 14,
-                              ),
+                            fontSize: 14,
+                          ),
                           recognizer: new TapGestureRecognizer()..onTap = () {},
                         ),
                         TextSpan(
@@ -189,37 +171,23 @@ class _HotelDetailesState extends State<HotelDetailes>
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 24,
-                    right: 24,
-                    top: 8,
-                    bottom: 16,
-                  ),
-                  // overall rating view
-                  child: RatingView(hotelData: widget.hotelData),
-                ),
-                _getPhotoReviewUi(
-                    "room_photo", 'view_all', Icons.arrow_forward, () {}),
-
-                // Hotel inside photo view
-                HotelPhotosList(restaurantId:widget.hotelData.id),
-                _getPhotoReviewUi("reviews", 'view_all', Icons.arrow_forward,
-                    () {
-                  NavigationServices(context).gotoReviewsListScreen();
-                }),
-
-                // feedback&Review data view
-                for (var i = 0; i < 2; i++)
-                  // ReviewsView(
-                  //   reviewsList:Avis(id: 1,userId: 5,text: 'hhhhh'),
-                  //   animation: animationController,
-                  //   animationController: animationController,
-                  //   callback: () {},
-                  // ),
-
                 SizedBox(
-                  height: 16,
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 24, right: 24),
+                  child: Expanded(
+                    child: Text(
+                      AppLocalizations(context).of("intersted"),
+                      style: TextStyles(context).getBoldStyle().copyWith(
+                        fontSize: 14,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 25,
                 ),
                 Stack(
                   alignment: Alignment.center,
@@ -229,9 +197,7 @@ class _HotelDetailesState extends State<HotelDetailes>
                       child: GoogleMap(
                         mapType: MapType.normal,
                         initialCameraPosition: CameraPosition(
-                            target: LatLng(coordinates.latitude,coordinates.longitude), zoom: 16.0),
-
-                        // markers: markers,
+                            target: LatLng(coordinates.latitude,coordinates.longitude), zoom: 15.0),
                         onTap: (pos) {
                           print(pos);
                           Marker m = Marker(
@@ -274,7 +240,7 @@ class _HotelDetailesState extends State<HotelDetailes>
                   padding: const EdgeInsets.only(
                       left: 16, right: 16, bottom: 16, top: 16),
                   child: CommonButton(
-                    buttonText: AppLocalizations(context).of("book_now"),
+                    buttonText: AppLocalizations(context).of("intersted"),
                     onTap: () {
                       NavigationServices(context)
                           .gotoRoomBookingScreen(widget.hotelData);
@@ -289,7 +255,6 @@ class _HotelDetailesState extends State<HotelDetailes>
             ),
           ),
 
-          // backgrouund image and Hotel name and thier details and more details animation view
           _backgraoundImageUI(widget.hotelData),
 
           // Arrow back Ui
@@ -301,14 +266,14 @@ class _HotelDetailesState extends State<HotelDetailes>
                 children: <Widget>[
                   _getAppBarUi(Theme.of(context).disabledColor.withOpacity(0.4),
                       Icons.arrow_back, AppTheme.backgroundColor, () {
-                    if (scrollController.offset != 0.0) {
-                      scrollController.animateTo(0.0,
-                          duration: Duration(milliseconds: 480),
-                          curve: Curves.easeInOutQuad);
-                    } else {
-                      Navigator.pop(context);
-                    }
-                  }),
+                        if (scrollController.offset != 0.0) {
+                          scrollController.animateTo(0.0,
+                              duration: Duration(milliseconds: 480),
+                              curve: Curves.easeInOutQuad);
+                        } else {
+                          Navigator.pop(context);
+                        }
+                      }),
                   Expanded(
                     child: SizedBox(),
                   ),
@@ -316,12 +281,10 @@ class _HotelDetailesState extends State<HotelDetailes>
                   _getAppBarUi(
                       AppTheme.backgroundColor,
                       isFav ? Icons.favorite : Icons.favorite_border,
-                      AppTheme.primaryColor, () async{
+                      AppTheme.primaryColor, () {
                     setState(() {
                       isFav = !isFav;
                     });
-                    await favoriteServices.addFavorite(Favorite(id: 0, restaurantId:int.parse(widget.hotelData.id), userId: 67, createdAt: DateTime.now(), updatedAt: DateTime.now())).then((value) => print(value));
-
                   })
                 ],
               ),
@@ -371,8 +334,8 @@ class _HotelDetailesState extends State<HotelDetailes>
               AppLocalizations(context).of(title),
               // "Photos",
               style: TextStyles(context).getBoldStyle().copyWith(
-                    fontSize: 14,
-                  ),
+                fontSize: 14,
+              ),
             ),
           ),
           Material(
@@ -389,9 +352,9 @@ class _HotelDetailesState extends State<HotelDetailes>
                       //  'View all',
                       textAlign: TextAlign.left,
                       style: TextStyles(context).getBoldStyle().copyWith(
-                            fontSize: 14,
-                            color: Theme.of(context).primaryColor,
-                          ),
+                        fontSize: 14,
+                        color: Theme.of(context).primaryColor,
+                      ),
                     ),
                     SizedBox(
                       height: 38,
@@ -440,8 +403,8 @@ class _HotelDetailesState extends State<HotelDetailes>
                           right: 0,
                           top: 0,
                           child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: ProfilePicture(restaurantId: widget.hotelData.id,)
+                              width: MediaQuery.of(context).size.width,
+                              child: ProfilePicture(restaurantId: widget.hotelData.id,)
                           ),
                         ),
                       ],
@@ -484,11 +447,9 @@ class _HotelDetailesState extends State<HotelDetailes>
                                           top: 16),
                                       child: CommonButton(
                                           buttonText: AppLocalizations(context)
-                                              .of("book_now"),
+                                              .of("intersted"),
                                           onTap: () {
-                                            NavigationServices(context)
-                                                .gotoRoomBookingScreen(
-                                                    widget.hotelData);
+
                                           }),
                                     ),
                                   ],
@@ -515,17 +476,17 @@ class _HotelDetailesState extends State<HotelDetailes>
                                         .primaryColor
                                         .withOpacity(0.2),
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(38)),
+                                    BorderRadius.all(Radius.circular(38)),
                                     onTap: () {
                                       try {
                                         scrollController.animateTo(
                                             MediaQuery.of(context).size.height -
                                                 MediaQuery.of(context)
-                                                        .size
-                                                        .height /
+                                                    .size
+                                                    .height /
                                                     5,
                                             duration:
-                                                Duration(milliseconds: 500),
+                                            Duration(milliseconds: 500),
                                             curve: Curves.fastOutSlowIn);
                                       } catch (e) {}
                                     },
@@ -538,9 +499,9 @@ class _HotelDetailesState extends State<HotelDetailes>
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        MainAxisAlignment.center,
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                        CrossAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
                                             AppLocalizations(context)
@@ -548,12 +509,12 @@ class _HotelDetailesState extends State<HotelDetailes>
                                             style: TextStyles(context)
                                                 .getBoldStyle()
                                                 .copyWith(
-                                                  color: Colors.white,
-                                                ),
+                                              color: Colors.white,
+                                            ),
                                           ),
                                           Padding(
                                             padding:
-                                                const EdgeInsets.only(top: 2),
+                                            const EdgeInsets.only(top: 2),
                                             child: Icon(
                                               Icons.keyboard_arrow_down,
                                               color: Colors.white,
@@ -595,121 +556,57 @@ class _HotelDetailesState extends State<HotelDetailes>
                 widget.hotelData.titleTxt,
                 textAlign: TextAlign.left,
                 style: TextStyles(context).getBoldStyle().copyWith(
-                      fontSize: 22,
-                      color: isInList ? AppTheme.fontcolor : Colors.white,
-                    ),
+                  fontSize: 22,
+                  color: isInList ? AppTheme.fontcolor : Colors.white,
+                ),
+              ),
+              SizedBox(
+                height: 7.5,
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
+                  Icon(
+                    FontAwesomeIcons.calendar,
+                    size: 15,
+                    color: Theme.of(context).primaryColor,
+                  ),
                   Expanded(
-                    flex:4,
+                    flex:2,
                     child: Text(
-                      widget.hotelData.subTxt,
+                      " " +"24-26 january 2022",
                       style: TextStyles(context).getRegularStyle().copyWith(
-                            fontSize: 14,
-                            color: isInList
-                                ? Theme.of(context).disabledColor.withOpacity(0.5)
-                                : Colors.white,
-                          ),
+                        fontSize: 15,
+                        color: isInList
+                            ? Theme.of(context).disabledColor.withOpacity(0.5)
+                            : Colors.white,
+                      ),
                     ),
                   ),
                   SizedBox(
-                    width: 4,
+                    width: 2,
                   ),
                   Icon(
-                    FontAwesomeIcons.mapMarkerAlt,
-                    size: 12,
+                    FontAwesomeIcons.clock,
+                    size: 15,
                     color: Theme.of(context).primaryColor,
                   ),
                   Text(
-                    "${widget.hotelData.dist.toStringAsFixed(1)}",
+                    " "+ "4PM - 12AM",
                     overflow: TextOverflow.ellipsis,
                     style: TextStyles(context).getRegularStyle().copyWith(
-                          fontSize: 14,
-                          color: isInList
-                              ? Theme.of(context).disabledColor.withOpacity(0.5)
-                              : Colors.white,
-                        ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Text(
-                      AppLocalizations(context).of("km_to_city"),
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyles(context).getRegularStyle().copyWith(
-                            fontSize: 14,
-                            color: isInList
-                                ? Theme.of(context)
-                                    .disabledColor
-                                    .withOpacity(0.5)
-                                : Colors.white,
-                          ),
+                      fontSize: 15,
+                      color: isInList
+                          ? Theme.of(context).disabledColor.withOpacity(0.5)
+                          : Colors.white,
                     ),
                   ),
                 ],
               ),
-              isInList
-                  ? SizedBox()
-                  : Padding(
-                      padding: const EdgeInsets.only(top: 4),
-                      child: Row(
-                        children: <Widget>[
-                          Helper.ratingStar(),
-                          Text(
-                            " ${widget.hotelData.reviews}",
-                            style:
-                                TextStyles(context).getRegularStyle().copyWith(
-                                      fontSize: 14,
-                                      color: isInList
-                                          ? Theme.of(context)
-                                              .disabledColor
-                                              .withOpacity(0.5)
-                                          : Colors.white,
-                                    ),
-                          ),
-                          Text(
-                            AppLocalizations(context).of("reviews"),
-                            style:
-                                TextStyles(context).getRegularStyle().copyWith(
-                                      fontSize: 14,
-                                      color: isInList
-                                          ? Theme.of(context).disabledColor
-                                          : Colors.white,
-                                    ),
-                          ),
-                        ],
-                      ),
-                    ),
             ],
           ),
         ),
-        // Column(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   crossAxisAlignment: CrossAxisAlignment.end,
-        //   children: <Widget>[
-        //     Text(
-        //       "\$${widget.hotelData.perNight}",
-        //       textAlign: TextAlign.left,
-        //       style: TextStyles(context).getBoldStyle().copyWith(
-        //             fontSize: 22,
-        //             color: isInList
-        //                 ? Theme.of(context).textTheme.bodyText1!.color
-        //                 : Colors.white,
-        //           ),
-        //     ),
-        //     Text(
-        //       AppLocalizations(context).of("per_night"),
-        //       style: TextStyles(context).getRegularStyle().copyWith(
-        //             fontSize: 14,
-        //             color: isInList
-        //                 ? Theme.of(context).disabledColor
-        //                 : Colors.white,
-        //           ),
-        //     ),
-        //   ],
-        // ),
       ],
     );
   }
