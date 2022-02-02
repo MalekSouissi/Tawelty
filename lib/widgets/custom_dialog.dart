@@ -4,7 +4,7 @@ import 'package:new_motel/constants/themes.dart';
 
 class CustomDialog extends StatefulWidget {
   const CustomDialog({
-    required this.title,
+    this.title='',
     this.description = '',
     this.topWidget,
     this.descriptionWidget,

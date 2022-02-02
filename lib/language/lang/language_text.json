@@ -182,6 +182,11 @@
         "ja": "プロフィール"
     },
     {
+        "text_id": "status",
+        "en": "status",
+        "fr": "status"
+    },
+    {
         "text_id": "where_are_you_going",
         "en": "Where are you going?",
         "fr": "Où vas-tu?",

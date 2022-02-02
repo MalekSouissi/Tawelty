@@ -5,7 +5,7 @@ import 'package:new_motel/models/avis.dart';
 class AvisServices{
   Client client = Client();
 
-  static const API = 'http://192.168.1.7:3000/';
+  static const API = 'http://192.168.1.239:3000/';
 
 
   Future getListAvis() {
@@ -20,8 +20,8 @@ class AvisServices{
         for (var item in jsonData) {
           events.add(Avis.fromJson(item));
         }
-        print(events);
-        return events;
+        print(jsonData);
+        return events.toList();
       }
       return 'An error occured1';
     }).catchError((_) => 'An error occured2');
@@ -62,15 +62,15 @@ class AvisServices{
   }
 
   Future updateAvis(String ID, Avis item) {
-    return client.put(Uri.parse(API + 'avis/' + ID),  headers: <String, String>{
+    return client.put(Uri.parse(API + 'avis/update/' + ID),  headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     }, body: jsonEncode(item.toJson())).then((data) {
       if (data.statusCode == 204) {
         return true;
       }
-      return 'An error occured';
+      return data.body;
     })
-        .catchError((_) =>'An error occured');
+        .catchError((_) =>'An error occured2');
   }
 
   Future deleteAvis(String ID) {

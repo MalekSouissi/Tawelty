@@ -207,6 +207,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var body = json.decode(res.body);
     SharedPreferences localStorage1 = await SharedPreferences.getInstance();
     localStorage1.setInt('id', json.decode(body['id'].toString()));
+    SharedPreferencesKeys().setIntData(key: 'id', id: body['id']);
     print(body['id']);
     userId=body['id'];
     // username=body['username'];

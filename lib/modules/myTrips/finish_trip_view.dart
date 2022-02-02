@@ -21,7 +21,6 @@ bool showAddress=false;
     hotelList= await RestaurantListData().fetchRestaurants();
 
     setState(() {
-
       showAddress = true;
     });
   }
@@ -59,7 +58,7 @@ bool showAddress=false;
             isShowDate: (index % 2) != 0,
           );
         },
-      ):Text('fuck me'),
+      ):Container(),
     );
   }
 }

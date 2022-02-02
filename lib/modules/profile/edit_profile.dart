@@ -4,6 +4,9 @@ import 'package:new_motel/constants/shared_preferences_keys.dart';
 import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
+import 'package:new_motel/models/user.dart';
+import 'package:new_motel/modules/profile/editProfileDialog.dart';
+import 'package:new_motel/services/user.services.dart';
 import 'package:new_motel/widgets/common_appbar_view.dart';
 import 'package:new_motel/widgets/common_card.dart';
 import 'package:new_motel/widgets/remove_focuse.dart';
@@ -11,6 +14,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/setting_list_data.dart';
 
 class EditProfile extends StatefulWidget {
+
+  User user;
+  EditProfile({required this.user});
 
   @override
   _EditProfileState createState() => _EditProfileState();
@@ -23,27 +29,9 @@ class _EditProfileState extends State<EditProfile> {
   String lname='';
   String email='';
   bool show=false;
-
-  void _getUserInfo() async {
-    SharedPreferences localStorage1 = await SharedPreferences.getInstance();
-    var userId = localStorage1.getInt('id');
-    print(userId);
-    setState(() {
-      user = userId;
-      fetchUser();
-      print(user);
-    });
-  }
-
-  List<SettingsListData> userInfoList = SettingsListData.userInfoList;
-  SettingsListData settingslistdata=SettingsListData();
-  List<SettingsListData> UserProfil=[];
-
-  // fetchUser(user)async{
-  //   UserProfil=await settingslistdata.GetUserProfil(user.toString());
-  //   print(UserProfil);
-  // }
-
+String status='';
+bool isInCall=false;
+TextEditingController textEditingController=TextEditingController();
   fetchUser()async{
     fname=(await SharedPreferencesKeys().getStringData(key: 'fname'))!;
     lname=await SharedPreferencesKeys().getStringData(key: 'lname') as String;
@@ -64,8 +52,66 @@ class _EditProfileState extends State<EditProfile> {
 
   }
 
+getUserStatus(){
+  switch(widget.user.status) {
+    case 0: {
+      // statements;
+     status= 'standard';
+    }
+break;
+    case 1: {
+      //statements;
+      status='silver';
+    }
+    break;
+    case 1: {
+      //statements;
+      status='gold';
+    }
+    break;
+
+    default: {
+      //statements;
+    }
+    break;
+
+  }
+  return status;
+}
+
   @override
   Widget build(BuildContext context) {
+  getUserStatus();
+    List<SettingsListData> userInfoList = [
+      SettingsListData(
+        titleTxt: '',
+        subTxt: "",
+      ),
+      SettingsListData(
+        titleTxt: 'username_text',
+        subTxt: widget.user.first_name!=null?widget.user.first_name:"Amanda Jane",
+      ),
+      SettingsListData(
+        titleTxt: 'mail_text',
+        subTxt: widget.user.email!=null?widget.user.email:"amanda@gmail.com",
+      ),
+      SettingsListData(
+        titleTxt: 'phone',
+        subTxt: "+65 1122334455",
+      ),
+      SettingsListData(
+        titleTxt: 'date_of_birth',
+        subTxt: "20, Aug, 1990",
+      ),
+      SettingsListData(
+        titleTxt: 'address_text',
+        subTxt: "123 Royal Street, New York",
+      ),
+      SettingsListData(
+        titleTxt: 'status',
+        subTxt: widget.user.status.toString()!=null?status:"123 Royal Street, New York",
+      ),
+    ];
     return Container(
       child: Scaffold(
         backgroundColor: AppTheme.scaffoldBackgroundColor,
@@ -77,10 +123,6 @@ class _EditProfileState extends State<EditProfile> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              TextButton(onPressed: (){
-                _getUserInfo();
-
-              }, child: Text('Button')),
               CommonAppbarView(
                 iconData: Icons.arrow_back,
                 titleText: AppLocalizations(context).of("edit_profile"),
@@ -97,7 +139,9 @@ class _EditProfileState extends State<EditProfile> {
                     return index == 0
                         ? getProfileUI()
                         : InkWell(
-                            onTap: () {},
+                            onTap: () {
+_showEditDialog(userInfoList[index].subTxt, userInfoList[index].titleTxt, false);
+                            },
                             child: Column(
                               children: <Widget>[
                                 Padding(
@@ -133,6 +177,13 @@ class _EditProfileState extends State<EditProfile> {
                                                   fontSize: 16,
                                                 ),
                                           ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            right: 16.0, bottom: 16, top: 16),
+                                        child: Container(
+                                          child: Icon(Icons.edit),
                                         ),
                                       )
                                     ],
@@ -220,4 +271,32 @@ class _EditProfileState extends State<EditProfile> {
       ),
     );
   }
+
+  _showEditDialog(String hint, String oldtext, bool obscure) {
+    return showDialog(
+      context: context,
+      builder: (ctx) =>
+          EditProfileDialog(hint, oldtext, textEditingController, obscure, () {
+            setState(() {
+              isInCall = true;
+            });
+
+           // EditUserDetails();
+          }
+          ),
+    );
+  }
+
+  EditUserDetails(key,user)async{
+
+    await SharedPreferencesKeys().getIntData(key: 'id').then((value) async {
+      user = await UserServices().updateUser(value.toString(),key,user);
+
+    });
+
+    setState(() {
+      isInCall=true;
+    });
+  }
+
 }

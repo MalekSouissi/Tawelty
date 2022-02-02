@@ -1,3 +1,4 @@
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:new_motel/constants/shared_preferences_keys.dart';
 
 class User {
@@ -11,6 +12,7 @@ class User {
   //int RestaurantId;
   DateTime createdAt;
   DateTime updatedAt;
+  int status;
 
   User(
       {required this.id,
@@ -20,6 +22,7 @@ class User {
       required this.password,
       // this.resetLink,
       // this.phone,
+        required this.status,
       required this.createdAt,
       required this.updatedAt});
   Map<String, dynamic> toJson() {
@@ -43,6 +46,7 @@ class User {
       password: item['password'],
       // phone: item['phone'],
       // resetLink: item['resetLink'],
+      status: item['status'],
       createdAt: DateTime.parse(item['createdAt']),
       updatedAt: item['updatedAt'] != null
           ? DateTime.parse(item['updatedAt'])

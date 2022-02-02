@@ -10,10 +10,13 @@ import 'package:new_motel/constants/localfiles.dart';
 import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
+import 'package:new_motel/models/avis.dart';
+import 'package:new_motel/models/favorite.dart';
 import 'package:new_motel/modules/hotel_booking/components/restaurant_carousel.dart';
 import 'package:new_motel/modules/hotel_detailes/hotel_photos.dart';
 import 'package:new_motel/modules/hotel_detailes/review_data_view.dart';
 import 'package:new_motel/routes/route_names.dart';
+import 'package:new_motel/services/favorite.services.dart';
 import 'package:new_motel/widgets/common_button.dart';
 import 'package:new_motel/widgets/common_card.dart';
 import '../../models/hotel_list_data.dart';
@@ -47,6 +50,7 @@ class _HotelDetailesState extends State<HotelDetailes>
   List<Marker> allMarkers = [];
   bool show = false;
   var coordinates;
+  FavoriteServices favoriteServices=FavoriteServices();
 
   getCoordinates(var query) async {
     var addresses = [];
@@ -209,12 +213,12 @@ class _HotelDetailesState extends State<HotelDetailes>
 
                 // feedback&Review data view
                 for (var i = 0; i < 2; i++)
-                  ReviewsView(
-                    reviewsList: RestaurantListData.reviewsList[i],
-                    animation: animationController,
-                    animationController: animationController,
-                    callback: () {},
-                  ),
+                  // ReviewsView(
+                  //   reviewsList:Avis(id: 1,userId: 5,text: 'hhhhh'),
+                  //   animation: animationController,
+                  //   animationController: animationController,
+                  //   callback: () {},
+                  // ),
 
                 SizedBox(
                   height: 16,
@@ -314,10 +318,12 @@ class _HotelDetailesState extends State<HotelDetailes>
                   _getAppBarUi(
                       AppTheme.backgroundColor,
                       isFav ? Icons.favorite : Icons.favorite_border,
-                      AppTheme.primaryColor, () {
+                      AppTheme.primaryColor, () async{
                     setState(() {
                       isFav = !isFav;
                     });
+                    await favoriteServices.addFavorite(Favorite(id: 0, restaurantId:int.parse(widget.hotelData.id), userId: 67, createdAt: DateTime.now(), updatedAt: DateTime.now())).then((value) => print(value));
+
                   })
                 ],
               ),

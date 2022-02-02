@@ -5,7 +5,9 @@ import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/logic/providers/theme_provider.dart';
+import 'package:new_motel/models/user.dart';
 import 'package:new_motel/routes/route_names.dart';
+import 'package:new_motel/services/user.services.dart';
 import 'package:new_motel/widgets/bottom_top_move_animation_view.dart';
 import 'package:provider/provider.dart';
 import '../../models/setting_list_data.dart';
@@ -26,19 +28,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String lname='';
   String email='';
   bool show=false;
-  fetchUser()async{
-    fname=(await SharedPreferencesKeys().getStringData(key: 'fname'))!;
-    lname=await SharedPreferencesKeys().getStringData(key: 'lname') as String;
-    email=(await SharedPreferencesKeys().getStringData(key: 'email'))!;
-    url= await SharedPreferencesKeys().getStringData(key: 'pdp') as String;
+  UserServices userServices=UserServices();
+  bool _isLoading= false;
+  late var user;
+
+  // fetchUser()async{
+  //   fname=(await SharedPreferencesKeys().getStringData(key: 'fname'))!;
+  //   lname=await SharedPreferencesKeys().getStringData(key: 'lname') as String;
+  //   email=(await SharedPreferencesKeys().getStringData(key: 'email'))!;
+  //   url= await SharedPreferencesKeys().getStringData(key: 'pdp') as String;
+  //   setState(() {
+  //     show=true;
+  //   });
+  //
+  //
+  //
+  //
+  //   setState(() {
+  //     _isLoading=true;
+  //   });
+  //
+  // }
+
+
+  fetchUserDetails()async{
+
+    await SharedPreferencesKeys().getIntData(key: 'id').then((value) async {
+      user = await userServices.getUserProfile(67.toString());
+
+    });
+
     setState(() {
-      show=true;
+      _isLoading=true;
     });
   }
 
+
   @override
   void initState() {
-    fetchUser();
+   // fetchUser();
+    fetchUserDetails();
     widget.animationController.forward();
     super.initState();
   }
@@ -141,7 +170,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget appBar() {
     return InkWell(
       onTap: () {
-        NavigationServices(context).gotoEditProfile();
+        NavigationServices(context).gotoEditProfile(user);
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -155,7 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    show?fname:AppLocalizations(context).of("amanda_text"),
+                    _isLoading?user.first_name:AppLocalizations(context).of("amanda_text"),
                     style: new TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w700,

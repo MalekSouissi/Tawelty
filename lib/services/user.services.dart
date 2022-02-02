@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:new_motel/models/user.dart';
 
 class UserServices {
-  static const API = 'http://192.168.1.6:3000/';
+  static const API = 'http://192.168.1.239:3000/';
 
   Future getUserProfile(String userId) {
     return http
@@ -53,13 +53,16 @@ class UserServices {
   //       error: true, errorMessage: 'An error occured'));
   // }
 
-  Future updateUser(String userID, User item) {
+  Future updateUser(String userID, key,String item) {
+    var body = {key: item};
+
     return http
         .put(Uri.parse(API + 'users/update/' + userID),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(item.toJson()))
+
+        body: jsonEncode(body))
         .then((data) {
       if (data.statusCode == 204) {
         return true;

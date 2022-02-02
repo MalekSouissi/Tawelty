@@ -1,11 +1,20 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:new_motel/constants/helper.dart';
+import 'package:new_motel/constants/text_styles.dart';
+import 'package:new_motel/constants/themes.dart';
+import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/models/avis.dart';
+import 'package:new_motel/modules/hotel_detailes/replysectionpage.dart';
 import 'package:new_motel/modules/hotel_detailes/review_data_view.dart';
 import 'package:new_motel/services/avis.services.dart';
 import 'package:new_motel/widgets/common_appbar_view.dart';
+import 'package:new_motel/widgets/common_card.dart';
+import 'package:new_motel/widgets/custom_dialog.dart';
 import '../../models/hotel_list_data.dart';
 import 'package:comment_box/comment/comment.dart';
-
+import 'package:new_motel/constants/helper.dart';
 
 class ReviewsListScreen extends StatefulWidget {
   @override
@@ -18,6 +27,21 @@ class _ReviewsListScreenState extends State<ReviewsListScreen>
   AvisServices avisServices = AvisServices();
   late AnimationController animationController;
   bool _isLoading = false;
+  var reviews = [];
+  TextEditingController controller = TextEditingController();
+  TextEditingController controllerUpdate = TextEditingController();
+  Helper helper = Helper();
+  final f = new DateFormat('yyyy-MM-dd');
+  addReview(avis) async {
+    setState(() {
+      _isLoading = false;
+    });
+    await avisServices.addAvis(avis).then((value) => fetchReviews());
+    setState(() {
+      _isLoading = true;
+    });
+  }
+
   @override
   void initState() {
     animationController = AnimationController(
@@ -28,9 +52,7 @@ class _ReviewsListScreenState extends State<ReviewsListScreen>
 
   final formKey = GlobalKey<FormState>();
   final TextEditingController commentController = TextEditingController();
-  List filedata = [
-
-  ];
+  List filedata = [];
 
   Widget commentChild(data) {
     return ListView(
@@ -76,9 +98,8 @@ class _ReviewsListScreenState extends State<ReviewsListScreen>
     setState(() {
       _isLoading = true;
     });
-    var reviews = await avisServices.getListAvis();
+    reviews = await avisServices.getListAvis();
     print(reviews);
-    print('hello');
     setState(() {
       _isLoading = false;
     });
@@ -95,52 +116,18 @@ class _ReviewsListScreenState extends State<ReviewsListScreen>
             iconData: Icons.close,
             onBackClick: () {
               //Navigator.pop(context);
-              print('hello');
               fetchReviews();
               Navigator.pop(context);
             },
-            titleText: "Review(20)",
+            titleText: "Review(${reviews.length})",
           ),
           // animation of Review and feedback data
           Expanded(
-            child: Container(
-              child: CommentBox(
-                userImage:
-                "https://lh3.googleusercontent.com/a-/AOh14GjRHcaendrf6gU5fPIVd8GIl1OgblrMMvGUoCBj4g=s400",
-                child: commentChild(filedata),
-                labelText: 'Write a comment...',
-                withBorder: false,
-                errorText: 'Comment cannot be blank',
-                sendButtonMethod: () {
-                  if (formKey.currentState!.validate()) {
-                    print(commentController.text);
-                    setState(() {
-                      var value = {
-                        'name': 'New User',
-                        'pic':
-                        'https://lh3.googleusercontent.com/a-/AOh14GjRHcaendrf6gU5fPIVd8GIl1OgblrMMvGUoCBj4g=s400',
-                        'message': commentController.text
-                      };
-                      filedata.insert(0, value);
-                    });
-                    commentController.clear();
-                    FocusScope.of(context).unfocus();
-                  } else {
-                    print("Not validated");
-                  }
-                },
-                formKey: formKey,
-                commentController: commentController,
-                backgroundColor: Color(0xFF1C3956),
-                textColor: Colors.white,
-                sendWidget: Icon(Icons.send_sharp, size: 30, color: Colors.white),
-              ),
-            )
-            /*ListView.builder(
+            child: ListView.builder(
               physics: BouncingScrollPhysics(),
               padding: EdgeInsets.only(
                   top: 8, bottom: MediaQuery.of(context).padding.bottom + 8),
-              itemCount: reviewsList.length,
+              itemCount: reviews.length,
               itemBuilder: (context, index) {
                 var count = reviewsList.length > 10 ? 10 : reviewsList.length;
                 var animation = Tween(begin: 0.0, end: 1.0).animate(
@@ -150,14 +137,302 @@ class _ReviewsListScreenState extends State<ReviewsListScreen>
                             curve: Curves.fastOutSlowIn)));
                 animationController.forward();
                 // page to redirect the feedback and review data
-                return ReviewsView(
-                  callback: () {},
-                  reviewsList: reviewsList[index],
-                  animation: animation,
-                  animationController: animationController,
+                return GestureDetector(
+                  onLongPress: () {
+                    showModalBottomSheet<void>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Container(
+                            height: 200,
+                            //color: Colors.amber,
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  TextButton(
+                                      onPressed: () {
+                                        _deleteReview(reviews[index].id);
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Icon(CupertinoIcons.delete),
+                                          SizedBox(width: 10,),
+                                          Text('Delete'),
+                                        ],
+                                      )),
+                                  TextButton(
+                                      onPressed: () {
+                                        _updateReview(index);
+                                      },
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.edit_outlined),
+                                          SizedBox(width: 10,),
+                                          Text('Edit'),
+                                        ],
+                                      )),
+                                ],
+                              ),
+                            ),
+                          );
+                        });
+                  },
+                  child: ReviewsView(
+                    callback: () {},
+                    reviewsList: reviews[index],
+                    animation: animation,
+                    animationController: animationController,
+                  ),
                 );
               },
-            )*/,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
+            child: Column(
+              // crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        width: 48,
+                        child: CommonCard(
+                          radius: 8,
+                          color: AppTheme.whiteColor,
+                          child: ClipRRect(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0)),
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              // child: Image.asset(
+                              //   reviewsList.imagePath,
+                              //   fit: BoxFit.cover,
+                              // ),
+                              child: Icon(
+                                Icons.person,
+                                size: 24,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        width: double.infinity,
+                        child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextField(
+                              controller: controller,
+                              decoration: InputDecoration(
+                                // border: OutlineInputBorder(),
+                                hintText: 'Add your comment',
+                                hintStyle: new TextStyles(context)
+                                    .getDescriptionStyle()
+                                    .copyWith(
+                                      fontWeight: FontWeight.w100,
+                                      color: Theme.of(context).disabledColor,
+                                    ),
+                              ),
+                            )),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  // mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                        onTap: () {
+                          addReview(Avis(
+                              id: 3,
+                              text: controller.text,
+                              restaurantId: 55,
+                              userId: 67,
+                              createdAt: DateTime.now(),
+                              updatedAt: DateTime.now()));
+                          setState(() {
+                            controller.clear();
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: Row(
+                            children: <Widget>[
+                              Text(
+                                'post',
+                                textAlign: TextAlign.left,
+                                style: TextStyles(context)
+                                    .getRegularStyle()
+                                    .copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                              ),
+                              SizedBox(
+                                height: 38,
+                                width: 26,
+                                child: Icon(
+                                  Icons.send,
+                                  size: 14,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Divider(
+                  height: 1,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _deleteReview(id) async {
+    bool isOk = await helper.showCommonPopup(
+      "Are you sure?",
+      "You want to Delete this comment ?",
+      context,
+      barrierDismissible: true,
+      isYesOrNoPopup: true,
+    );
+    if (isOk) {
+      delete(id);
+    }
+  }
+
+  delete(ID) async {
+    await avisServices
+        .deleteAvis(ID.toString())
+        .then((value) => fetchReviews());
+    setState(() {
+      _isLoading = true;
+    });
+  }
+
+  _updateReview(index) {
+    return showDialog(
+      context: context,
+      //barrierDismissible: true,
+      builder: (BuildContext context) => AlertDialog(
+        contentPadding: EdgeInsets.fromLTRB(10, 15, 10, 0),
+        actionsPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+        buttonPadding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(15),
+          ),
+        ),
+        content: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 10),
+              Text(
+                "Modifier commentaire",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              SizedBox(height: 10),
+              TextField(
+                controller: controllerUpdate,
+                decoration: InputDecoration(
+                  hintText: reviews[index].text,
+                  border: InputBorder.none,
+                  hintStyle:
+                      new TextStyles(context).getDescriptionStyle().copyWith(
+                            fontWeight: FontWeight.w100,
+                            color: Theme.of(context).disabledColor,
+                          ),
+                ),
+              ),
+              SizedBox(height: 10),
+              Divider(),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Container(
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(10),
+                  bottomLeft: Radius.circular(10),
+                ),
+              ),
+              child: Text(
+                "Cancel",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w900,
+                  color: Colors.white54,
+                ),
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () async {
+              print(reviews[index].id);
+              print(controllerUpdate.text);
+              print(reviews[index].createdAt);
+              setState(() {
+                _isLoading=false;
+              });
+              await avisServices.updateAvis(
+                  reviews[index].id.toString(),
+                  Avis(
+                      id: reviews[index].id,
+                      text: controllerUpdate.text,
+                      createdAt: reviews[index].createdAt,
+                      updatedAt: DateTime.now(),
+                      restaurantId: 30,
+                      userId: 67)).then((value) => fetchReviews());
+              setState(() {
+                _isLoading=true;
+              });
+            },
+            child: Container(
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(10),
+                  bottomLeft: Radius.circular(10),
+                ),
+              ),
+              child: Text(
+                "Update",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w900,
+                  color: Colors.white54,
+                ),
+              ),
+            ),
           ),
         ],
       ),
