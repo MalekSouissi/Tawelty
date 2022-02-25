@@ -269,13 +269,11 @@
         "fr": "Dernières recherches",
         "ar": "عمليات البحث الأخيرة",
         "ja": "最後の検索"
-        },
+    },
     {
         "text_id": "Result",
         "en": "Result",
-        "fr": "Resultats",
-        "ar": "عمليات البحث الأخيرة",
-        "ja": "最後検索"
+        "fr": "Resultats"
     },
     {
         "text_id": "clear_all",
@@ -363,8 +361,8 @@
     },
     {
         "text_id": "book_now",
-        "en": "Reserve now",
-        "fr": "Réserver maintenant ",
+        "en": "Resrve now",
+        "fr": "Réserver maintenant",
         "ar": " احجز الآن",
         "ja": "今予約する"
     },
