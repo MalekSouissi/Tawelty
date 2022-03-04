@@ -46,12 +46,12 @@ class _SplashScreenState extends State<SplashScreen> {
                   : null,
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
-              child: Image.asset(Localfiles.introduction, fit: BoxFit.cover),
+              child: Image.asset(Localfiles.splashbg, fit: BoxFit.cover),
             ),
             Column(
               children: <Widget>[
                 Expanded(
-                  flex: 1,
+                  flex: 3,
                   child: SizedBox(),
                 ),
                 Center(
@@ -65,17 +65,18 @@ class _SplashScreenState extends State<SplashScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 16,
+                  height: 15,
                 ),
-                Text(
-                  "Tawelty",
-                  textAlign: TextAlign.left,
-                  style: TextStyles(context).getBoldStyle().copyWith(
-                        fontSize: 24,
-                      ),
+                Center(
+                  child: Divider(
+                    thickness: 1,
+                    endIndent: 125,
+                    indent: 125,
+                    color: AppTheme.whiteColor.withOpacity(0.5),
+                  ),
                 ),
                 SizedBox(
-                  height: 8,
+                  height: 15,
                 ),
                 AnimatedOpacity(
                   opacity: isLoadText ? 1.0 : 0.0,
@@ -96,8 +97,9 @@ class _SplashScreenState extends State<SplashScreen> {
                   child: CommonButton(
                     //backgroundColor: Color(0xFF1C3956),
                     padding: const EdgeInsets.only(
-                        left: 48, right: 48, bottom: 8, top: 8),
+                        left: 100, right: 100, bottom: 8, top: 8),
                     buttonText: AppLocalizations(context).of("get_started"),
+
                     onTap: () {
                       NavigationServices(context).gotoIntroductionScreen();
                     },
@@ -108,7 +110,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   duration: Duration(milliseconds: 1200),
                   child: Padding(
                     padding: EdgeInsets.only(
-                        bottom: 24.0 + MediaQuery.of(context).padding.bottom,
+                        bottom: 35 + MediaQuery.of(context).padding.bottom,
                         top: 16),
                     child: Text(
                       AppLocalizations(context).of("already_have_account"),

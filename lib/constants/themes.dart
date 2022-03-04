@@ -33,6 +33,10 @@ class AppTheme {
 
   static Color get primaryTextColor =>
       isLightMode ? Color(0xFF262626) : Color(0xFFFFFFFF);
+  static Color get blueTextColor =>
+      isLightMode ? Color(0xFF1C3956) : Color(0xFFAF8F61);
+  static Color get thirdTextColor =>
+      isLightMode ? Color(0xFF1C3956) : Color(0xFFFFFFFF);
 
   static Color get secondaryTextColor =>
       isLightMode ? Color(0xFFADADAD) : Color(0xFF6D6D6D);
@@ -129,7 +133,8 @@ class AppTheme {
       textTheme: _buildTextTheme(base.textTheme),
       primaryTextTheme: _buildTextTheme(base.textTheme),
       platform: TargetPlatform.iOS,
-      visualDensity: VisualDensity.adaptivePlatformDensity, colorScheme: colorScheme.copyWith(secondary: primaryColor),
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+      colorScheme: colorScheme.copyWith(secondary: primaryColor),
     );
   }
 

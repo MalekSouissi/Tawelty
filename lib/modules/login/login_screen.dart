@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:new_motel/api/api.dart';
 import 'package:new_motel/constants/shared_preferences_keys.dart';
+import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/modules/login/facebook_twitter_button_view.dart';
 import 'package:new_motel/routes/route_names.dart';
 import 'package:new_motel/utils/validator.dart';
 import 'package:new_motel/widgets/common_appbar_view.dart';
 import 'package:new_motel/widgets/common_button.dart';
+import 'package:new_motel/widgets/common_intro_button_blue.dart';
 import 'package:new_motel/widgets/common_text_field_view.dart';
 import 'package:new_motel/widgets/remove_focuse.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,8 +26,8 @@ class _LoginScreenState extends State<LoginScreen> {
   String _errorPassword = '';
   TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
-  String token='';
-  int userId=0;
+  String token = '';
+  int userId = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: FacebookTwitterButtonView(),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.only(top: 30, bottom: 15),
                       child: Text(
                         AppLocalizations(context).of("log_with mail"),
                         textAlign: TextAlign.center,
@@ -85,15 +87,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: _passwordController,
                     ),
                     _forgotYourPasswordUI(),
-                    CommonButton(
-                      padding: EdgeInsets.only(left: 24, right: 24, bottom: 16),
+                    CommonIntroButtonBlue(
+                      padding:
+                          EdgeInsets.only(left: 115, right: 115, bottom: 16),
                       buttonText: AppLocalizations(context).of("login"),
                       onTap: () {
                         if (_allValidation()) {
-                        _login();
+                          _login();
                           // NavigationServices(context).gotoTabScreen();
                         }
-
                       },
                     ),
                   ],
@@ -108,9 +110,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _forgotYourPasswordUI() {
     return Padding(
-      padding: const EdgeInsets.only(top: 8, right: 16, bottom: 8, left: 16),
+      padding: const EdgeInsets.only(top: 15, right: 16, bottom: 15, left: 16),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           InkWell(
@@ -125,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
-                  color: Theme.of(context).disabledColor,
+                  color: AppTheme.redErrorColor,
                 ),
               ),
             ),
@@ -135,13 +137,11 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _login() async{
-
+  void _login() async {
     setState(() {
       _isLoading = true;
     });
     var data = {
-
       'email': _emailController.text,
       'password': _passwordController.text,
       //'phone' : phoneController.text,
@@ -155,19 +155,18 @@ class _LoginScreenState extends State<LoginScreen> {
     var body = jsonDecode(res.body.toString());
     print(body);
     //if(body['status']==200){
-      if(body['token']!=null){
-        // SharedPreferences localStorage = await SharedPreferences.getInstance();
-        // localStorage.setString('token', body['token']);
-        SharedPreferencesKeys().setTokenData(key: 'token', token: body['token']);
-        token=body['token'];
-        _getProfile();
-        print(body);
-        NavigationServices(context).gotoTabScreen();
-      } else{
+    if (body['token'] != null) {
+      // SharedPreferences localStorage = await SharedPreferences.getInstance();
+      // localStorage.setString('token', body['token']);
+      SharedPreferencesKeys().setTokenData(key: 'token', token: body['token']);
+      token = body['token'];
+      _getProfile();
+      print(body);
+      NavigationServices(context).gotoTabScreen();
+    } else {
+      print(body);
 
-       print(body);
-
-      ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(body.toString()),
         action: SnackBarAction(
           label: 'Undo',
@@ -178,38 +177,36 @@ class _LoginScreenState extends State<LoginScreen> {
       ));
     }
 
-
     setState(() {
       _isLoading = false;
     });
-
   }
 
   showError(msg) {
     showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text('Done'),
-          content: Text(msg.toString()),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Ok'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            )
-          ],
-        ));
+              title: Text('Done'),
+              content: Text(msg.toString()),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Ok'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            ));
   }
 
-  void _getProfile()async{
-    var res = await CallApi().getProfile('users/profile',token);
+  void _getProfile() async {
+    var res = await CallApi().getProfile('users/profile', token);
     var body = json.decode(res.body);
     SharedPreferences localStorage1 = await SharedPreferences.getInstance();
     localStorage1.setInt('id', json.decode(body['id'].toString()));
     SharedPreferencesKeys().setIntData(key: 'id', id: body['id']);
     print(body['id']);
-    userId=body['id'];
+    userId = body['id'];
     // username=body['username'];
     print(userId);
     // print(body);

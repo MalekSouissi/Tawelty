@@ -10,6 +10,7 @@ import 'package:new_motel/routes/route_names.dart';
 import 'package:new_motel/utils/validator.dart';
 import 'package:new_motel/widgets/common_appbar_view.dart';
 import 'package:new_motel/widgets/common_button.dart';
+import 'package:new_motel/widgets/common_intro_button_blue.dart';
 import 'package:new_motel/widgets/common_text_field_view.dart';
 import 'package:new_motel/widgets/remove_focuse.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,7 +21,6 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-
   String _errorEmail = '';
   TextEditingController _emailController = TextEditingController();
   String _errorPassword = '';
@@ -30,8 +30,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String _errorLName = '';
   TextEditingController _lnameController = TextEditingController();
   bool _isLoading = false;
-  String token='';
-  int userId=0;
+  String token = '';
+  int userId = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: FacebookTwitterButtonView(),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.only(top: 30, bottom: 15),
                         child: Text(
                           AppLocalizations(context).of("log_with mail"),
                           textAlign: TextAlign.center,
@@ -110,14 +110,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         errorText: _errorPassword,
                         controller: _passwordController,
                       ),
-                      CommonButton(
+                      CommonIntroButtonBlue(
                         padding:
-                            EdgeInsets.only(left: 24, right: 24, bottom: 8),
+                            EdgeInsets.only(left: 110, right: 110, bottom: 8),
                         buttonText: AppLocalizations(context).of("sign_up"),
                         onTap: () {
-                          if (_allValidation())
-                            _handleLogin();
-                            //NavigationServices(context).gotoTabScreen();
+                          if (_allValidation()) _handleLogin();
+                          //NavigationServices(context).gotoTabScreen();
                         },
                       ),
                       Padding(
@@ -235,7 +234,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _isLoading = true;
     });
     var data = {
-      'first_name':_fnameController.text,
+      'first_name': _fnameController.text,
       'last_name': _lnameController.text,
       'email': _emailController.text,
       'password': _passwordController.text,
@@ -248,26 +247,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
     var res = await CallApi().postData(data, 'users/register');
     var body = json.decode(res.body);
     print(body);
-    if(body['token']!=null){
+    if (body['token'] != null) {
       // SharedPreferences localStorage = await SharedPreferences.getInstance();
       // localStorage.setString('token', body['token']);
       SharedPreferencesKeys().setTokenData(key: 'token', token: body['token']);
-      token=body['token'];
+      token = body['token'];
       _getProfile();
       print(body);
       NavigationServices(context).gotoTabScreen();
-    }else {
-       print(body['error']);
-       ScaffoldMessenger.of(context).showSnackBar( SnackBar(
-         content: Text(body['error'].toString()),
-         action: SnackBarAction(
-           label: 'Undo',
-           onPressed: () {
-             // Some code to undo the change.
-           },
-         ),
-       ));
-     }
+    } else {
+      print(body['error']);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(body['error'].toString()),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            // Some code to undo the change.
+          },
+        ),
+      ));
+    }
 
     //}
 
@@ -276,14 +275,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
   }
 
-  void _getProfile()async{
-    var res = await CallApi().getProfile('users/profile',token);
+  void _getProfile() async {
+    var res = await CallApi().getProfile('users/profile', token);
     var body = json.decode(res.body);
     SharedPreferences localStorage1 = await SharedPreferences.getInstance();
     localStorage1.setInt('id', json.decode(body['id'].toString()));
     SharedPreferencesKeys().setIntData(key: 'id', id: body['id']);
     print(body['id']);
-    userId=body['id'];
+    userId = body['id'];
     // username=body['username'];
     print(userId);
     // print(body);
