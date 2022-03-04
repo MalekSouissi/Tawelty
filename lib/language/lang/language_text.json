@@ -14,8 +14,15 @@
         "ja": "すでにアカウントをお持ちですか？サインイン"
     },
     {
+        "text_id": "never_let_you",
+        "en": "NEVER LET YOU DOWN",
+        "fr": "VJAMAIS TE LAISSER TOMBER",
+        "ar": "لن تخذلك",
+        "ja": "あなたを決して裏切りません"
+    },
+    {
         "text_id": "get_started",
-        "en": "Get started",
+        "en": "Start",
         "fr": "Commencer",
         "ar": "البدء",
         "ja": "始めましょう"

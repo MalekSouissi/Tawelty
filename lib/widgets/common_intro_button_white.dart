@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/widgets/tap_effect.dart';
 import 'package:new_motel/constants/text_styles.dart';
 
-class CommonButton extends StatelessWidget {
+class CommonIntroButtonWhite extends StatelessWidget {
   final VoidCallback? onTap;
   final EdgeInsetsGeometry? padding;
   final String? buttonText;
@@ -10,7 +11,7 @@ class CommonButton extends StatelessWidget {
   final Color? textColor, backgroundColor;
   final bool? isClickable;
   final double radius;
-  const CommonButton({
+  const CommonIntroButtonWhite({
     Key? key,
     this.onTap,
     this.buttonText,
@@ -44,7 +45,7 @@ class CommonButton extends StatelessWidget {
                   Text(
                     buttonText ?? "",
                     style: TextStyles(context).getRegularStyle().copyWith(
-                          color: Color(0xFFAF8F61),
+                          color: AppTheme.blueTextColor,
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
                           letterSpacing: 1.75,

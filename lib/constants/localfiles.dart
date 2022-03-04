@@ -71,4 +71,8 @@ class Localfiles {
   static const String birghtness = BaseImageUrl + 'birghtness.png';
   static const String parth = BaseImageUrl + 'parth.png';
   static const String event_1 = BaseImageUrl + 'event_1.jpg';
+  static const String splashbg = BaseImageUrl + 'splash_bg.png';
+  static const String facebook = BaseImageUrl + 'facebook.png';
+  static const String googleplus = BaseImageUrl + 'googleplus.png';
+  static const String linkedin = BaseImageUrl + 'LinkedIn.png';
 }

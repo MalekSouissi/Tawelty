@@ -125,7 +125,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
       restaurantFiles.add(Item1(url: fileList[i].url,));
       print(restaurantFiles[i].toString());
     }
-    setState(() {
+    setState(() { 
       showAddress = true;
     });
   }

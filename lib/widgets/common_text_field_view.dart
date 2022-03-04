@@ -38,7 +38,9 @@ class CommonTextFieldView extends StatelessWidget {
                   const EdgeInsets.only(left: 16, right: 16, top: 4, bottom: 4),
               child: Text(
                 titleText ?? "",
-                style: TextStyles(context).getDescriptionStyle(),
+                style: TextStyles(context)
+                    .getIntroDescriptionStyle()
+                    .copyWith(fontSize: 15, fontWeight: FontWeight.w500),
               ),
             ),
           Card(
@@ -59,7 +61,7 @@ class CommonTextFieldView extends StatelessWidget {
                     onChanged: onChanged,
                     style: TextStyles(context).getRegularStyle(),
                     obscureText: isObscureText,
-                    cursorColor: Theme.of(context).primaryColor,
+                    cursorColor: AppTheme.thirdTextColor,
                     onEditingComplete: () {
                       FocusScope.of(context).nextFocus();
                     },

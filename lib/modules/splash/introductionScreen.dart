@@ -5,8 +5,10 @@ import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/modules/splash/components/page_pop_view.dart';
 import 'package:new_motel/routes/route_names.dart';
-import 'package:new_motel/widgets/common_button.dart';
+import 'package:new_motel/widgets/common_intro_button_blue.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+import '../../widgets/common_intro_button_white.dart';
 
 class IntroductionScreen extends StatefulWidget {
   @override
@@ -95,20 +97,20 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                 spacing: 5.0), // your preferred effect
             onDotClicked: (index) {},
           ),
-          CommonButton(
-            padding:
-                const EdgeInsets.only(left: 48, right: 48, bottom: 8, top: 32),
+          CommonIntroButtonBlue(
+            padding: const EdgeInsets.only(
+                left: 100, right: 100, bottom: 8, top: 32),
             buttonText: AppLocalizations(context).of("login"),
             onTap: () {
               NavigationServices(context).gotoLoginScreen();
             },
           ),
-          CommonButton(
-            padding:
-                const EdgeInsets.only(left: 48, right: 48, bottom: 32, top: 8),
+          CommonIntroButtonWhite(
+            padding: const EdgeInsets.only(
+                left: 100, right: 100, bottom: 32, top: 8),
             buttonText: AppLocalizations(context).of("create_account"),
             backgroundColor: AppTheme.backgroundColor,
-            textColor: AppTheme.primaryTextColor,
+            textColor: AppTheme.blueTextColor,
             onTap: () {
               NavigationServices(context).gotoSignScreen();
             },
