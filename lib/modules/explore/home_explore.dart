@@ -1,11 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/logic/providers/theme_provider.dart';
 import 'package:new_motel/models/enum.dart';
+import 'package:new_motel/modules/explore/restaurant_home_view.dart';
 import 'package:new_motel/modules/myTrips/hotel_list_view_page.dart';
+import 'package:new_motel/modules/profile/profile_screen.dart';
 import 'package:new_motel/routes/route_names.dart';
 import 'package:new_motel/widgets/bottom_top_move_animation_view.dart';
 import 'package:new_motel/widgets/common_button.dart';
@@ -28,7 +32,7 @@ class HomeExploreScreen extends StatefulWidget {
 
 class _HomeExploreScreenState extends State<HomeExploreScreen>
     with TickerProviderStateMixin {
-  RestaurantListData restaurantListData=RestaurantListData();
+  RestaurantListData restaurantListData = RestaurantListData();
   late ScrollController controller;
   late AnimationController _animationController;
   var sliderImageHieght = 0.0;
@@ -65,13 +69,12 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
   }
 
   var hotelList = [];
-  bool showAddress=false;
+  bool showAddress = false;
 
-  fetchRestaurant()async{
-    hotelList= await RestaurantListData().fetchRestaurants();
+  fetchRestaurant() async {
+    hotelList = await RestaurantListData().fetchRestaurants();
 
     setState(() {
-
       showAddress = true;
     });
   }
@@ -79,96 +82,76 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
   @override
   Widget build(BuildContext context) {
     sliderImageHieght = MediaQuery.of(context).size.width * 1.3;
-    return BottomTopMoveAnimationView(
-      animationController: widget.animationController,
-      child: Consumer<ThemeProvider>(
-        builder: (context, provider, child) => Stack(
-          children: <Widget>[
-            Container(
-              color: AppTheme.scaffoldBackgroundColor,
-              child: ListView.builder(
-                controller: controller,
-                itemCount: 4,
-                // padding on top is only for we need spec for sider
-                padding:
-                    EdgeInsets.only(top: sliderImageHieght + 32, bottom: 16),
-                scrollDirection: Axis.vertical,
-                itemBuilder: (context, index) {
-                  // some list UI
-                  var count = 4;
-                  var animation = Tween(begin: 0.0, end: 1.0).animate(
-                    CurvedAnimation(
-                      parent: widget.animationController,
-                      curve: Interval((1 / count) * index, 1.0,
-                          curve: Curves.fastOutSlowIn),
+    return Scaffold(
+      body: SafeArea(
+        top: true,
+        minimum: EdgeInsets.only(top: 70),
+        child: BottomTopMoveAnimationView(
+          animationController: widget.animationController,
+          child: Consumer<ThemeProvider>(
+            builder: (context, provider, child) => SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width*0.7,
+                            child: Text('Les meilleurs restaurants en Tunisie',style: TextStyles(context).getBoldStyle().copyWith(fontSize: 24),)),
+                        GestureDetector(
+                          onTap: (){
+                            NavigationServices(context).gotoProfileScreen();
+                          },
+                            child: CircleAvatar(child: Icon(MdiIcons.accountOutline))),
+                      ],
                     ),
-                  );
-                  if (index == 0) {
-                    return TitleView(
-                      titleTxt:
-                          AppLocalizations(context).of("popular_destination"),
-                      subTxt: '',
-                      animation: animation,
+                  ),
+                  serachUI(),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  _buildListExplore(),
+                  TitleView(
+                    titleTxt: AppLocalizations(context).of("popular_destination"),
+                    subTxt: '',
+                    animation:
+                        Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+                      parent: widget.animationController,
+                      curve:
+                          Interval((1 / 5) * 1, 1.0, curve: Curves.fastOutSlowIn),
+                    )),
+                    animationController: widget.animationController,
+                    click: () {},
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    //Popular Destinations animation view
+                    child: PopularListView(
+                      hotelData: restaurantListData,
                       animationController: widget.animationController,
-                      click: () {},
-                    );
-                  } else if (index == 1) {
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      //Popular Destinations animation view
-                      child: PopularListView(
-                        hotelData: restaurantListData,
-                        animationController: widget.animationController,
-                        callBack: (index) {},
-                      ),
-                    );
-                  } else if (index == 2) {
-                    return TitleView(
-                      titleTxt: AppLocalizations(context).of("best_deal"),
-                      subTxt: AppLocalizations(context).of("view_all"),
-                      animation: animation,
-                      isLeftButton: true,
-                      animationController: widget.animationController,
-                      click: () {},
-                    );
-                  } else {
-                    return getDealListView(index);
-                  }
-                },
+                      callBack: (index) {},
+                    ),
+                  ),
+                  TitleView(
+                    titleTxt: AppLocalizations(context).of("best_deal"),
+                    subTxt: AppLocalizations(context).of("view_all"),
+                    animation:
+                        Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+                      parent: widget.animationController,
+                      curve:
+                          Interval((1 / 5) * 1, 1.0, curve: Curves.fastOutSlowIn),
+                    )),
+                    isLeftButton: true,
+                    animationController: widget.animationController,
+                    click: () {},
+                  ),
+                  getDealListView(),
+                ],
               ),
             ),
-            // sliderUI with 3 images are moving
-            _sliderUI(),
-
-            // viewHotels Button UI for click event
-            _viewHotelsButton(_animationController),
-
-            //just gradient for see the time and battry Icon on "TopBar"
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                height: 80,
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                  colors: [
-                    Theme.of(context).backgroundColor.withOpacity(0.4),
-                    Theme.of(context).backgroundColor.withOpacity(0.0),
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                )),
-              ),
-            ),
-            //   serachUI on Top  Positioned
-            Positioned(
-              top: MediaQuery.of(context).padding.top,
-              left: 0,
-              right: 0,
-              child: serachUI(),
-            )
-          ],
+          ),
         ),
       ),
     );
@@ -252,7 +235,7 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
     );
   }
 
-  Widget getDealListView(int index) {
+  Widget getDealListView() {
     List<Widget> list = [];
     hotelList.forEach((f) {
       var animation = Tween(begin: 0.0, end: 1.0).animate(
@@ -274,28 +257,79 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
     });
     return Padding(
       padding: const EdgeInsets.only(top: 8),
-      child: showAddress?Column(
-        children: list
-      ):Container(),
+      child: showAddress ? Column(children: list) : Container(),
     );
   }
 
   Widget serachUI() {
     return Padding(
-      padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
-      child: CommonCard(
-        radius: 36,
-        child: InkWell(
-          borderRadius: BorderRadius.all(Radius.circular(38)),
-          onTap: () {
-            NavigationServices(context).gotoSearchScreen();
-          },
-          child: CommonSearchBar(
-            iconData: FontAwesomeIcons.search,
-            enabled: false,
-            text: AppLocalizations(context).of("where_are_you_going"),
+      padding: const EdgeInsets.only(left: 24, right: 24, top: 24),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+
+          SizedBox(
+            width: MediaQuery.of(context).size.width*0.75,
+            child: CommonCard(
+              radius: 36,
+              child: InkWell(
+                borderRadius: BorderRadius.all(Radius.circular(38)),
+                onTap: () {
+                  NavigationServices(context).gotoHotelHomeScreen();
+                },
+                child: CommonSearchBar(
+                  iconData: FontAwesomeIcons.search,
+                  enabled: false,
+                  text: AppLocalizations(context).of("where_are_you_going"),
+                ),
+              ),
+            ),
           ),
-        ),
+          CommonCard(
+            radius: 50,
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: InkWell(
+                borderRadius: BorderRadius.all(Radius.circular(38)),
+                onTap: () {
+                  NavigationServices(context).gotoFiltersScreen();
+                },
+                child: Icon(MdiIcons.tuneVariant,color: AppTheme.primaryColor,),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildListExplore() {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.5,
+      child: ListView.builder(
+        padding: const EdgeInsets.only(top: 0, bottom: 0, right: 24, left: 8),
+        itemCount: hotelList.length-400,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          var count = hotelList.length-400 > 10 ? 10 : hotelList.length-400;
+          var animation = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+              parent: _animationController!,
+              curve: Interval((1 / count) * index, 1.0,
+                  curve: Curves.fastOutSlowIn)));
+          _animationController?.forward();
+          //Population animation photo and text view
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: RestaurantListView(
+              hotelData: hotelList[index],
+              animation: animation,
+              animationController: _animationController!,
+              callback: () {
+                NavigationServices(context).gotoHotelDetailes(hotelList[index]);
+              },
+            ),
+          );
+        },
       ),
     );
   }

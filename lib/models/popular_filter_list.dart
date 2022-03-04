@@ -14,7 +14,7 @@ class PopularFilterListData {
 
   static List<PopularFilterListData> popularFList = [
     PopularFilterListData(
-      titleTxt: 'free_breakfast',
+      titleTxt: 'reservation_text',
       isSelected: false,
     ),
     PopularFilterListData(
@@ -37,10 +37,30 @@ class PopularFilterListData {
       titleTxt: 'pet_friendlly',
       isSelected: false,
     ),
-    // PopularFilterListData(
-    //   titleTxt: 'reservation_text',
-    //   isSelected: false,
-    // ),
+    PopularFilterListData(
+      titleTxt: 'Fumeur_text',
+      isSelected: false,
+    ),
+    PopularFilterListData(
+      titleTxt: 'children_text',
+      isSelected: false,
+    ),
+    PopularFilterListData(
+      titleTxt: 'ticket_text',
+      isSelected: false,
+    ),
+    PopularFilterListData(
+      titleTxt: 'cheque_text',
+      isSelected: false,
+    ),
+    PopularFilterListData(
+      titleTxt: 'outdoor_text',
+      isSelected: false,
+    ),
+    PopularFilterListData(
+      titleTxt: 'indoor_text',
+      isSelected: false,
+    ),
     PopularFilterListData(
       titleTxt: 'shisha_text',
       isSelected: false,
@@ -76,10 +96,22 @@ class PopularFilterListData {
       titleTxt: 'europeene',
       isSelected: false,
     ),
-    // PopularFilterListData(
-    //   titleTxt: 'reservation_text',
-    //   isSelected: false,
-    // ),
+    PopularFilterListData(
+      titleTxt: 'lebanese',
+      isSelected: false,
+    ),
+    PopularFilterListData(
+      titleTxt: 'world cuisine',
+      isSelected: false,
+    ),
+    PopularFilterListData(
+      titleTxt: 'turkich',
+      isSelected: false,
+    ),
+    PopularFilterListData(
+      titleTxt: 'american',
+      isSelected: false,
+    ),
     PopularFilterListData(
       titleTxt: 'fruit de mer',
       isSelected: false,

@@ -109,19 +109,14 @@ class RestaurantListData {
     Uri.parse(API + 'restaurants'));
 
     if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
       final jsonData = json.decode(response.body);
-      final floors = <RestaurantListData>[];
+      final restaurants = <RestaurantListData>[];
       for (var item in jsonData) {
-        floors.add(RestaurantListData.fromJson(item));
+        restaurants.add(RestaurantListData.fromJson(item));
       }
-          print(floors);
-      return floors;
-      //return RestaurantListData.fromJson(jsonDecode(response.body));
+          print(restaurants);
+      return restaurants;
     } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
       throw Exception('Failed to load album');
     }
   }

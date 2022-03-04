@@ -59,7 +59,7 @@ bool showAddress=false;
             isShowDate: (index % 2) != 0,
           );
         },
-      ):Text('fuck me'),
+      ):Container(),
     );
   }
 }

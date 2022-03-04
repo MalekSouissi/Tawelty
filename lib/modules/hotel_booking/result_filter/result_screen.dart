@@ -84,7 +84,7 @@ class _ResultPageViewState extends State<ResultPageView> with TickerProviderStat
                     isShowDate: (index % 2) != 0,
                   );
                 },
-              ):Text('fuck me'),
+              ):Container(),
             ),
           ),
         ],

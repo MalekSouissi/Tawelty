@@ -37,7 +37,7 @@ class TabButtonUI extends StatelessWidget {
                 height: 32,
                 child: Icon(
                   icon,
-                  size: 26,
+                  size: 24,
                   color: _color,
                 ),
               ),
@@ -48,7 +48,7 @@ class TabButtonUI extends StatelessWidget {
                   child: Text(
                     text,
                     style: TextStyles(context).getDescriptionStyle().copyWith(
-                          color: _color,
+                          color: _color,fontSize: 12
                         ),
                   ),
                 ),

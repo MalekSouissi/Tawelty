@@ -46,7 +46,6 @@ class _FiltersScreenState extends State<FiltersScreen> {
     generalsList=await filterListData.fetchGenerals();
     print(generalsList);
   }
-
   fetchCuisines()async{
     cuisinesList=await filterListData.fetchCuisines();
     print(cuisinesList);
@@ -261,11 +260,15 @@ class _FiltersScreenState extends State<FiltersScreen> {
         .translate(text, from: 'en', to: 'fr');
  print(translation.toString());
     if (text != '') {
-      //finalList.clear();
+     // finalList.clear();
     list.forEach((element) {
       if(element.type.toLowerCase().contains(translation.text.substring(0, 4).toLowerCase())){
         setState(() {
-          finalList.add(element.restaurantId);
+          if(finalList.contains(element.restaurantId)){
+            print(element.restaurantId);
+          }else{
+            finalList.add(element.restaurantId);
+          }
         });
       }
     });

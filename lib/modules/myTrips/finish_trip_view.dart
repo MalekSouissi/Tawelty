@@ -17,9 +17,10 @@ class _FinishTripViewState extends State<FinishTripView> {
   var hotelList = [];
 bool showAddress=false;
 
+
+
   fetchRestaurant()async{
     hotelList= await RestaurantListData().fetchRestaurants();
-
     setState(() {
       showAddress = true;
     });
@@ -29,7 +30,6 @@ bool showAddress=false;
   @override
   void initState() {
     fetchRestaurant();
-   // widget.animationController.forward();
     super.initState();
   }
 

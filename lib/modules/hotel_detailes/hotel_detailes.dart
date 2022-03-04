@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -6,11 +7,13 @@ import 'package:geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 import 'package:new_motel/constants/helper.dart';
+import 'package:new_motel/constants/localfiles.dart';
 import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/models/avis.dart';
 import 'package:new_motel/models/favorite.dart';
+import 'package:new_motel/modules/explore/popular_list_view.dart';
 import 'package:new_motel/modules/hotel_booking/components/restaurant_carousel.dart';
 import 'package:new_motel/modules/hotel_detailes/hotel_photos.dart';
 import 'package:new_motel/modules/hotel_detailes/review_data_view.dart';
@@ -18,6 +21,7 @@ import 'package:new_motel/routes/route_names.dart';
 import 'package:new_motel/services/favorite.services.dart';
 import 'package:new_motel/widgets/common_button.dart';
 import 'package:new_motel/widgets/common_card.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../models/hotel_list_data.dart';
 import 'rating_view.dart';
 
@@ -48,42 +52,55 @@ class _HotelDetailesState extends State<HotelDetailes>
   List<Marker> allMarkers = [];
   bool show = false;
   var coordinates;
-  FavoriteServices favoriteServices=FavoriteServices();
+  String url = 'tel:+21626718812';
+  FavoriteServices favoriteServices = FavoriteServices();
+  RestaurantListData restaurantListData = RestaurantListData();
 
   getCoordinates(var query) async {
     var addresses = [];
     var first;
     addresses = await Geocoder.local.findAddressesFromQuery(query);
     first = await addresses.first;
-    coordinates=await first.coordinates;
+    coordinates = await first.coordinates;
     print("${first.countryName} : ${first.coordinates},${first.featureName}");
     setState(() {
-    show=true;
+      show = true;
     });
     return coordinates;
   }
+
+  Future<void> _makeSocialMediaRequest(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   void setCustomMapPin() async {
     customIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5),
         'assets/image/icon/marker.png');
   }
-  setMarker(query)async{
-    Coordinates coordinates= await getCoordinates(query);
+
+  setMarker(query) async {
+    Coordinates coordinates = await getCoordinates(query);
     allMarkers.add(Marker(
         icon: BitmapDescriptor.defaultMarkerWithHue(
           BitmapDescriptor.hueViolet,
         ),
         markerId: MarkerId(widget.hotelData.titleTxt),
         draggable: false,
-        infoWindow:
-        InfoWindow(title: widget.hotelData.titleTxt, snippet: widget.hotelData.subTxt),
-        position: LatLng(coordinates.latitude,coordinates.longitude)));
+        infoWindow: InfoWindow(
+            title: widget.hotelData.titleTxt, snippet: widget.hotelData.subTxt),
+        position: LatLng(coordinates.latitude, coordinates.longitude)));
   }
+
   @override
   void initState() {
     getCoordinates(widget.hotelData.subTxt);
     setCustomMapPin();
-     setMarker(widget.hotelData.subTxt);
+    setMarker(widget.hotelData.subTxt);
     animationController = AnimationController(
         duration: Duration(milliseconds: 2000), vsync: this);
     _animationController =
@@ -189,6 +206,7 @@ class _HotelDetailesState extends State<HotelDetailes>
                     ),
                   ),
                 ),
+
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 24,
@@ -203,7 +221,7 @@ class _HotelDetailesState extends State<HotelDetailes>
                     "room_photo", 'view_all', Icons.arrow_forward, () {}),
 
                 // Hotel inside photo view
-                HotelPhotosList(restaurantId:widget.hotelData.id),
+                HotelPhotosList(restaurantId: widget.hotelData.id),
                 _getPhotoReviewUi("reviews", 'view_all', Icons.arrow_forward,
                     () {
                   NavigationServices(context).gotoReviewsListScreen();
@@ -211,12 +229,18 @@ class _HotelDetailesState extends State<HotelDetailes>
 
                 // feedback&Review data view
                 for (var i = 0; i < 2; i++)
-                  // ReviewsView(
-                  //   reviewsList:Avis(id: 1,userId: 5,text: 'hhhhh'),
-                  //   animation: animationController,
-                  //   animationController: animationController,
-                  //   callback: () {},
-                  // ),
+                  ReviewsView(
+                    reviewsList: Avis(
+                        id: 1,
+                        userId: 5,
+                        text: 'hhhhh',
+                        createdAt: DateTime.now(),
+                        updatedAt: DateTime.now(),
+                        restaurantId: 356),
+                    animation: animationController,
+                    animationController: animationController,
+                    callback: () {},
+                  ),
 
                 SizedBox(
                   height: 16,
@@ -229,13 +253,17 @@ class _HotelDetailesState extends State<HotelDetailes>
                       child: GoogleMap(
                         mapType: MapType.normal,
                         initialCameraPosition: CameraPosition(
-                            target: LatLng(coordinates.latitude,coordinates.longitude), zoom: 16.0),
+                            target: LatLng(
+                                coordinates.latitude, coordinates.longitude),
+                            zoom: 16.0),
 
                         // markers: markers,
                         onTap: (pos) {
                           print(pos);
                           Marker m = Marker(
-                              markerId: MarkerId('1'), icon: customIcon, position: pos);
+                              markerId: MarkerId('1'),
+                              icon: customIcon,
+                              position: pos);
                           setState(() {
                             allMarkers.add(m);
                           });
@@ -248,7 +276,7 @@ class _HotelDetailesState extends State<HotelDetailes>
                       ),
                     ),
                     InkWell(
-                      onTap: ()async{
+                      onTap: () async {
                         await MapsLauncher.launchQuery(
                             widget.hotelData.titleTxt);
                       },
@@ -269,6 +297,21 @@ class _HotelDetailesState extends State<HotelDetailes>
                       ),
                     )
                   ],
+                ),
+                _getPhotoReviewUi(
+                    "popular_destination", 'view_all', Icons.arrow_forward, () {}),
+                SizedBox(
+
+                  height: 200,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    //Popular Destinations animation view
+                    child: PopularListView(
+                      hotelData: restaurantListData,
+                      animationController: _animationController,
+                      callBack: (index) {},
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
@@ -316,12 +359,18 @@ class _HotelDetailesState extends State<HotelDetailes>
                   _getAppBarUi(
                       AppTheme.backgroundColor,
                       isFav ? Icons.favorite : Icons.favorite_border,
-                      AppTheme.primaryColor, () async{
+                      AppTheme.primaryColor, () async {
                     setState(() {
                       isFav = !isFav;
                     });
-                    await favoriteServices.addFavorite(Favorite(id: 0, restaurantId:int.parse(widget.hotelData.id), userId: 67, createdAt: DateTime.now(), updatedAt: DateTime.now())).then((value) => print(value));
-
+                    await favoriteServices
+                        .addFavorite(Favorite(
+                            id: 0,
+                            restaurantId: int.parse(widget.hotelData.id),
+                            userId: 67,
+                            createdAt: DateTime.now(),
+                            updatedAt: DateTime.now()))
+                        .then((value) => print(value));
                   })
                 ],
               ),
@@ -440,9 +489,10 @@ class _HotelDetailesState extends State<HotelDetailes>
                           right: 0,
                           top: 0,
                           child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: ProfilePicture(restaurantId: widget.hotelData.id,)
-                          ),
+                              width: MediaQuery.of(context).size.width,
+                              child: ProfilePicture(
+                                restaurantId: widget.hotelData.id,
+                              )),
                         ),
                       ],
                     ),
@@ -600,17 +650,51 @@ class _HotelDetailesState extends State<HotelDetailes>
                     ),
               ),
               Row(
+                children: [
+                  Icon(
+                    FontAwesomeIcons.clock,
+                    size: 14,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  SizedBox(
+                    width: 4,
+                  ),
+                  Text(
+                    AppLocalizations(context).of("open now"),
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyles(context).getBoldStyle().copyWith(
+                        fontSize: 14,
+                        color: isInList ? AppTheme.primaryColor : Colors.white),
+                  ),
+                  SizedBox(
+                    width: 4,
+                  ),
+                  Text(
+                    "10:00 Am",
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyles(context).getBoldStyle().copyWith(
+                        fontSize: 14,
+                        color: isInList ? AppTheme.primaryColor : Colors.white),
+                  ),
+                ],
+              ),
+              SizedBox(
+                width: 4,
+              ),
+              Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Expanded(
-                    flex:4,
+                    flex: 4,
                     child: Text(
                       widget.hotelData.subTxt,
                       style: TextStyles(context).getRegularStyle().copyWith(
                             fontSize: 14,
                             color: isInList
-                                ? Theme.of(context).disabledColor.withOpacity(0.5)
+                                ? Theme.of(context)
+                                    .disabledColor
+                                    .withOpacity(0.5)
                                 : Colors.white,
                           ),
                     ),
@@ -711,6 +795,134 @@ class _HotelDetailesState extends State<HotelDetailes>
         //   ],
         // ),
       ],
+    );
+  }
+
+  Widget restaurantContacts() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Column(
+            children: [
+              GestureDetector(
+                onTap: () async {
+                  if (await canLaunch(url)) {
+                    await launch(url);
+                  } else {
+                    throw 'call not possible';
+                  }
+                },
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: AppTheme.primaryColor.withOpacity(0.5),
+
+                        //  border: Border.all(color: KBeige),
+                        borderRadius: BorderRadius.circular(50)),
+                    child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Icon(
+                          FontAwesomeIcons.phone,
+                          color: AppTheme.primaryColor,
+                        ))),
+              ),
+              Text(
+                'Call',
+                style: TextStyle(
+                  fontSize: 15,
+                  color: AppTheme.primaryColor,
+                ),
+              )
+            ],
+          ),
+          Column(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  final Uri _emailLaunchUri = Uri(
+                      scheme: 'mailto',
+                      path: 'contact.tawelty@gmail.com',
+                      queryParameters: {'subject': 'subject'});
+                  launch(_emailLaunchUri.toString());
+                },
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: AppTheme.primaryColor.withOpacity(0.5),
+                        //border: Border.all(color: KBeige),
+                        borderRadius: BorderRadius.circular(50)),
+                    child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Icon(
+                          FontAwesomeIcons.envelope,
+                          color: AppTheme.primaryColor,
+                        ))),
+              ),
+              Text(
+                'Email',
+                style: TextStyle(
+                  fontSize: 15,
+                  color: AppTheme.primaryColor,
+                ),
+              )
+            ],
+          ),
+          Column(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  _makeSocialMediaRequest("http://pratikbutani.com");
+                },
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: AppTheme.primaryColor.withOpacity(0.5),
+                        //border: Border.all(color: KBeige),
+                        borderRadius: BorderRadius.circular(50)),
+                    child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Icon(
+                          FontAwesomeIcons.link,
+                          color: AppTheme.primaryColor,
+                        ))),
+              ),
+              Text(
+                'Website',
+                style: TextStyle(
+                  fontSize: 15,
+                  color: AppTheme.primaryColor,
+                ),
+              )
+            ],
+          ),
+          Column(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  _makeSocialMediaRequest("http://pratikbutani.com");
+                },
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: AppTheme.primaryColor.withOpacity(0.5),
+                        //border: Border.all(color: KBeige),
+                        borderRadius: BorderRadius.circular(50)),
+                    child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Icon(
+                          FontAwesomeIcons.utensils,
+                          color: AppTheme.primaryColor,
+                        ))),
+              ),
+              Text(
+                'Menu',
+                style: TextStyle(
+                  fontSize: 15,
+                  color: AppTheme.primaryColor,
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

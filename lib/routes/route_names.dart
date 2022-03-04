@@ -18,6 +18,7 @@ import 'package:new_motel/modules/profile/edit_profile.dart';
 import 'package:new_motel/modules/profile/hepl_center_screen.dart';
 import 'package:new_motel/modules/profile/how_do_screen.dart';
 import 'package:new_motel/modules/profile/invite_screen.dart';
+import 'package:new_motel/modules/profile/profile_screen.dart';
 import 'package:new_motel/modules/profile/settings_screen.dart';
 import 'package:new_motel/routes/routes.dart';
 
@@ -73,6 +74,10 @@ class NavigationServices {
     ));
   }
 
+  Future<dynamic> gotoProfileScreen() async {
+    return await _pushMaterialPageRoute(ProfileScreen());
+  }
+
   Future<dynamic> gotoSearchScreen() async {
     return await _pushMaterialPageRoute(SearchScreen());
   }
@@ -95,8 +100,8 @@ class NavigationServices {
     return await _pushMaterialPageRoute(ReviewsListScreen());
   }
 
-  Future<dynamic> gotoEditProfile(user) async {
-    return await _pushMaterialPageRoute(EditProfile(user: user,));
+  Future<dynamic> gotoEditProfile() async {
+    return await _pushMaterialPageRoute(EditProfile());
   }
 
   Future<dynamic> gotoSettingsScreen() async {

@@ -1,6 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geocoder/geocoder.dart';
+import 'package:geocoder/model.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
@@ -38,16 +42,109 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
   final searchBarHieght = 158.0;
   final filterBarHieght = 52.0;
   bool showAdress=false;
+  List<RestaurantListData> restaurantList = [];
+  String value = 'hamamet';
+  List<Address> resultAdress = [];
+  bool showAddress = false;
+
   fetchRestaurants()async{
     _foundRestaurants=await RestaurantListData().fetchRestaurants();
-    print(_foundRestaurants);
+   // print(_foundRestaurants);
+    _findRestaurantsWithLocation(value);
     setState(() {
       showAdress=true;
     });
   }
+  _findRestaurantsWithLocation(value) async {
+    for (int i = 0; i < _foundRestaurants.length; i++) {
+      if (_foundRestaurants[i].subTxt == null) {
+        print(_foundRestaurants[i].titleTxt);
+      } else {
+        if (_foundRestaurants[i]
+            .subTxt
+            .toUpperCase()
+            .contains(value.substring(0, 4).toUpperCase())) {
+          restaurantList.add(_foundRestaurants[i]);
+        }
+      }
+    }
+    setState(() {
+      _foundRestaurants = restaurantList;
+    });
+    return _foundRestaurants;
+  }
+  _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+    getLocation();
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+  }
+  getLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    print(position.latitude);
+    print(position.longitude);
+
+    getCurrentAddress(position.latitude, position.longitude);
+  }
+  getCurrentAddress(latitude, longitude) async {
+    var address;
+
+    final coordinates = new Coordinates(latitude, longitude);
+    resultAdress =
+    await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    var first = resultAdress.first;
+    if (first != null) {
+      address = first.featureName;
+      address = " $address, ${first.subLocality}";
+      address = " $address, ${first.subLocality}";
+      address = " $address, ${first.locality}";
+      address = " $address, ${first.countryName}";
+      address = " $address, ${first.postalCode}";
+
+      // locationController.text = address;
+      print(address);
+      print(first.countryName);
+      setState(() {
+        value = first.countryName.toString();
+      });
+    }
+    return address;
+  }
 
   @override
   void initState() {
+    _determinePosition();
     fetchRestaurants();
     animationController = AnimationController(
         duration: Duration(milliseconds: 1000), vsync: this);
@@ -149,7 +246,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                                             _getSearchBarUI(),
                                             // time date and number of rooms view
                                             //TimeDateView(),
-                                            LocationListView(),
+                                            LocationListView(value: value,),
                                           ],
                                         ),
                                       ),
@@ -204,7 +301,7 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   },
                   enabled: true,
                   ishsow: false,
-                  text: "London...",
+                  text:  AppLocalizations(context).of("where_are_you_going"),
                 ),
               ),
             ),
@@ -219,8 +316,8 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                   NavigationServices(context).gotoSearchScreen();
                 },
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Icon(FontAwesomeIcons.search,
+                  padding: const EdgeInsets.all(12.0),
+                  child: Icon(MdiIcons.tuneVariant,
                       size: 20, color: AppTheme.backgroundColor),
                 ),
               ),
@@ -282,29 +379,15 @@ class _HotelHomeScreenState extends State<HotelHomeScreen>
                     borderRadius: BorderRadius.all(
                       Radius.circular(32.0),
                     ),
-                    onTap: () {},
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(Icons.favorite_border),
-                    ),
-                  ),
-                ),
-                Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(32.0),
-                    ),
                     onTap: () {
-                      setState(() {
-                        _isShowMap = !_isShowMap;
-                      });
+
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Icon(_isShowMap
-                          ? Icons.sort
-                          : FontAwesomeIcons.mapMarkedAlt),
+                      child: CircleAvatar(
+                        child: Icon(
+                            MdiIcons.accountOutline),
+                      ),
                     ),
                   ),
                 ),

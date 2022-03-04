@@ -20,6 +20,10 @@ class BookWaitSeat {
   String random;
   String other;
   String block;
+  String waitbook;
+  int clientId;
+  String idReservation;
+
 
   BookWaitSeat(
       {this.id = 0,
@@ -36,7 +40,11 @@ class BookWaitSeat {
       this.userId = 1,
       this.random = '',
         this.block='',
-      this.updatedAt});
+      this.updatedAt,
+        this.clientId=0,
+        this.idReservation='',
+        this.waitbook='',
+      });
 
   Client client = Client();
 
@@ -55,6 +63,9 @@ class BookWaitSeat {
       'random': random,
       'other': other,
       'block':block,
+      'waitbook':waitbook,
+      'ClientId':clientId,
+      'IdReservation':idReservation,
     };
   }
 
@@ -73,6 +84,9 @@ class BookWaitSeat {
       random: item['random'],
       block: item['block'],
       other: item['other'],
+      idReservation: item['IdReservation'],
+      waitbook: item['waitBook'],
+      clientId: item['ClientId'],
       updatedAt: item['updatedAt'] != null
           ? DateTime.parse(item['updatedAt'])
           : DateTime.parse(item['updatedAt']),
@@ -129,7 +143,7 @@ class BookWaitSeat {
 
   addBWS(List<BookWaitSeat> item) {
     return client
-        .post(Uri.parse(API + 'BWS/CreateBookwaitseatTRUE'),
+        .post(Uri.parse(API + 'BWS/CreateReservation'),
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },
@@ -139,6 +153,25 @@ class BookWaitSeat {
         return data.body;
       }
     });
+  }
+
+  createReservation(idReservation,startTime,guestNb) {
+    var body = {
+      "idReservation": idReservation,
+      "startTime": startTime,
+      "guestnumber": guestNb,
+    };
+    return client
+        .post(Uri.parse(API + 'BWS/CreateReservation'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(body));
+        // .then((data) {
+    //   if (data.statusCode == 200) {
+    //     return data.body;
+    //   }
+    // });
   }
 
   printInvoicePDF(String id) async {

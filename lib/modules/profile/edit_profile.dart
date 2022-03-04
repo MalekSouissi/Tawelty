@@ -15,8 +15,6 @@ import '../../models/setting_list_data.dart';
 
 class EditProfile extends StatefulWidget {
 
-  User user;
-  EditProfile({required this.user});
 
   @override
   _EditProfileState createState() => _EditProfileState();
@@ -46,42 +44,41 @@ TextEditingController textEditingController=TextEditingController();
   void initState() {
    // _getUserInfo();
 
-   fetchUser();
+ //  fetchUser();
     // TODO: implement initState
     super.initState();
 
   }
 
-getUserStatus(){
-  switch(widget.user.status) {
-    case 0: {
-      // statements;
-     status= 'standard';
-    }
-break;
-    case 1: {
-      //statements;
-      status='silver';
-    }
-    break;
-    case 1: {
-      //statements;
-      status='gold';
-    }
-    break;
-
-    default: {
-      //statements;
-    }
-    break;
-
-  }
-  return status;
-}
+// getUserStatus(){
+//   switch(status) {
+//     case 0: {
+//       // statements;
+//      status= 'standard';
+//     }
+// break;
+//     case 1: {
+//       //statements;
+//       status='silver';
+//     }
+//     break;
+//     case 1: {
+//       //statements;
+//       status='gold';
+//     }
+//     break;
+//
+//     default: {
+//       //statements;
+//     }
+//     break;
+//
+//   }
+//   return status;
+// }
 
   @override
   Widget build(BuildContext context) {
-  getUserStatus();
     List<SettingsListData> userInfoList = [
       SettingsListData(
         titleTxt: '',
@@ -89,11 +86,11 @@ break;
       ),
       SettingsListData(
         titleTxt: 'username_text',
-        subTxt: widget.user.first_name!=null?widget.user.first_name:"Amanda Jane",
+        subTxt: "Amanda Jane",
       ),
       SettingsListData(
         titleTxt: 'mail_text',
-        subTxt: widget.user.email!=null?widget.user.email:"amanda@gmail.com",
+        subTxt: "amanda@gmail.com",
       ),
       SettingsListData(
         titleTxt: 'phone',
@@ -109,7 +106,7 @@ break;
       ),
       SettingsListData(
         titleTxt: 'status',
-        subTxt: widget.user.status.toString()!=null?status:"123 Royal Street, New York",
+        subTxt: "123 Royal Street, New York",
       ),
     ];
     return Container(

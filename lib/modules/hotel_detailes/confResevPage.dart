@@ -9,6 +9,7 @@ import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/models/bookWaitSeat.dart';
+import 'package:new_motel/models/reservation.dart';
 import 'package:new_motel/models/table.dart';
 import 'package:new_motel/widgets/common_button.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -16,26 +17,21 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'download.dart';
 
 class ConfirmPage extends StatefulWidget {
-  final List<BookWaitSeat> bookWaitSeat;
+  final List<ObjReservation> bookWaitSeat;
   final List<String> demandeSpecial;
-  final DateTime startTime;
-  final DateTime endTime;
+
   final String guestName;
-  final List<RestaurantTable> Tables;
   final int user;
   final int guestNumber;
   final String restaurantName;
 
   ConfirmPage(
       {required this.bookWaitSeat,
-      required this.startTime,
-      required this.endTime,
       required this.guestName,
       required this.demandeSpecial,
       required this.user,
       required this.guestNumber,
-      required this.restaurantName,
-      required this.Tables});
+      required this.restaurantName,});
   @override
   _ConfirmPageState createState() => _ConfirmPageState();
 }
@@ -69,7 +65,7 @@ class _ConfirmPageState extends State<ConfirmPage> {
                 children: [
                   //Text(DateTime.now().day.toString()+'-'+DateTime.now().month.toString()+'-'+DateTime.now().year.toString(),style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold,color: KBeige),),
                   Text(
-                    'Table number  ' + widget.Tables[0].id.toString(),
+                    'Table number  ' + widget.bookWaitSeat[0].id.toString(),
                     style: TextStyles(context).getTitleStyle(),
                   ),
                   SizedBox(
@@ -80,19 +76,6 @@ class _ConfirmPageState extends State<ConfirmPage> {
                     style: TextStyles(context).getTitle2Style(),                  ),
                   Text(widget.guestNumber.toString() + ' guests',style: TextStyles(context).getBoldStyle(),),
 
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    DateFormat.yMMMd().format(widget.startTime),
-                    style: TextStyles(context).getTitle2Style(),
-                  ),
-                  Text(
-                    DateFormat.jm().format(widget.startTime),
-                    style: TextStyles(context).getBoldStyle(),                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
                   Center(
                     child: QrImage(
                       foregroundColor: AppTheme.primaryColor,
@@ -113,12 +96,12 @@ class _ConfirmPageState extends State<ConfirmPage> {
                     buttonText:
                         AppLocalizations(context).of("confirm_reservation"),
                     onTap: () {
-                      _buildListBWStoDB();
+                      //_buildListBWStoDB();
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => FileDownload(
-                                    random: randomValue,
+                                    random: widget.bookWaitSeat[0].idReservation,
                                     platform: TargetPlatform.android,
                                   )));
                       print('taped');
@@ -214,31 +197,31 @@ class _ConfirmPageState extends State<ConfirmPage> {
     // );
   }
 
-  _buildListBWStoDB() async {
-    Random random = Random();
-    randomValue = random.nextInt(10000).toString();
-    print(randomValue);
-    final List<BookWaitSeat> item = [];
-    for (int i = 0; i < widget.bookWaitSeat.length; i++) {
-      item.add(BookWaitSeat(
-          userId: widget.user,
-          restaurantId: widget.bookWaitSeat[i].restaurantId,
-          id: widget.bookWaitSeat[i].id,
-          // ids: widget.bookWaitSeat.ids,
-          debut: widget.startTime,
-          fin: widget.endTime,
-          confResv: '0',
-          cancResv: '0',
-          guestName: widget.guestName,
-          random: randomValue,
-          //  other: widget.demandeSpecial.toString(),
-          ids: 1,
-          etat: 1,
-          updatedAt: widget.startTime,
-          createdAt: widget.endTime));
-    }
+  // _buildListBWStoDB() async {
+  //   Random random = Random();
+  //   randomValue = random.nextInt(10000).toString();
+  //   print(randomValue);
+  //   final List<BookWaitSeat> item = [];
+  //   for (int i = 0; i < widget.bookWaitSeat.length; i++) {
+  //     item.add(BookWaitSeat(
+  //         userId: widget.user,
+  //         restaurantId: widget.bookWaitSeat[i].restaurantId,
+  //         id: widget.bookWaitSeat[i].id,
+  //         // ids: widget.bookWaitSeat.ids,
+  //         debut: widget.startTime,
+  //         fin: widget.endTime,
+  //         confResv: '0',
+  //         cancResv: '0',
+  //         guestName: widget.guestName,
+  //         random: randomValue,
+  //         //  other: widget.demandeSpecial.toString(),
+  //         ids: 1,
+  //         etat: 1,
+  //         updatedAt: widget.startTime,
+  //         createdAt: widget.endTime));
+  //   }
 
-    final result = await bookwaitseat.addBWS(item);
-    //print(jsonDecode(result));
-  }
+  //   final result = await bookwaitseat.addBWS(item);
+  //   //print(jsonDecode(result));
+  // }
 }

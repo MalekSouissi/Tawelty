@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/logic/providers/theme_provider.dart';
@@ -95,7 +96,6 @@ class _BottomTabScreenState extends State<BottomTabScreen>
         } else if (tabType == BottomBarType.Profile) {
           setState(() {
             _indexView = ProfileScreen(
-              animationController: _animationController,
             );
           });
         }
@@ -112,7 +112,7 @@ class _BottomTabScreenState extends State<BottomTabScreen>
           Row(
             children: <Widget>[
               TabButtonUI(
-                icon: Icons.search,
+                icon: MdiIcons.homeOutline,
                 isSelected: tabType == BottomBarType.Explore,
                 text: AppLocalizations(context).of("explore"),
                 onTap: () {
@@ -120,15 +120,16 @@ class _BottomTabScreenState extends State<BottomTabScreen>
                 },
               ),
               TabButtonUI(
-                icon: FontAwesomeIcons.heart,
-                isSelected: tabType == BottomBarType.Trips,
-                text: AppLocalizations(context).of("trips"),
+                icon: MdiIcons.shareVariantOutline,
+                isSelected: tabType == BottomBarType.Explore,
+                text: AppLocalizations(context).of("explore"),
                 onTap: () {
-                  tabClick(BottomBarType.Trips);
+                  tabClick(BottomBarType.Explore);
                 },
               ),
+
               TabButtonUI(
-                icon: FontAwesomeIcons.calendarCheck,
+                icon: MdiIcons.calendarStar,
                 isSelected: tabType == BottomBarType.Events,
                 text: AppLocalizations(context).of("events"),
                 onTap: () {
@@ -136,11 +137,19 @@ class _BottomTabScreenState extends State<BottomTabScreen>
                 },
               ),
               TabButtonUI(
-                icon: FontAwesomeIcons.user,
-                isSelected: tabType == BottomBarType.Profile,
-                text: AppLocalizations(context).of("profile"),
+                icon: MdiIcons.heartOutline,
+                isSelected: tabType == BottomBarType.Trips,
+                text: AppLocalizations(context).of("trips"),
                 onTap: () {
-                  tabClick(BottomBarType.Profile);
+                  tabClick(BottomBarType.Trips);
+                },
+              ),
+              TabButtonUI(
+                icon: MdiIcons.giftOutline,
+                isSelected: tabType == BottomBarType.Trips,
+                text: AppLocalizations(context).of("trips"),
+                onTap: () {
+                  tabClick(BottomBarType.Trips);
                 },
               ),
             ],
@@ -154,4 +163,4 @@ class _BottomTabScreenState extends State<BottomTabScreen>
   }
 }
 
-enum BottomBarType { Explore, Trips, Events, Profile }
+enum BottomBarType { Explore,Share, Events,Trips,Gifts, Profile }

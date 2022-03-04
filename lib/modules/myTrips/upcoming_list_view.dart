@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_motel/modules/explore/restaurant_home_view.dart';
 import 'package:new_motel/modules/myTrips/hotel_list_view.dart';
 import 'package:new_motel/routes/route_names.dart';
 import '../../models/hotel_list_data.dart';
@@ -46,7 +47,7 @@ class _UpcomingListViewState extends State<UpcomingListView> {
                   curve: Curves.fastOutSlowIn)));
           widget.animationController.forward();
           //Upcoming UI view and hotel list
-          return HotelListView(
+          return RestaurantListView(
             callback: () {
               NavigationServices(context).gotoHotelDetailes(hotelList[index]);
             },

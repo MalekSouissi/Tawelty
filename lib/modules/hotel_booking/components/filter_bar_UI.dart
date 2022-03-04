@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/models/hotel_list_data.dart';
+import 'package:new_motel/modules/my_events/common_card.dart';
 import 'package:new_motel/routes/route_names.dart';
 
 class FilterBarUI extends StatefulWidget {
@@ -16,6 +18,7 @@ class _FilterBarUIState extends State<FilterBarUI> {
   RestaurantListData restaurantListData = RestaurantListData();
   List<RestaurantListData> finalList = [];
   List resultList = [];
+  bool _isShowMap = false;
 
   fetchRestaurants() async {
     finalList = await restaurantListData.fetchRestaurants();
@@ -46,7 +49,7 @@ class _FilterBarUIState extends State<FilterBarUI> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     widget.resultList.length.toString(),
-                    style: TextStyles(context).getRegularStyle(),
+                    style: TextStyles(context).getBoldStyle().copyWith(fontSize: 18),
                   ),
                 ),
                 Expanded(
@@ -54,7 +57,7 @@ class _FilterBarUIState extends State<FilterBarUI> {
                     padding: const EdgeInsets.only(left: 0.0),
                     child: Text(
                       AppLocalizations(context).of("hotel_found"),
-                      style: TextStyles(context).getRegularStyle(),
+                      style: TextStyles(context).getBoldStyle().copyWith(fontSize: 18),
                     ),
                   ),
                 ),
@@ -62,26 +65,18 @@ class _FilterBarUIState extends State<FilterBarUI> {
                   color: Colors.transparent,
                   child: InkWell(
                     borderRadius: BorderRadius.all(
-                      Radius.circular(4.0),
+                      Radius.circular(32.0),
                     ),
                     onTap: () {
-                      NavigationServices(context).gotoFiltersScreen();
+                      setState(() {
+                        _isShowMap = !_isShowMap;
+                      });
                     },
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Row(
-                        children: <Widget>[
-                          Text(
-                            AppLocalizations(context).of("filtter"),
-                            style: TextStyles(context).getRegularStyle(),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Icon(Icons.sort,
-                                color: Theme.of(context).primaryColor),
-                          ),
-                        ],
-                      ),
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(_isShowMap
+                          ? MdiIcons.formatListBulletedSquare
+                          : MdiIcons.map,color: AppTheme.primaryColor,size: 24,),
                     ),
                   ),
                 ),

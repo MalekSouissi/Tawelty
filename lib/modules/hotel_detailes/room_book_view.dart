@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/models/bookWaitSeat.dart';
+import 'package:new_motel/models/reservation.dart';
 import 'package:new_motel/models/table.dart';
 import 'package:new_motel/widgets/common_button.dart';
 import 'package:time_picker_widget/time_picker_widget.dart';
@@ -42,9 +44,9 @@ class _RoomeBookViewState extends State<RoomeBookView> {
   bool _validate = false;
   //final List<int> availableTables=[];
   final List<RestaurantTable> availableTables = [];
-  final List<BookWaitSeat> availableBWS = [];
+  final List<ObjReservation> availableBWS = [];
   final List<BookWaitSeat> unavailableBWS = [];
-  String restaurantName='';
+  String restaurantName = '';
 
   int _counter = 0;
 
@@ -81,7 +83,7 @@ class _RoomeBookViewState extends State<RoomeBookView> {
       final minutes = time!.minute.toString().padLeft(2, '0');
 
       //print('$hours:$minutes:00');
-      return '$hours:$minutes';
+      return '$hours:$minutes:00';
     }
   }
 
@@ -112,8 +114,8 @@ class _RoomeBookViewState extends State<RoomeBookView> {
   void initState() {
     print(widget.restaurantId);
     //_getUserInfo();
-    _fetchBWS();
-    _fetchTables();
+    // _fetchBWS();
+    // _fetchTables();
     setState(() {
       _isLoading = true;
     });
@@ -127,61 +129,76 @@ class _RoomeBookViewState extends State<RoomeBookView> {
       child: ListView(
         children: [
           //Text(DateTime.now().day.toString()),
-          Stepper(
-            //type: StepperType.horizontal,
-            steps: _mySteps(),
-            currentStep: this._currentStep,
-            onStepTapped: (step) {
-              setState(() {
-                this._currentStep = step;
-              });
-            },
-            onStepContinue: () {
-              setState(() {
-                if (this._currentStep < this._mySteps().length - 1) {
-                  this._currentStep = this._currentStep + 1;
-                } else {
-                  //Logic to check if everything is completed
-                  //print('Completed, check fields.');
-                }
-                //  _buildListAvailbaleTablesWithNbPerson(_counter);
-                // _getAvailableTablesTimeAndDate();
-              });
-            },
-            onStepCancel: () {
-              setState(() {
-                if (this._currentStep > 0) {
-                  this._currentStep = this._currentStep - 1;
-                } else {
-                  this._currentStep = 0;
-                }
-              });
-            },
+          Theme(
+            data: ThemeData(
+              colorScheme: Theme.of(context).colorScheme.copyWith(primary: Colors.red),
+            ),
+            child: Stepper(
+              controlsBuilder: (BuildContext context, ControlsDetails details){
+                return SizedBox();
+              },
+              steps: _mySteps(),
+              currentStep: this._currentStep,
+              onStepTapped: (step) {
+                setState(() {
+                  this._currentStep = step;
+                });
+              },
+              onStepContinue: () {
+                setState(() {
+                  if (this._currentStep < this._mySteps().length - 1) {
+                    this._currentStep = this._currentStep + 1;
+                  } else {
+                    //Logic to check if everything is completed
+                    //print('Completed, check fields.');
+                  }
+                  //  _buildListAvailbaleTablesWithNbPerson(_counter);
+                  // _getAvailableTablesTimeAndDate();
+                });
+              },
+              onStepCancel: () {
+                setState(() {
+                  if (this._currentStep > 0) {
+                    this._currentStep = this._currentStep - 1;
+                  } else {
+                    this._currentStep = 0;
+                  }
+                });
+              },
+            ),
           ),
-          // Padding(
-          //   padding: const EdgeInsets.only(bottom: 18.0),
-          //   child: Container(
-          //     width: MediaQuery.of(context).size.width,
-          //     color: Color(0xFFAF8F61).withOpacity(0.8),
-          //     child: TextButton(
-          //         onPressed: () {
-          //           // _fetchBWS();
-          //           // _fetchTables();
-          //           _buildListAvailbaleTablesWithNbPerson(_counter);
-          //
-          //         },
-          //         child: Text('get reservation',style: TextStyle(color: Colors.white,fontSize: 18),)),
-          //   ),
-          // ),
-          CommonButton(
-            padding: EdgeInsets.only(left: 24, right: 24, bottom: 16),
-            buttonText: AppLocalizations(context).of("get_reservation"),
-            onTap: () {
-             //_fetchBWS();
-              //_fetchTables();
-              _buildListAvailbaleTablesWithNbPerson(_counter);
-            },
+
+          Row(
+            children: [
+              Expanded(
+                flex: 4,
+                child: CommonButton(
+                  backgroundColor: Colors.red,
+                  padding: EdgeInsets.only(left: 24, bottom: 16),
+                  buttonText: 'Annuler',
+                  onTap: () {
+                    _counter=0;
+                    getText();
+                  },
+                ),
+              ),
+              Expanded(
+                flex: 8,
+                child: CommonButton(
+                  padding: EdgeInsets.only(left: 24, right: 24, bottom: 16),
+                  buttonText: AppLocalizations(context).of("get_reservation"),
+                  backgroundColor: Colors.green,
+                  onTap: () {
+                    //_fetchBWS();
+                    //_fetchTables();
+                    //_buildListAvailbaleTablesWithNbPerson(_counter);
+                    _createReservation(_counter);
+                  },
+                ),
+              ),
+            ],
           ),
+          availableBWS.isNotEmpty?Text(availableBWS.length.toString()):Container(),
         ],
       ),
     );
@@ -192,14 +209,14 @@ class _RoomeBookViewState extends State<RoomeBookView> {
       Step(
         title: Text(
           'Choose guest number',
-          style: TextStyles(context).getTitleStyle(),
+          style: TextStyles(context).getTitleStyle().copyWith(fontSize: 18),
         ),
         content: Container(
-          padding: EdgeInsets.symmetric(horizontal: 25),
-          width: MediaQuery.of(context).size.width * 0.7,
+          padding: EdgeInsets.symmetric(horizontal: 15),
+          width: MediaQuery.of(context).size.width * 0.6,
           decoration: BoxDecoration(
-            border: Border.all(width: 1, color: AppTheme.primaryTextColor),
-            borderRadius: BorderRadius.circular(10),
+            color: AppTheme.whiteColor,
+            borderRadius: BorderRadius.circular(30),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -207,7 +224,6 @@ class _RoomeBookViewState extends State<RoomeBookView> {
               Text(
                 '$_counter',
                 style: TextStyles(context).getHintStyle(),
-
               ),
               Column(
                 children: [
@@ -220,10 +236,8 @@ class _RoomeBookViewState extends State<RoomeBookView> {
                     onTap: _incrementCounter,
                   ),
                   GestureDetector(
-                    child: Icon(
-                      Icons.arrow_drop_down,
-                      size: 30,
-                        color: AppTheme.primaryTextColor                    ),
+                    child: Icon(Icons.arrow_drop_down,
+                        size: 30, color: AppTheme.primaryTextColor),
                     onTap: _decrementCounter,
                   ),
                 ],
@@ -236,31 +250,30 @@ class _RoomeBookViewState extends State<RoomeBookView> {
       Step(
         title: Text(
           'Pick the date',
-          style: TextStyles(context).getTitleStyle(),
+          style: TextStyles(context).getTitleStyle().copyWith(fontSize: 18),
         ),
         content: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              width: MediaQuery.of(context).size.width * 0.8,
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+              width: MediaQuery.of(context).size.width * 0.6,
+              padding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
               decoration: BoxDecoration(
-                border: Border.all(width: 1, color: AppTheme.primaryTextColor),
-                borderRadius: BorderRadius.circular(10),
+                color: AppTheme.whiteColor,
+                borderRadius: BorderRadius.circular(30),
               ),
               child: Row(
                 //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Icon(
-                    Icons.calendar_today_outlined,
+                    MdiIcons.calendarOutline,
                     color: AppTheme.primaryTextColor,
-                    size: 30,
+                    size: 18,
                   ),
                   GestureDetector(
                     child: Text(
                       getText(),
-                      style: TextStyles(context).getHintStyle(),
-
+                      style: TextStyles(context).getHintStyle().copyWith(fontSize: 18),
                     ),
                     onTap: () {
                       showDatePicker(
@@ -288,30 +301,29 @@ class _RoomeBookViewState extends State<RoomeBookView> {
       Step(
         title: Text(
           'Pick the time',
-          style: TextStyles(context).getTitleStyle(),
+          style: TextStyles(context).getTitleStyle().copyWith(fontSize: 18),
         ),
         content: Column(
           children: [
             Container(
-              width: MediaQuery.of(context).size.width * 0.8,
-              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+              width: MediaQuery.of(context).size.width * 0.6,
+              padding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
               decoration: BoxDecoration(
-                border: Border.all(width: 1, color: AppTheme.primaryTextColor),
-                borderRadius: BorderRadius.circular(10),
+                color: AppTheme.whiteColor,
+                borderRadius: BorderRadius.circular(30),
               ),
               child: Row(
                 //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Icon(
-                    Icons.timer,
+                    MdiIcons.timer,
                     color: AppTheme.primaryTextColor,
-                    size: 30,
+                    size: 18,
                   ),
                   GestureDetector(
                     child: Text(
                       getTextTime(),
-                      style: TextStyles(context).getHintStyle(),
-
+                      style: TextStyles(context).getHintStyle().copyWith(fontSize: 18),
                     ),
                     onTap: () {
                       pickTime(context);
@@ -326,20 +338,8 @@ class _RoomeBookViewState extends State<RoomeBookView> {
       ),
       Step(
         title: Text(
-          'Validate info',
-          style: TextStyles(context).getTitleStyle(),
-        ),
-        content: DisabledInput(
-            controller: guestNameController,
-            validate: _validate,
-            inputHint: 'jhon',
-            color: AppTheme.primaryTextColor),
-        isActive: _currentStep >= 3,
-      ),
-      Step(
-        title: Text(
           'Special request',
-          style: TextStyles(context).getTitleStyle(),
+          style: TextStyles(context).getTitleStyle().copyWith(fontSize: 18),
         ),
         content: Align(
           alignment: Alignment.centerLeft,
@@ -408,7 +408,7 @@ class _RoomeBookViewState extends State<RoomeBookView> {
       for (var item in jsonData['bookwaitseat']) {
         listBWS.add(BookWaitSeat.fromJson(item));
       }
-      restaurantName=jsonData['NomResto'];
+      restaurantName = jsonData['NomResto'];
       print(jsonData['bookwaitseat']);
       return listBWS;
     } else {
@@ -428,7 +428,7 @@ class _RoomeBookViewState extends State<RoomeBookView> {
         //availableTables.add(listAllTables[item]);
       }
       print(jsonData['table']);
-     return availableTables;
+      return availableTables;
     } else {
       throw Exception('Failed to load album');
     }
@@ -453,69 +453,70 @@ class _RoomeBookViewState extends State<RoomeBookView> {
     });
   }
 
-  _buildListAvailbaleTablesWithNbPerson(int nbPerson) {
-    for (int i = 0; i < listBWS.length; i++) {
-      for (int j = 0; j < availableTables.length; j++) {
-        if (availableTables[j].nbCouverts == nbPerson &&
-            listBWS[i].id == availableTables[j].ids - 1630) {
-          print(availableTables[j].ids - 1630);
+  _createReservation(int nbPerson) async {
+    String startTime = DateTime(datetime!.year, datetime!.month, datetime!.day,
+            newTime!.hour, newTime!.minute)
+        .toIso8601String();
+    setState(() {
+      _isLoading = false;
+    });
+    var body = {
+      "RestaurantId": widget.restaurantId,
+      "startTime": "2022-12-20 14:00:00",
+      "guestnumber": nbPerson,
+    };
 
-          startTime = DateTime(datetime!.year, datetime!.month, datetime!.day,
-              newTime!.hour, newTime!.minute);
-          endTime = DateTime(datetime!.year, datetime!.month, datetime!.day,
-              newTime!.hour + 1, newTime!.minute);
-          final DateTime dbStartTime = DateTime(
-              listBWS[i].debut!.year,
-              listBWS[i].debut!.month,
-              listBWS[i].debut!.day,
-              listBWS[i].debut!.hour + 2,
-              listBWS[i].debut!.minute);
-          final DateTime dbEndTime = DateTime(
-              listBWS[i].fin!.year,
-              listBWS[i].fin!.month,
-              listBWS[i].fin!.day,
-              listBWS[i].fin!.hour + 2,
-              listBWS[i].fin!.minute);
-          print(dbStartTime);
-          print(dbEndTime);
-          print(startTime);
-          print(endTime);
-          if (startTime!.compareTo(dbStartTime) >= 0 &&
-                  startTime!.compareTo(dbEndTime) <= 0 ||
-              (endTime!.compareTo(dbStartTime) >= 0 &&
-                  endTime!.compareTo(dbEndTime) <= 0)) {
-            print(databaseBWS[i].id);
-            print('is unavailable');
-            id = listBWS[i].id;
-            unavailableBWS.add(listBWS[i]);
-            print(unavailableBWS.length);
-            _showMyDialog();
-          } else {
-            print(listBWS[i].ids);
-            print('is available');
-            id = listBWS[i].id;
-            availableBWS.add(listBWS[i]);
-
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ConfirmPage(
-                          bookWaitSeat: availableBWS,
-                          restaurantName: restaurantName,
-                          startTime: startTime!,
-                          endTime: endTime!,
-                          Tables: availableTables,
-                          guestName: guestNameController.text,
-                          demandeSpecial: demandeSpecial,
-                          user: 65,
-                          guestNumber: _counter,
-                        )));
-          }
-        }
+    print(body['RestaurantId']);
+    print(body['startTime']);
+    print(body['guestnumber']);
+    final response = await http
+        .post(Uri.parse('http://37.187.198.241:3000/BWS/CreateReservation'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(body))
+        .then((value) {
+      print(value.body);
+      final data = jsonDecode(value.body);
+      for (Map<String, dynamic> i in data['1TableWithOutTolenace']) {
+        //Map form = i['form'];
+        debugPrint(i.toString());
+        availableBWS.add(ObjReservation.fromJson(i));
       }
-    }
-    // id = availableBWS[0].id;
-    // result = 'table with id= $id is available at date :$startTime';
+
+      for (Map<String, dynamic> i in data['TolerancePlus']) {
+        //Map form = i['form'];
+        debugPrint(i.toString());
+        availableBWS.add(ObjReservation.fromJson(i));
+      }
+
+      for (Map<String, dynamic> i in data['ToleranceMinus']) {
+        //Map form = i['form'];
+        debugPrint(i.toString());
+        availableBWS.add(ObjReservation.fromJson(i));
+      }
+
+      for (Map<String, dynamic> i in data['CollageWithTolerancePlus']) {
+        //Map form = i['form'];
+        debugPrint(i.toString());
+        availableBWS.add(ObjReservation.fromJson(i));
+      }
+
+      for (Map<String, dynamic> i in data['CollageWithToleranceMinus']) {
+        //Map form = i['form'];
+        debugPrint(i.toString());
+        availableBWS.add(ObjReservation.fromJson(i));
+      }
+
+      for (Map<String, dynamic> i in data['CollageWithTolerancePlusMinus']) {
+        //Map form = i['form'];
+        debugPrint(i.toString());
+        availableBWS.add(ObjReservation.fromJson(i));
+      }
+
+      print(availableBWS);
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>ConfirmPage(bookWaitSeat: availableBWS, guestName: 'jhon', demandeSpecial: demandeSpecial, user: user, guestNumber: nbPerson, restaurantName: restaurantName, )));
+    });
   }
 
   Future<void> _showMyDialog() async {
@@ -561,22 +562,25 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return FilterChip(
-      label: Text(widget.chipName),
-      labelStyle:TextStyles(context).getRegularStyle(),
-
-    selected: _isSelected,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30.0),
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: FilterChip(
+        padding:const EdgeInsets.all(4.0) ,
+        label: Text(widget.chipName),
+        labelStyle: TextStyles(context).getRegularStyle().copyWith(color: AppTheme.whiteColor,fontSize: 15),
+        selected: _isSelected,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        backgroundColor: AppTheme.primaryColor,
+        onSelected: (isSelected) {
+          setState(() {
+            _isSelected = isSelected;
+            widget.chips.add(widget.chipName);
+          });
+        },
+        selectedColor: AppTheme.secondaryTextColor,
       ),
-      backgroundColor: Theme.of(context).primaryColor,
-      onSelected: (isSelected) {
-        setState(() {
-          _isSelected = isSelected;
-          widget.chips.add(widget.chipName);
-        });
-      },
-      selectedColor: Theme.of(context).primaryColor,
     );
   }
 }
