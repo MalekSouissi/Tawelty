@@ -28,7 +28,7 @@ class HomeExploreScreen extends StatefulWidget {
 
 class _HomeExploreScreenState extends State<HomeExploreScreen>
     with TickerProviderStateMixin {
-  RestaurantListData restaurantListData=RestaurantListData();
+  RestaurantListData restaurantListData = RestaurantListData();
   late ScrollController controller;
   late AnimationController _animationController;
   var sliderImageHieght = 0.0;
@@ -65,13 +65,12 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
   }
 
   var hotelList = [];
-  bool showAddress=false;
+  bool showAddress = false;
 
-  fetchRestaurant()async{
-    hotelList= await RestaurantListData().fetchRestaurants();
+  fetchRestaurant() async {
+    hotelList = await RestaurantListData().fetchRestaurants();
 
     setState(() {
-
       showAddress = true;
     });
   }
@@ -214,7 +213,7 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
                         AppLocalizations(context).of("view_hotel"),
                         style: TextStyles(context)
                             .getRegularStyle()
-                            .copyWith(color: AppTheme.whiteColor),
+                            .copyWith(color: AppTheme.blueTextColor),
                       ),
                     ),
                   ),
@@ -274,9 +273,7 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
     });
     return Padding(
       padding: const EdgeInsets.only(top: 8),
-      child: showAddress?Column(
-        children: list
-      ):Container(),
+      child: showAddress ? Column(children: list) : Container(),
     );
   }
 

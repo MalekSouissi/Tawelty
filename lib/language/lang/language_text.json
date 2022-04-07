@@ -14,6 +14,13 @@
         "ja": "すでにアカウントをお持ちですか？サインイン"
     },
     {
+        "text_id": "homescreen",
+        "en": "Home",
+        "fr": "Accueil",
+        "ar": "الصفحة الرئيسية",
+        "ja": "ホームページ"
+    },
+    {
         "text_id": "never_let_you",
         "en": "NEVER LET YOU DOWN",
         "fr": "VJAMAIS TE LAISSER TOMBER",
@@ -428,6 +435,13 @@
         "fr": "Ambiances",
         "ar": "أجواء",
         "ja": "ロケーション"
+    },
+    {
+        "text_id": "welcome",
+        "en": "Welcome",
+        "fr": "Bienvenue",
+        "ar": "مرحبا",
+        "ja": "ようこそ"
     },
     {
         "text_id": "price",

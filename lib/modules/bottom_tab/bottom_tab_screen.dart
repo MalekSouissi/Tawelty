@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:new_motel/constants/themes.dart';
+import 'package:new_motel/home_screen/home_screen.dart';
 import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/logic/providers/theme_provider.dart';
 import 'package:new_motel/modules/bottom_tab/components/tab_button_UI.dart';
@@ -21,7 +22,7 @@ class _BottomTabScreenState extends State<BottomTabScreen>
   late AnimationController _animationController;
   bool _isFirstTime = true;
   Widget _indexView = Container();
-  BottomBarType bottomBarType = BottomBarType.Explore;
+  BottomBarType bottomBarType = BottomBarType.Home;
 
   @override
   void initState() {
@@ -36,9 +37,7 @@ class _BottomTabScreenState extends State<BottomTabScreen>
     await Future.delayed(const Duration(milliseconds: 480));
     setState(() {
       _isFirstTime = false;
-      _indexView = HomeExploreScreen(
-        animationController: _animationController,
-      );
+      _indexView = HomeScreen();
     });
     _animationController..forward();
   }
@@ -73,7 +72,11 @@ class _BottomTabScreenState extends State<BottomTabScreen>
     if (tabType != bottomBarType) {
       bottomBarType = tabType;
       _animationController.reverse().then((f) {
-        if (tabType == BottomBarType.Explore) {
+        if (tabType == BottomBarType.Home) {
+          setState(() {
+            _indexView = HomeScreen();
+          });
+        } else if (tabType == BottomBarType.Explore) {
           setState(() {
             _indexView = HomeExploreScreen(
               animationController: _animationController,
@@ -91,7 +94,6 @@ class _BottomTabScreenState extends State<BottomTabScreen>
               animationController: _animationController,
             );
           });
-
         } else if (tabType == BottomBarType.Profile) {
           setState(() {
             _indexView = ProfileScreen(
@@ -111,6 +113,14 @@ class _BottomTabScreenState extends State<BottomTabScreen>
         children: <Widget>[
           Row(
             children: <Widget>[
+              TabButtonUI(
+                icon: Icons.home_max_outlined,
+                isSelected: tabType == BottomBarType.Home,
+                text: AppLocalizations(context).of("homescreen"),
+                onTap: () {
+                  tabClick(BottomBarType.Home);
+                },
+              ),
               TabButtonUI(
                 icon: Icons.search,
                 isSelected: tabType == BottomBarType.Explore,
@@ -154,4 +164,4 @@ class _BottomTabScreenState extends State<BottomTabScreen>
   }
 }
 
-enum BottomBarType { Explore, Trips, Events, Profile }
+enum BottomBarType { Home, Explore, Trips, Events, Profile }

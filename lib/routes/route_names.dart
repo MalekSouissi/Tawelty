@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_motel/home_screen/home_screen.dart';
 import 'package:new_motel/models/hotel_list_data.dart';
 import 'package:new_motel/modules/bottom_tab/bottom_tab_screen.dart';
 import 'package:new_motel/modules/hotel_booking/filter_screen/filters_screen.dart';
