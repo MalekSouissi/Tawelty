@@ -93,12 +93,8 @@ class _FiltersScreenState extends State<FiltersScreen> {
                   child: Column(
                     children: <Widget>[
                       // hotel price filter
-                      priceBarFilter(),
-                      Divider(
-                        height: 1,
-                      ),
+                      allAccommodationUI(),
                       // facilitate filter in hotel
-                      popularFilter(),
                       Divider(
                         height: 1,
                       ),
@@ -107,13 +103,20 @@ class _FiltersScreenState extends State<FiltersScreen> {
                         height: 1,
                       ),
                       ambianceFilter(),
+                      popularFilter(),
+                      Divider(
+                        height: 1,
+                      ),
                       //hotel distance from city
                       distanceViewUI(),
                       Divider(
                         height: 1,
                       ),
+                      priceBarFilter(),
+                      Divider(
+                        height: 1,
+                      ),
                       // all type of  accommodation
-                      allAccommodationUI()
                     ],
                   ),
                 ),
@@ -129,6 +132,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
                   bottom: 16 + MediaQuery.of(context).padding.bottom,
                   top: 8),
               child: CommonButton(
+                backgroundColor: AppTheme.primaryColor,
                 onTap: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context)=>ResultPageView(resultList: finalList,)));
                 },
@@ -201,7 +205,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
                         : Colors.grey.withOpacity(0.6),
                     onChanged: (value) {
                       setState(() {
-                        searchByFilter(date.titleTxt, typeList);
+                        date.isSelected?  searchByFilter(date.titleTxt, typeList):removeFromFilter(date.titleTxt,typeList);
                         checkAppPosition(i);
                       });
                     },
@@ -282,6 +286,36 @@ class _FiltersScreenState extends State<FiltersScreen> {
       });
     }
   }
+
+  removeFromFilter(String text,List list)async{
+    var translation = await translator
+        .translate(text, from: 'en', to: 'fr');
+    print(translation.toString());
+    if (text != '') {
+      // finalList.clear();
+      list.forEach((element) {
+        if(element.type.toLowerCase().contains(translation.text.substring(0, 4).toLowerCase())){
+          setState(() {
+            if(finalList.contains(element.restaurantId)){
+              print(element.restaurantId);
+              finalList.remove(element.restaurantId);
+            }else{
+              finalList.remove(element.restaurantId);
+            }
+          });
+        }
+      });
+      print(finalList);
+
+    } else {
+      setState(() {
+        print(finalList.length);
+        //finalList.clear();
+        //resultList.addAll(finalList);
+      });
+    }
+  }
+
   Widget distanceViewUI() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -418,8 +452,12 @@ class _FiltersScreenState extends State<FiltersScreen> {
                       onTap: () {
                         setState(() {
                           date.isSelected = !date.isSelected;
-                          if(date.isSelected)
+                          if(date.isSelected){
                             searchByFilter(date.titleTxt,generalsList);
+
+                          }else{
+                            removeFromFilter(date.titleTxt, generalsList);
+                          }
                         });
                       },
                       child: Padding(
@@ -486,8 +524,12 @@ class _FiltersScreenState extends State<FiltersScreen> {
                       onTap: () {
                         setState(() {
                           date.isSelected = !date.isSelected;
-                          if(date.isSelected)
+                          if(date.isSelected){
                             searchByFilter(date.titleTxt,cuisinesList);
+
+                          }else{
+                            removeFromFilter(date.titleTxt,cuisinesList);
+                          }
                         });
                       },
                       child: Padding(
@@ -554,8 +596,12 @@ class _FiltersScreenState extends State<FiltersScreen> {
                       onTap: () {
                         setState(() {
                           date.isSelected = !date.isSelected;
-                          if(date.isSelected)
-                          searchByFilter(date.titleTxt,ambiancesList);
+                          if(date.isSelected){
+                            searchByFilter(date.titleTxt,ambiancesList);
+
+                          }else{
+                            removeFromFilter(date.titleTxt,ambiancesList);
+                          }
                         });
                       },
                       child: Padding(

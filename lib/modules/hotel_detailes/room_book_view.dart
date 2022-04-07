@@ -215,7 +215,7 @@ class _RoomeBookViewState extends State<RoomeBookView> {
           padding: EdgeInsets.symmetric(horizontal: 15),
           width: MediaQuery.of(context).size.width * 0.6,
           decoration: BoxDecoration(
-            color: AppTheme.whiteColor,
+            color: AppTheme.backgroundColor,
             borderRadius: BorderRadius.circular(30),
           ),
           child: Row(
@@ -259,7 +259,7 @@ class _RoomeBookViewState extends State<RoomeBookView> {
               width: MediaQuery.of(context).size.width * 0.6,
               padding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
               decoration: BoxDecoration(
-                color: AppTheme.whiteColor,
+                color: AppTheme.backgroundColor,
                 borderRadius: BorderRadius.circular(30),
               ),
               child: Row(
@@ -273,7 +273,7 @@ class _RoomeBookViewState extends State<RoomeBookView> {
                   GestureDetector(
                     child: Text(
                       getText(),
-                      style: TextStyles(context).getHintStyle().copyWith(fontSize: 18),
+                      style: TextStyles(context).getHintStyle().copyWith(fontSize: 16),
                     ),
                     onTap: () {
                       showDatePicker(
@@ -309,7 +309,7 @@ class _RoomeBookViewState extends State<RoomeBookView> {
               width: MediaQuery.of(context).size.width * 0.6,
               padding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
               decoration: BoxDecoration(
-                color: AppTheme.whiteColor,
+                color: AppTheme.backgroundColor,
                 borderRadius: BorderRadius.circular(30),
               ),
               child: Row(
@@ -454,69 +454,70 @@ class _RoomeBookViewState extends State<RoomeBookView> {
   }
 
   _createReservation(int nbPerson) async {
-    String startTime = DateTime(datetime!.year, datetime!.month, datetime!.day,
-            newTime!.hour, newTime!.minute)
-        .toIso8601String();
-    setState(() {
-      _isLoading = false;
-    });
-    var body = {
-      "RestaurantId": widget.restaurantId,
-      "startTime": "2022-12-20 14:00:00",
-      "guestnumber": nbPerson,
-    };
+    // String startTime = DateTime(datetime!.year, datetime!.month, datetime!.day,
+    //         newTime!.hour, newTime!.minute)
+    //     .toIso8601String();
+    // setState(() {
+    //   _isLoading = false;
+    // });
+    // var body = {
+    //   "RestaurantId": widget.restaurantId,
+    //   "startTime": getText()+ ' '+getTextTime(),
+    //   "guestnumber": nbPerson,
+    // };
+    //
+    // print(body['RestaurantId']);
+    // print(body['startTime']);
+    // print(body['guestnumber']);
+    // final response = await http
+    //     .post(Uri.parse('http://37.187.198.241:3000/BWS/CreateReservation'),
+    //         headers: <String, String>{
+    //           'Content-Type': 'application/json; charset=UTF-8',
+    //         },
+    //         body: jsonEncode(body))
+    //     .then((value) {
+    //   print(value.body);
+    //   final data = jsonDecode(value.body);
+    //   for (Map<String, dynamic> i in data['1TableWithOutTolenace']) {
+    //     //Map form = i['form'];
+    //     debugPrint(i.toString());
+    //     availableBWS.add(ObjReservation.fromJson(i));
+    //   }
+    //
+    //   for (Map<String, dynamic> i in data['TolerancePlus']) {
+    //     //Map form = i['form'];
+    //     debugPrint(i.toString());
+    //     availableBWS.add(ObjReservation.fromJson(i));
+    //   }
+    //
+    //   for (Map<String, dynamic> i in data['ToleranceMinus']) {
+    //     //Map form = i['form'];
+    //     debugPrint(i.toString());
+    //     availableBWS.add(ObjReservation.fromJson(i));
+    //   }
+    //
+    //   for (Map<String, dynamic> i in data['CollageWithTolerancePlus']) {
+    //     //Map form = i['form'];
+    //     debugPrint(i.toString());
+    //     availableBWS.add(ObjReservation.fromJson(i));
+    //   }
+    //
+    //   for (Map<String, dynamic> i in data['CollageWithToleranceMinus']) {
+    //     //Map form = i['form'];
+    //     debugPrint(i.toString());
+    //     availableBWS.add(ObjReservation.fromJson(i));
+    //   }
+    //
+    //   for (Map<String, dynamic> i in data['CollageWithTolerancePlusMinus']) {
+    //     //Map form = i['form'];
+    //     debugPrint(i.toString());
+    //     availableBWS.add(ObjReservation.fromJson(i));
+    //   }
 
-    print(body['RestaurantId']);
-    print(body['startTime']);
-    print(body['guestnumber']);
-    final response = await http
-        .post(Uri.parse('http://37.187.198.241:3000/BWS/CreateReservation'),
-            headers: <String, String>{
-              'Content-Type': 'application/json; charset=UTF-8',
-            },
-            body: jsonEncode(body))
-        .then((value) {
-      print(value.body);
-      final data = jsonDecode(value.body);
-      for (Map<String, dynamic> i in data['1TableWithOutTolenace']) {
-        //Map form = i['form'];
-        debugPrint(i.toString());
-        availableBWS.add(ObjReservation.fromJson(i));
-      }
+    //   print(availableBWS);
+    // });
+  Navigator.push(context, MaterialPageRoute(builder: (context)=>ConfirmPage(bookWaitSeat: availableBWS, guestName: 'jhon', demandeSpecial: demandeSpecial, guestNumber: nbPerson, restaurantName: restaurantName, )));
 
-      for (Map<String, dynamic> i in data['TolerancePlus']) {
-        //Map form = i['form'];
-        debugPrint(i.toString());
-        availableBWS.add(ObjReservation.fromJson(i));
-      }
-
-      for (Map<String, dynamic> i in data['ToleranceMinus']) {
-        //Map form = i['form'];
-        debugPrint(i.toString());
-        availableBWS.add(ObjReservation.fromJson(i));
-      }
-
-      for (Map<String, dynamic> i in data['CollageWithTolerancePlus']) {
-        //Map form = i['form'];
-        debugPrint(i.toString());
-        availableBWS.add(ObjReservation.fromJson(i));
-      }
-
-      for (Map<String, dynamic> i in data['CollageWithToleranceMinus']) {
-        //Map form = i['form'];
-        debugPrint(i.toString());
-        availableBWS.add(ObjReservation.fromJson(i));
-      }
-
-      for (Map<String, dynamic> i in data['CollageWithTolerancePlusMinus']) {
-        //Map form = i['form'];
-        debugPrint(i.toString());
-        availableBWS.add(ObjReservation.fromJson(i));
-      }
-
-      print(availableBWS);
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>ConfirmPage(bookWaitSeat: availableBWS, guestName: 'jhon', demandeSpecial: demandeSpecial, user: user, guestNumber: nbPerson, restaurantName: restaurantName, )));
-    });
   }
 
   Future<void> _showMyDialog() async {

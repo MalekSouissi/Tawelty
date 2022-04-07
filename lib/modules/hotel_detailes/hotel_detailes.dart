@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:maps_launcher/maps_launcher.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:new_motel/constants/helper.dart';
 import 'package:new_motel/constants/localfiles.dart';
 import 'package:new_motel/constants/text_styles.dart';
@@ -206,7 +207,7 @@ class _HotelDetailesState extends State<HotelDetailes>
                     ),
                   ),
                 ),
-
+                restaurantContacts(),
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 24,
@@ -317,6 +318,7 @@ class _HotelDetailesState extends State<HotelDetailes>
                   padding: const EdgeInsets.only(
                       left: 16, right: 16, bottom: 16, top: 16),
                   child: CommonButton(
+                    backgroundColor: AppTheme.primaryColor,
                     buttonText: AppLocalizations(context).of("book_now"),
                     onTap: () {
                       NavigationServices(context)
@@ -533,8 +535,10 @@ class _HotelDetailesState extends State<HotelDetailes>
                                           bottom: 16,
                                           top: 16),
                                       child: CommonButton(
+                                        backgroundColor: AppTheme.primaryColor,
                                           buttonText: AppLocalizations(context)
                                               .of("book_now"),
+                                         // textColor: Colors.black54,
                                           onTap: () {
                                             NavigationServices(context)
                                                 .gotoRoomBookingScreen(
@@ -823,8 +827,8 @@ class _HotelDetailesState extends State<HotelDetailes>
                     child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Icon(
-                          FontAwesomeIcons.phone,
-                          color: AppTheme.primaryColor,
+                          MdiIcons.phone,
+                          color: AppTheme.whiteColor,
                         ))),
               ),
               Text(
@@ -854,8 +858,8 @@ class _HotelDetailesState extends State<HotelDetailes>
                     child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Icon(
-                          FontAwesomeIcons.envelope,
-                          color: AppTheme.primaryColor,
+                          MdiIcons.email,
+                          color: AppTheme.whiteColor,
                         ))),
               ),
               Text(
@@ -881,8 +885,8 @@ class _HotelDetailesState extends State<HotelDetailes>
                     child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Icon(
-                          FontAwesomeIcons.link,
-                          color: AppTheme.primaryColor,
+                          MdiIcons.link,
+                          color: AppTheme.whiteColor,
                         ))),
               ),
               Text(
@@ -908,8 +912,8 @@ class _HotelDetailesState extends State<HotelDetailes>
                     child: Padding(
                         padding: const EdgeInsets.all(12.0),
                         child: Icon(
-                          FontAwesomeIcons.utensils,
-                          color: AppTheme.primaryColor,
+                          MdiIcons.food,
+                          color: AppTheme.whiteColor,
                         ))),
               ),
               Text(

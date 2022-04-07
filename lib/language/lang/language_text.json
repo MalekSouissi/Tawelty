@@ -182,6 +182,16 @@
         "ja": "旅行"
     },
     {
+        "text_id": "Share",
+        "en": "Share",
+        "fr": "Partage"
+    },
+    {
+        "text_id": "Gifts",
+        "en": "Gifts",
+        "fr": "Cadeaux"
+    },
+    {
         "text_id": "profile",
         "en": "Profile",
         "fr": "profil",

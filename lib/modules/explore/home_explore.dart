@@ -68,7 +68,7 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
     super.initState();
   }
 
-  var hotelList = [];
+  List<RestaurantListData> hotelList = [];
   bool showAddress = false;
 
   fetchRestaurant() async {
@@ -85,7 +85,7 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
     return Scaffold(
       body: SafeArea(
         top: true,
-        minimum: EdgeInsets.only(top: 70),
+        minimum: EdgeInsets.only(top: 40),
         child: BottomTopMoveAnimationView(
           animationController: widget.animationController,
           child: Consumer<ThemeProvider>(
@@ -99,10 +99,11 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
                       children: [
                         Container(
                           width: MediaQuery.of(context).size.width*0.7,
-                            child: Text('Les meilleurs restaurants en Tunisie',style: TextStyles(context).getBoldStyle().copyWith(fontSize: 24),)),
+                            child: Text('Les meilleurs restaurants en Tunisie',style: TextStyles(context).getBoldStyle().copyWith(fontSize: 20),)),
                         GestureDetector(
                           onTap: (){
-                            NavigationServices(context).gotoProfileScreen();
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileScreen()));
+                           // NavigationServices(context).gotoProfileScreen();
                           },
                             child: CircleAvatar(child: Icon(MdiIcons.accountOutline))),
                       ],
@@ -261,9 +262,28 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
     );
   }
 
+  void _runFilter(String enteredKeyword) {
+    List<RestaurantListData> results = [];
+    if (enteredKeyword.isEmpty) {
+      // if the search field is empty or only contains white-space, we'll display all users
+      setState(() {
+        results = hotelList;
+      });
+    } else {
+      results = hotelList
+          .where((restaurant) => restaurant.titleTxt.toLowerCase()
+          .contains(enteredKeyword.toLowerCase()))
+          .toList();
+    }
+
+    setState(() {
+      hotelList = results;
+    });
+  }
+
   Widget serachUI() {
     return Padding(
-      padding: const EdgeInsets.only(left: 24, right: 24, top: 24),
+      padding: const EdgeInsets.only(left: 24, top: 24,right: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -274,27 +294,34 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
               radius: 36,
               child: InkWell(
                 borderRadius: BorderRadius.all(Radius.circular(38)),
-                onTap: () {
-                  NavigationServices(context).gotoHotelHomeScreen();
-                },
+                // onTap: () {
+                //   NavigationServices(context).gotoHotelHomeScreen();
+                // },
                 child: CommonSearchBar(
                   iconData: FontAwesomeIcons.search,
-                  enabled: false,
+                  enabled: true,
                   text: AppLocalizations(context).of("where_are_you_going"),
+                  onchanged: (text){
+                    _runFilter(text);
+                  },
                 ),
               ),
             ),
           ),
-          CommonCard(
-            radius: 50,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: InkWell(
-                borderRadius: BorderRadius.all(Radius.circular(38)),
-                onTap: () {
-                  NavigationServices(context).gotoFiltersScreen();
-                },
-                child: Icon(MdiIcons.tuneVariant,color: AppTheme.primaryColor,),
+          SizedBox(width: 10,),
+          Expanded(
+            flex: 3,
+            child: CommonCard(
+              radius: 50,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: InkWell(
+                  borderRadius: BorderRadius.all(Radius.circular(38)),
+                  onTap: () {
+                    NavigationServices(context).gotoFiltersScreen();
+                  },
+                  child: Icon(MdiIcons.tuneVariant,color: AppTheme.primaryColor,),
+                ),
               ),
             ),
           ),
@@ -308,7 +335,7 @@ class _HomeExploreScreenState extends State<HomeExploreScreen>
       height: MediaQuery.of(context).size.height * 0.5,
       child: ListView.builder(
         padding: const EdgeInsets.only(top: 0, bottom: 0, right: 24, left: 8),
-        itemCount: hotelList.length-400,
+        itemCount: hotelList.length,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           var count = hotelList.length-400 > 10 ? 10 : hotelList.length-400;

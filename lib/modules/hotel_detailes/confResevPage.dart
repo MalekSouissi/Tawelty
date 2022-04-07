@@ -21,7 +21,7 @@ class ConfirmPage extends StatefulWidget {
   final List<String> demandeSpecial;
 
   final String guestName;
-  final int user;
+  //final int user;
   final int guestNumber;
   final String restaurantName;
 
@@ -29,7 +29,7 @@ class ConfirmPage extends StatefulWidget {
       {required this.bookWaitSeat,
       required this.guestName,
       required this.demandeSpecial,
-      required this.user,
+      //required this.user,
       required this.guestNumber,
       required this.restaurantName,});
   @override
@@ -65,7 +65,7 @@ class _ConfirmPageState extends State<ConfirmPage> {
                 children: [
                   //Text(DateTime.now().day.toString()+'-'+DateTime.now().month.toString()+'-'+DateTime.now().year.toString(),style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold,color: KBeige),),
                   Text(
-                    'Table number  ' + widget.bookWaitSeat[0].id.toString(),
+                    'Table number  ' + 'widget.bookWaitSeat[0].id.toString()',
                     style: TextStyles(context).getTitleStyle(),
                   ),
                   SizedBox(
@@ -81,7 +81,7 @@ class _ConfirmPageState extends State<ConfirmPage> {
                       foregroundColor: AppTheme.primaryColor,
                       data: widget.guestName +
                           'reservation date :' +
-                          widget.bookWaitSeat[0].debut.toString(),
+                          'widget.bookWaitSeat[0].debut.toString()',
                       version: QrVersions.auto,
                       size: 175,
                       gapless: false,
@@ -92,6 +92,7 @@ class _ConfirmPageState extends State<ConfirmPage> {
                   ),
 
                   CommonButton(
+                    backgroundColor: AppTheme.primaryColor,
                     padding: EdgeInsets.only(left: 24, right: 24, bottom: 16),
                     buttonText:
                         AppLocalizations(context).of("confirm_reservation"),
@@ -101,7 +102,7 @@ class _ConfirmPageState extends State<ConfirmPage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => FileDownload(
-                                    random: widget.bookWaitSeat[0].idReservation,
+                                    random: 2588.toString(),
                                     platform: TargetPlatform.android,
                                   )));
                       print('taped');

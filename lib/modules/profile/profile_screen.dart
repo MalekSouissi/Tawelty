@@ -75,99 +75,99 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    return BottomTopMoveAnimationView(
-        animationController: _animationController,
-        child: Consumer<ThemeProvider>(
-          builder: (context, provider, child) => Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding:
-                    EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-                child: Container(child: appBar()),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  padding: EdgeInsets.all(0.0),
-                  itemCount: userSettingsList.length,
-                  itemBuilder: (context, index) {
-                    return Material(
-                      child: InkWell(
-                        onTap: () async {
-                          //setting screen view
-                          if (index == 5) {
-                            NavigationServices(context).gotoSettingsScreen();
+    return Scaffold(
+      body: Consumer<ThemeProvider>(
+        builder: (context, provider, child) => Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding:
+                  EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+              child: Container(child: appBar()),
+            ),
+            Expanded(
+              child: ListView.builder(
+                physics: BouncingScrollPhysics(),
+                padding: EdgeInsets.all(0.0),
+                itemCount: userSettingsList.length,
+                itemBuilder: (context, index) {
+                  return Material(
+                    child: InkWell(
+                      onTap: () async {
+                        //setting screen view
+                        if (index == 5) {
+                          NavigationServices(context).gotoSettingsScreen();
 
-                            //   setState(() {});
-                          }
-                          //help center screen view
+                          //   setState(() {});
+                        }
+                        //help center screen view
 
-                          if (index == 3) {
-                            NavigationServices(context).gotoHeplCenterScreen();
-                          }
-                          //Chage password  screen view
+                        if (index == 3) {
+                          NavigationServices(context).gotoHeplCenterScreen();
+                        }
+                        //Chage password  screen view
 
-                          if (index == 0) {
-                            NavigationServices(context)
-                                .gotoChangepasswordScreen();
-                          }
-                          //Invite friend  screen view
+                        if (index == 0) {
+                          NavigationServices(context)
+                              .gotoChangepasswordScreen();
+                        }
+                        //Invite friend  screen view
 
-                          if (index == 1) {
-                            NavigationServices(context).gotoInviteFriend();
-                          }
-                        },
-                        child: Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8, right: 16),
-                              child: Row(
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: Text(
-                                        AppLocalizations(context).of(
-                                          userSettingsList[index].titleTxt,
-                                        ),
-                                        style: TextStyles(context)
-                                            .getRegularStyle()
-                                            .copyWith(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 16),
+                        if (index == 1) {
+                          NavigationServices(context).gotoInviteFriend();
+                        }
+                      },
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 16),
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Text(
+                                      AppLocalizations(context).of(
+                                        userSettingsList[index].titleTxt,
                                       ),
+                                      style: TextStyles(context)
+                                          .getRegularStyle()
+                                          .copyWith(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 16),
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(16),
-                                    child: Container(
-                                      child: Icon(
-                                          userSettingsList[index].iconData,
-                                          color: AppTheme.secondaryTextColor
-                                              .withOpacity(0.7)),
-                                    ),
-                                  )
-                                ],
-                              ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Container(
+                                    child: Icon(
+                                        userSettingsList[index].iconData,
+                                        color: AppTheme.secondaryTextColor
+                                            .withOpacity(0.7)),
+                                  ),
+                                )
+                              ],
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 16, right: 16),
-                              child: Divider(
-                                height: 1,
-                              ),
-                            )
-                          ],
-                        ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 16, right: 16),
+                            child: Divider(
+                              height: 1,
+                            ),
+                          )
+                        ],
                       ),
-                    );
-                  },
-                ),
-              )
-            ],
-          ),
-        ));
+                    ),
+                  );
+                },
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   Widget appBar() {

@@ -86,6 +86,13 @@ class _BottomTabScreenState extends State<BottomTabScreen>
               animationController: _animationController,
             );
           });
+        }
+        else if (tabType == BottomBarType.Share) {
+          setState(() {
+            _indexView = MyTripsScreen(
+              animationController: _animationController,
+            );
+          });
         } else if (tabType == BottomBarType.Events) {
           setState(() {
             _indexView = MyEventsScreen(
@@ -93,10 +100,17 @@ class _BottomTabScreenState extends State<BottomTabScreen>
             );
           });
 
-        } else if (tabType == BottomBarType.Profile) {
+        } else if (tabType == BottomBarType.Gifts) {
           setState(() {
-            _indexView = ProfileScreen(
+            _indexView = MyEventsScreen(
+              animationController: _animationController,
             );
+          });
+
+        }
+        else if (tabType == BottomBarType.Profile) {
+          setState(() {
+            _indexView = ProfileScreen();
           });
         }
       });
@@ -121,8 +135,8 @@ class _BottomTabScreenState extends State<BottomTabScreen>
               ),
               TabButtonUI(
                 icon: MdiIcons.shareVariantOutline,
-                isSelected: tabType == BottomBarType.Explore,
-                text: AppLocalizations(context).of("explore"),
+                isSelected: tabType == BottomBarType.Share,
+                text: AppLocalizations(context).of("Share"),
                 onTap: () {
                   tabClick(BottomBarType.Explore);
                 },
@@ -146,8 +160,8 @@ class _BottomTabScreenState extends State<BottomTabScreen>
               ),
               TabButtonUI(
                 icon: MdiIcons.giftOutline,
-                isSelected: tabType == BottomBarType.Trips,
-                text: AppLocalizations(context).of("trips"),
+                isSelected: tabType == BottomBarType.Gifts,
+                text: AppLocalizations(context).of("Gifts"),
                 onTap: () {
                   tabClick(BottomBarType.Trips);
                 },

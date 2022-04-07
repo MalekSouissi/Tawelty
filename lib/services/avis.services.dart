@@ -5,7 +5,7 @@ import 'package:new_motel/models/avis.dart';
 class AvisServices{
   Client client = Client();
 
-  static const API = 'http://192.168.1.239:3000/';
+  static const API = 'http://37.187.198.241:3000/';
 
 
   Future getListAvis() {
