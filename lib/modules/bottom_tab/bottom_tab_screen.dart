@@ -38,7 +38,7 @@ class _BottomTabScreenState extends State<BottomTabScreen>
     await Future.delayed(const Duration(milliseconds: 480));
     setState(() {
       _isFirstTime = false;
-      _indexView = HomeScreen();
+      _indexView = HomePage(animationController: _animationController,);
     });
     _animationController..forward();
   }
@@ -75,7 +75,7 @@ class _BottomTabScreenState extends State<BottomTabScreen>
       _animationController.reverse().then((f) {
         if (tabType == BottomBarType.Home) {
           setState(() {
-            _indexView = HomeScreen();
+            _indexView = HomePage(animationController: _animationController,);
           });
         } else if (tabType == BottomBarType.Explore) {
           setState(() {

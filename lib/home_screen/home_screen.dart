@@ -5,32 +5,25 @@ import '../constants/text_styles.dart';
 import '../constants/themes.dart';
 import '../language/appLocalizations.dart';
 import '../models/setting_list_data.dart';
+import '../modules/myTrips/favorites_list_view.dart';
+import '../modules/myTrips/finish_trip_view.dart';
+import '../modules/myTrips/my_trips_screen.dart';
+import '../modules/myTrips/upcoming_list_view.dart';
+import '../modules/my_events/common_card.dart';
 import '../routes/route_names.dart';
 import '../services/user.services.dart';
-//import 'profil.dart';
-
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomePage(),
-    );
-  }
-}
 
 class HomePage extends StatefulWidget {
+  final AnimationController animationController;
+
+  const HomePage({Key? key, required this.animationController})
+      : super(key: key);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   List<SettingsListData> userSettingsList = SettingsListData.userSettingsList;
   String url = '';
   String fname = '';
@@ -39,9 +32,34 @@ class _HomePageState extends State<HomePage> {
   bool show = false;
   UserServices userServices = UserServices();
   bool _isLoading = false;
+  bool isFav = false;
   late var user;
 
   int _selectedItemIndex = 0;
+  late AnimationController tabAnimationController;
+
+  Widget indexView = Container();
+  TopBarType topBarType = TopBarType.Upcomming;
+
+  @override
+  void initState() {
+    tabAnimationController =
+        AnimationController(duration: Duration(milliseconds: 400), vsync: this);
+    indexView = UpcomingListView(
+      animationController: tabAnimationController,
+    );
+    tabAnimationController..forward();
+    widget.animationController.forward();
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    tabAnimationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,6 +118,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
+            tabViewUI(topBarType),
             Expanded(
               child: ListView(
                 padding: EdgeInsets.only(top: 8),
@@ -145,7 +164,10 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Container buildPostSection(String urlPost, String urlProfilePhoto) {
+  Container buildPostSection(
+    String urlPost,
+    String urlProfilePhoto,
+  ) {
     return Container(
       margin: EdgeInsets.only(bottom: 8),
       padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
@@ -250,10 +272,44 @@ class _HomePageState extends State<HomePage> {
         Positioned(
           bottom: 20,
           right: 20,
-          child: Icon(Icons.favorite,
-              size: 35, color: Colors.white.withOpacity(0.7)),
+          child: _getAppBarUi(
+              AppTheme.backgroundColor,
+              isFav ? Icons.favorite : Icons.favorite_border,
+              AppTheme.primaryColor, () {
+            setState(() {
+              isFav = !isFav;
+            });
+          }),
         )
       ],
+    );
+  }
+
+  Widget _getAppBarUi(
+      Color color, IconData icon, Color iconcolor, VoidCallback onTap) {
+    return SizedBox(
+      height: AppBar().preferredSize.height,
+      child: Padding(
+        padding: EdgeInsets.only(top: 8, left: 8, right: 8),
+        child: Container(
+          width: AppBar().preferredSize.height - 8,
+          height: AppBar().preferredSize.height - 8,
+          decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.all(
+                Radius.circular(32.0),
+              ),
+              onTap: onTap,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(icon, color: iconcolor),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -277,42 +333,134 @@ class _HomePageState extends State<HomePage> {
       onTap: () {
         NavigationServices(context).gotoEditProfile(user);
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                child: Text(
                   AppLocalizations(context).of("welcome"),
                   style: TextStyles(context).getTitleStyle().copyWith(
                       color: AppTheme.blueTextColor,
                       fontWeight: FontWeight.w900,
                       fontSize: 27.5),
                 ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16, bottom: 16, left: 24),
+                child: Container(
+                  width: 65,
+                  height: 65,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                    child: show
+                        ? Image.network(
+                            url,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset(Localfiles.userImage),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  void tabClick(TopBarType tabType) {
+    if (tabType != topBarType) {
+      topBarType = tabType;
+      tabAnimationController.reverse().then((f) {
+        if (tabType == TopBarType.Upcomming) {
+          setState(() {
+            indexView = UpcomingListView(
+              animationController: tabAnimationController,
+            );
+          });
+        } else if (tabType == TopBarType.Finished) {
+          setState(() {
+            indexView = FinishTripView(
+              animationController: tabAnimationController,
+            );
+          });
+        } else if (tabType == TopBarType.Favorites) {
+          setState(() {
+            indexView = FavoritesListView(
+              animationController: tabAnimationController,
+            );
+          });
+        }
+      });
+    }
+  }
+
+  Widget tabViewUI(TopBarType tabType) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: CommonCard(
+        color: AppTheme.backgroundColor,
+        radius: 36,
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                _getTopBarUi(() {
+                  tabClick(TopBarType.Upcomming);
+                },
+                    tabType == TopBarType.Upcomming
+                        ? AppTheme.primaryColor
+                        : AppTheme.secondaryTextColor,
+                    "populair"),
+                _getTopBarUi(() {
+                  tabClick(TopBarType.Finished);
+                },
+                    tabType == TopBarType.Finished
+                        ? AppTheme.primaryColor
+                        : AppTheme.secondaryTextColor,
+                    "recent"),
+                _getTopBarUi(() {
+                  tabClick(TopBarType.Favorites);
+                },
+                    tabType == TopBarType.Favorites
+                        ? AppTheme.primaryColor
+                        : AppTheme.secondaryTextColor,
+                    "suivant"),
               ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16, bottom: 16, left: 24),
-            child: Container(
-              width: 65,
-              height: 65,
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                child: show
-                    ? Image.network(
-                        url,
-                        fit: BoxFit.cover,
-                      )
-                    : Image.asset(Localfiles.userImage),
+            SizedBox(
+              height: MediaQuery.of(context).padding.bottom,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _getTopBarUi(VoidCallback onTap, Color color, String text) {
+    return Expanded(
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.all(Radius.circular(32.0)),
+          highlightColor: Colors.transparent,
+          splashColor: Theme.of(context).primaryColor.withOpacity(0.2),
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 16, top: 16),
+            child: Center(
+              child: Text(
+                AppLocalizations(context).of(text),
+                style: TextStyles(context)
+                    .getRegularStyle()
+                    .copyWith(fontWeight: FontWeight.w600, color: color),
               ),
             ),
-          )
-        ],
+          ),
+        ),
       ),
     );
   }

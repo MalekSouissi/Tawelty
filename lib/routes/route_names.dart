@@ -101,7 +101,7 @@ class NavigationServices {
     return await _pushMaterialPageRoute(ReviewsListScreen());
   }
 
-  Future<dynamic> gotoEditProfile() async {
+  Future<dynamic> gotoEditProfile(user) async {
     return await _pushMaterialPageRoute(EditProfile());
   }
 

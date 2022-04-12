@@ -460,6 +460,27 @@
         "ja": "ようこそ"
     },
     {
+        "text_id": "recent",
+        "en": "Recent",
+        "fr": "Récent",
+        "ar": "مؤخرا",
+        "ja": "近々"
+    },
+    {
+        "text_id": "populair",
+        "en": "populair",
+        "fr": "populaire",
+        "ar": "شعبية",
+        "ja": "ポピュラー"
+    },
+    {
+        "text_id": "suivant",
+        "en": "following",
+        "fr": "suivant",
+        "ar": "التالي",
+        "ja": "続く"
+    },
+    {
         "text_id": "price",
         "en": "Price",
         "fr": "Prix",

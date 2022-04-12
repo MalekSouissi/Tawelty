@@ -174,7 +174,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
     return Material(
       child: InkWell(
         onTap: () {
-          NavigationServices(context).gotoEditProfile();
+          NavigationServices(context).gotoEditProfile(user);
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
