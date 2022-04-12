@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/home_screen/home_screen.dart';
 import 'package:new_motel/language/appLocalizations.dart';
@@ -88,6 +89,13 @@ class _BottomTabScreenState extends State<BottomTabScreen>
               animationController: _animationController,
             );
           });
+        }
+        else if (tabType == BottomBarType.Share) {
+          setState(() {
+            _indexView = MyTripsScreen(
+              animationController: _animationController,
+            );
+          });
         } else if (tabType == BottomBarType.Events) {
           setState(() {
             _indexView = MyEventsScreen(
@@ -95,10 +103,18 @@ class _BottomTabScreenState extends State<BottomTabScreen>
             );
           });
         } else if (tabType == BottomBarType.Profile) {
+
+        } else if (tabType == BottomBarType.Gifts) {
           setState(() {
-            _indexView = ProfileScreen(
+            _indexView = MyEventsScreen(
               animationController: _animationController,
             );
+          });
+
+        }
+        else if (tabType == BottomBarType.Profile) {
+          setState(() {
+            _indexView = ProfileScreen();
           });
         }
       });
@@ -122,7 +138,7 @@ class _BottomTabScreenState extends State<BottomTabScreen>
                 },
               ),
               TabButtonUI(
-                icon: Icons.search,
+                icon: MdiIcons.homeOutline,
                 isSelected: tabType == BottomBarType.Explore,
                 text: AppLocalizations(context).of("explore"),
                 onTap: () {
@@ -130,15 +146,16 @@ class _BottomTabScreenState extends State<BottomTabScreen>
                 },
               ),
               TabButtonUI(
-                icon: FontAwesomeIcons.heart,
-                isSelected: tabType == BottomBarType.Trips,
-                text: AppLocalizations(context).of("trips"),
+                icon: MdiIcons.shareVariantOutline,
+                isSelected: tabType == BottomBarType.Share,
+                text: AppLocalizations(context).of("Share"),
                 onTap: () {
-                  tabClick(BottomBarType.Trips);
+                  tabClick(BottomBarType.Explore);
                 },
               ),
+
               TabButtonUI(
-                icon: FontAwesomeIcons.calendarCheck,
+                icon: MdiIcons.calendarStar,
                 isSelected: tabType == BottomBarType.Events,
                 text: AppLocalizations(context).of("events"),
                 onTap: () {
@@ -146,11 +163,19 @@ class _BottomTabScreenState extends State<BottomTabScreen>
                 },
               ),
               TabButtonUI(
-                icon: FontAwesomeIcons.user,
-                isSelected: tabType == BottomBarType.Profile,
-                text: AppLocalizations(context).of("profile"),
+                icon: MdiIcons.heartOutline,
+                isSelected: tabType == BottomBarType.Trips,
+                text: AppLocalizations(context).of("trips"),
                 onTap: () {
-                  tabClick(BottomBarType.Profile);
+                  tabClick(BottomBarType.Trips);
+                },
+              ),
+              TabButtonUI(
+                icon: MdiIcons.giftOutline,
+                isSelected: tabType == BottomBarType.Gifts,
+                text: AppLocalizations(context).of("Gifts"),
+                onTap: () {
+                  tabClick(BottomBarType.Trips);
                 },
               ),
             ],
@@ -164,4 +189,4 @@ class _BottomTabScreenState extends State<BottomTabScreen>
   }
 }
 
-enum BottomBarType { Home, Explore, Trips, Events, Profile }
+enum BottomBarType { Home,Explore,Share, Events,Trips,Gifts, Profile }

@@ -43,10 +43,10 @@ class CommonIntroButtonWhite extends StatelessWidget {
             child: Center(
               child: buttonTextWidget ??
                   Text(
-                    buttonText ?? "",
+                    buttonText ?? "".toUpperCase(),
                     style: TextStyles(context).getRegularStyle().copyWith(
                           color: AppTheme.blueTextColor,
-                          fontSize: 20,
+                          fontSize: 18,
                           fontWeight: FontWeight.w500,
                           letterSpacing: 1.75,
                         ),

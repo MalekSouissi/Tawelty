@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:new_motel/constants/text_styles.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/models/hotel_list_data.dart';
@@ -76,60 +77,23 @@ class CategoryView extends StatelessWidget {
                             ),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(16),
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      popularList.titleTxt,
-                                      style: TextStyles(context)
-                                          .getBoldStyle()
-                                          .copyWith(
-                                        fontSize: 24,
-                                        color: AppTheme.whiteColor,
-                                      ),
-                                    ),
-                                    Container(
-                                      height:
-                                      MediaQuery.of(context).size.height /
-                                          15,
-                                      width:
-                                      MediaQuery.of(context).size.height /
-                                          15,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                          BorderRadius.circular(10),
-                                          color: Colors.white),
-                                      child: Center(
-                                        child: Text(
-                                          '24\noct',
-                                          style: TextStyles(context)
-                                              .getRegularStyle()
-                                              .copyWith(
-                                            fontSize: 15,
-                                            color: AppTheme.primaryColor,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                Text(
+                                  popularList.titleTxt,
+                                  style: TextStyles(context)
+                                      .getBoldStyle()
+                                      .copyWith(
+                                    fontSize: 20,
+                                    color: AppTheme.whiteColor,
+                                  ),
                                 ),
-                                Column(
-                                  children: [
-                                    InfoCard(
-                                      dataIcon: FontAwesomeIcons.clock,
-                                      text: "4PM-11PM",
-                                    ),
-                                    SizedBox(height: 4,),
-                                    InfoCard(
-                                      dataIcon: FontAwesomeIcons.mapMarkerAlt,
-                                      text: "Av Habib Bourguiba",
-                                    ),
-                                  ],
+                                InfoCard(
+                                  dataIcon: MdiIcons.marker,
+                                  text: "Av Habib Bourguiba",
                                 )
                               ],
                             ),
@@ -168,14 +132,14 @@ class InfoCard extends StatelessWidget {
             dataIcon,
             color:
             AppTheme.whiteColor,
-            size: 15,
+            size: 12,
           ),
           Text(
             " " + text,
             style: TextStyles(context)
                 .getRegularStyle()
                 .copyWith(
-              fontSize: 15.75,
+              fontSize: 14,
               color: AppTheme.whiteColor,
               fontWeight: FontWeight.w500,
             ),

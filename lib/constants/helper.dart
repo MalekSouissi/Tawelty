@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/language/appLocalizations.dart';
 import 'package:new_motel/logic/providers/theme_provider.dart';
@@ -37,12 +38,12 @@ class Helper {
     return RatingBarIndicator(
       rating: rating,
       itemBuilder: (context, index) => Icon(
-        Icons.star,
+        MdiIcons.star,
         color: AppTheme.primaryColor,
       ),
       itemCount: 5,
       unratedColor: AppTheme.secondaryTextColor,
-      itemSize: 18.0,
+      itemSize: 15.0,
       direction: Axis.horizontal,
     );
   }

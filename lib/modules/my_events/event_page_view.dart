@@ -194,24 +194,24 @@ class _EventViewPageState extends State<EventViewPage>
                   children: <Widget>[
                     AspectRatio(
                       aspectRatio: 1.5,
-                      child: GoogleMap(
-                        mapType: MapType.normal,
-                        initialCameraPosition: CameraPosition(
-                            target: LatLng(coordinates.latitude,coordinates.longitude), zoom: 15.0),
-                        onTap: (pos) {
-                          print(pos);
-                          Marker m = Marker(
-                              markerId: MarkerId('1'), icon: customIcon, position: pos);
-                          setState(() {
-                            allMarkers.add(m);
-                          });
-                        },
-                        markers: Set.from(allMarkers),
-                        onMapCreated: (GoogleMapController controller) {
-                          _controller = controller;
-                          _controller!.setMapStyle(_mapStyle);
-                        },
-                      ),
+                      // child: GoogleMap(
+                      //   mapType: MapType.normal,
+                      //   initialCameraPosition: CameraPosition(
+                      //       target: LatLng(coordinates.latitude,coordinates.longitude), zoom: 15.0),
+                      //   onTap: (pos) {
+                      //     print(pos);
+                      //     Marker m = Marker(
+                      //         markerId: MarkerId('1'), icon: customIcon, position: pos);
+                      //     setState(() {
+                      //       allMarkers.add(m);
+                      //     });
+                      //   },
+                      //   markers: Set.from(allMarkers),
+                      //   onMapCreated: (GoogleMapController controller) {
+                      //     _controller = controller;
+                      //     _controller!.setMapStyle(_mapStyle);
+                      //   },
+                      // ),
                     ),
                     InkWell(
                       onTap: ()async{

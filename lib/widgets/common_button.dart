@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_motel/constants/themes.dart';
 import 'package:new_motel/widgets/tap_effect.dart';
 import 'package:new_motel/constants/text_styles.dart';
 
@@ -35,7 +36,7 @@ class CommonButton extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(radius),
             ),
-            color: Colors.white ?? Theme.of(context).primaryColor,
+            color: backgroundColor,
             shadowColor: Colors.black12.withOpacity(
               Theme.of(context).brightness == Brightness.dark ? 0.6 : 0.2,
             ),
@@ -44,9 +45,9 @@ class CommonButton extends StatelessWidget {
                   Text(
                     buttonText ?? "",
                     style: TextStyles(context).getRegularStyle().copyWith(
-                          color: Color(0xFFAF8F61),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
+                          color: AppTheme.whiteColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.normal,
                           letterSpacing: 1.75,
                         ),
                   ),

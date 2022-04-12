@@ -189,6 +189,16 @@
         "ja": "旅行"
     },
     {
+        "text_id": "Share",
+        "en": "Share",
+        "fr": "Partage"
+    },
+    {
+        "text_id": "Gifts",
+        "en": "Gifts",
+        "fr": "Cadeaux"
+    },
+    {
         "text_id": "profile",
         "en": "Profile",
         "fr": "profil",
@@ -375,7 +385,7 @@
     },
     {
         "text_id": "book_now",
-        "en": "Resrve now",
+        "en": "Reserve now",
         "fr": "Réserver maintenant",
         "ar": " احجز الآن",
         "ja": "今予約する"
@@ -407,6 +417,12 @@
         "fr": "moins",
         "ar": "أقل",
         "ja": "もっと少なく"
+    },
+    {
+        "text_id": "open now",
+        "en": "open now",
+        "fr": "ouvert"
+
     },
     {
         "text_id": "Overall_rating",
@@ -501,7 +517,7 @@
     },
     {
         "text_id": "filtter",
-        "en": "filtter",
+        "en": "filter",
         "fr": "filtre",
         "ar": "منقي",
         "ja": "フィルタ"
@@ -572,15 +588,15 @@
     },
     {
         "text_id": "free_breakfast",
-        "en": "Free Breakfast",
-        "fr": "Petit déjeuner gratuit",
+        "en": "Breakfast",
+        "fr": "Petit déjeuner",
         "ar": "إفطار مجاني",
         "ja": "無料の朝食"
     },
     {
         "text_id": "Parking",
-        "en": "Free Parking",
-        "fr": "Parking gratuit",
+        "en": "Parking",
+        "fr": "Parking",
         "ar": "موقف سيارات مجاني",
         "ja": "無料駐車場"
     },
@@ -630,10 +646,40 @@
     },
     {
         "text_id": "Free_Wifi",
-        "en": "Free Wifi",
-        "fr": "Wifi gratuit",
+        "en": "Wifi",
+        "fr": "Wifi ",
         "ar": "واى فاى مجانى",
         "ja": "無料のWifi"
+    },
+    {
+        "text_id": "Fumeur_text",
+        "en": "smoking area",
+        "fr": "espace fumeur "
+    },
+    {
+        "text_id": "children_text",
+        "en": "children",
+        "fr": "enfants "
+    },
+    {
+        "text_id": "ticket_text",
+        "en": "ticket restaurant",
+        "fr": "ticket restaurant"
+    },
+    {
+        "text_id": "cheque_text",
+        "en": "check",
+        "fr": "chèque"
+    },
+    {
+        "text_id": "outdoor_text",
+        "en": "outdoors",
+        "fr": "plein air"
+    },
+    {
+        "text_id": "indoor_text",
+        "en": "indoors",
+        "fr": "à l'interieur"
     },
     {
         "text_id": "tunisienne",
@@ -675,7 +721,26 @@
         "en": "Steak",
         "fr": "Steak"
     },
-
+    {
+        "text_id": "world cuisine",
+        "en": "world cuisine",
+        "fr": "Cuisine de monde"
+    },
+    {
+        "text_id": "turkich",
+        "en": "Turkich",
+        "fr": "Turque"
+    },
+    {
+        "text_id": "american",
+        "en": "American",
+        "fr": "Américaine"
+    },
+    {
+        "text_id": "lebanese",
+        "en": "lebanese",
+        "fr": "lébanaise"
+    },
     {
         "text_id": "Festive_text",
         "en": "Festive",
@@ -1125,10 +1190,8 @@
     },
     {
         "text_id": "room_data",
-        "en": "Room",
-        "fr": "Chambre",
-        "ar": "غرفة",
-        "ja": "ルーム"
+        "en": "Table",
+        "fr": "Table"
     },
     {
         "text_id": "choose_date",

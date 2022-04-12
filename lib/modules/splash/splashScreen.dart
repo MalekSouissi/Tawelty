@@ -95,7 +95,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   opacity: isLoadText ? 1.0 : 0.0,
                   duration: Duration(milliseconds: 680),
                   child: CommonButton(
-                    //backgroundColor: Color(0xFF1C3956),
+                    backgroundColor: AppTheme.primaryColor,
                     padding: const EdgeInsets.only(
                         left: 100, right: 100, bottom: 8, top: 8),
                     buttonText: AppLocalizations(context).of("get_started"),

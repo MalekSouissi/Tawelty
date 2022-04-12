@@ -43,10 +43,25 @@ class _MotelAppState extends State<MotelApp> {
     }
   }
 
+  checkIfTokenExists() async {
+    await SharedPreferencesKeys().getTokenData(key: "token").then((token) async {
+      if (token != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BottomTabScreen(),
+            //settings: RouteSettings(name: "/homePage"),
+          ),
+        );
+      }
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
-isLogged();
+//isLogged();
+checkIfTokenExists();
 super.initState();
   }
   @override

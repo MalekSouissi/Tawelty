@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:new_motel/constants/themes.dart';
@@ -19,15 +21,15 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen>
     with TickerProviderStateMixin {
-  List<RestaurantListData> lastsSearchesList = [];
-
+  List<RestaurantListData> allRestaurants = [];
   late AnimationController animationController;
   final translator = GoogleTranslator();
-  bool show=false;
-  List finalList=[];
-  List<FilterListData> typeList=[];
-  List<RestaurantListData> _foundRestaurants=[];
+  bool show = false;
+  List<RestaurantListData> finalList = [];
+  List<FilterListData> typeList = [];
+  List<RestaurantListData> _foundRestaurants = [];
   List<RestaurantListData> hotelTypeList = RestaurantListData.hotelTypeList;
+  List<RestaurantListData> finalListResult=[];
 
   @override
   void initState() {
@@ -38,57 +40,75 @@ class _SearchScreenState extends State<SearchScreen>
     super.initState();
   }
 
-  bool showAddress=false;
+  bool showAddress = false;
 
-  fetchRestaurant()async{
-    lastsSearchesList= await RestaurantListData().fetchRestaurants();
-    _foundRestaurants=lastsSearchesList;
+  fetchRestaurant() async {
+    allRestaurants = await RestaurantListData().fetchRestaurants();
+    _foundRestaurants = allRestaurants;
     setState(() {
-
       showAddress = true;
     });
   }
 
-
-  fetchTypes()async{
-    typeList=await FilterListData().fetchTypes();
+  fetchTypes() async {
+    typeList = await FilterListData().fetchTypes();
     print(typeList);
     setState(() {
-      show=true;
+      show = true;
     });
   }
 
   searchByFilter(String text)async{
-    var translation = await translator
-        .translate(text, from: 'en', to: 'fr');
-    print(translation.toString());
-    List<RestaurantListData> results=[];
-    var restaurant;
-    if (text != '') {
-      //finalList.clear();
-      typeList.forEach((element) {
-        if(element.type.toLowerCase().contains(translation.text.substring(0, 4).toLowerCase())){
-          setState((){
-            finalList.add(element.restaurantId);
-             restaurant=lastsSearchesList.where((restaurant) => restaurant.id==element.restaurantId);
+    var translation=await translator.translate(text,from: 'en',to: 'fr');
+    if(text!=''){
+      typeList.forEach((type) {
+        if(type.type.toLowerCase().contains(translation.text.substring(0,4).toLowerCase())){
+          print(type.restaurantId);
+          allRestaurants.forEach((restaurant) {
+            if(restaurant.id==type.restaurantId){
+              if(finalListResult.contains(restaurant)){
+                print('already existed');
+              }else{
+                finalListResult.add(restaurant);
+
+              }
+            }
           });
-          results.add(restaurant.first);
         }
       });
-
       setState(() {
-        _foundRestaurants=results;
+        _foundRestaurants=finalListResult;
       });
-      // results = _foundRestaurants
-      //     .where((restaurant) => restaurant.id == element.
-      print(finalList);
-      print(_foundRestaurants);
+    }
+  }
 
+  removeByFilter(String text) async {
+    var translation = await translator.translate(text, from: 'en', to: 'fr');
+    print(translation.toString());
+    List<RestaurantListData> results = [];
+    if (text != '') {
+      typeList.forEach((type) {
+        if(type.type.toLowerCase().contains(translation.text.substring(0,4).toLowerCase())){
+          print(type.restaurantId);
+          allRestaurants.forEach((restaurant) {
+            if(restaurant.id==type.restaurantId){
+              //if(finalListResult.contains(restaurant)){
+                finalListResult.remove(restaurant);
+            }
+          });
+        }
+      });
+      setState(() {
+        _foundRestaurants=finalListResult;
+        if(_foundRestaurants.isEmpty){
+          fetchRestaurant();
+        }
+      });
     } else {
       setState(() {
-
         print(finalList.length);
-        //finalList.clear();
+        finalList.clear();
+        fetchRestaurant();
         //resultList.addAll(finalList);
       });
     }
@@ -130,7 +150,7 @@ class _SearchScreenState extends State<SearchScreen>
                             color: AppTheme.backgroundColor,
                             radius: 36,
                             child: CommonSearchBar(
-                              onchanged: (String text){
+                              onchanged: (String text) {
                                 _runFilter(text);
                               },
                               iconData: FontAwesomeIcons.search,
@@ -141,7 +161,7 @@ class _SearchScreenState extends State<SearchScreen>
                           ),
                         ),
                         //SearchTypeListView(),
-                    typeListUI(),
+                        typeListUI(),
                         Padding(
                           padding: const EdgeInsets.only(
                               left: 24, right: 24, top: 8),
@@ -149,7 +169,10 @@ class _SearchScreenState extends State<SearchScreen>
                             children: <Widget>[
                               Expanded(
                                 child: Text(
-                                  AppLocalizations(context).of("Result")+'('+finalList.length.toString()+')',
+                                  AppLocalizations(context).of("Result") +
+                                      '(' +
+                                      _foundRestaurants.length.toString() +
+                                      ')',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: 16,
@@ -166,6 +189,7 @@ class _SearchScreenState extends State<SearchScreen>
                                     setState(() {
                                       _foundRestaurants.clear();
                                       finalList.clear();
+                                      fetchRestaurant();
                                     });
                                   },
                                   child: Padding(
@@ -206,6 +230,7 @@ class _SearchScreenState extends State<SearchScreen>
       ),
     );
   }
+
   void _runFilter(String enteredKeyword) {
     List<RestaurantListData> results = [];
     if (enteredKeyword.isEmpty) {
@@ -213,8 +238,9 @@ class _SearchScreenState extends State<SearchScreen>
       results = _foundRestaurants;
     } else {
       results = _foundRestaurants
-          .where((restaurant) => restaurant.titleTxt.toLowerCase()
-          .contains(enteredKeyword.toLowerCase()))
+          .where((restaurant) => restaurant.titleTxt
+              .toLowerCase()
+              .contains(enteredKeyword.toLowerCase()))
           .toList();
     }
 
@@ -222,6 +248,7 @@ class _SearchScreenState extends State<SearchScreen>
       _foundRestaurants = results;
     });
   }
+
   List<Widget> getPList() {
     List<Widget> noList = [];
     var cout = 0;
@@ -247,24 +274,24 @@ class _SearchScreenState extends State<SearchScreen>
             ),
           ));
           cout += 1;
-        } catch (e) {
-        }
+        } catch (e) {}
       }
-      showAddress?noList.add(
-        Padding(
-          padding: const EdgeInsets.only(left: 16, right: 16),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: listUI,
-          ),
-        ),
-      ):Container();
+      showAddress
+          ? noList.add(
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: listUI,
+                ),
+              ),
+            )
+          : Container();
     }
     return noList;
   }
 
-
-  Widget typeListUI(){
+  Widget typeListUI() {
     return Container(
       height: 114,
       child: ListView.builder(
@@ -301,7 +328,7 @@ class _SearchScreenState extends State<SearchScreen>
                               decoration: BoxDecoration(
                                 color: Theme.of(context).primaryColor,
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(80.0)),
+                                    BorderRadius.all(Radius.circular(80.0)),
                                 boxShadow: <BoxShadow>[
                                   BoxShadow(
                                     color: Theme.of(context).dividerColor,
@@ -312,7 +339,7 @@ class _SearchScreenState extends State<SearchScreen>
                               ),
                               child: ClipRRect(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(80.0)),
+                                    BorderRadius.all(Radius.circular(80.0)),
                                 child: AspectRatio(
                                   aspectRatio: 1,
                                   child: Image.asset(
@@ -326,16 +353,23 @@ class _SearchScreenState extends State<SearchScreen>
                               color: Colors.transparent,
                               child: InkWell(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(80.0)),
+                                    BorderRadius.all(Radius.circular(80.0)),
                                 highlightColor: Colors.transparent,
                                 splashColor: Theme.of(context)
                                     .primaryColor
                                     .withOpacity(0.4),
                                 onTap: () {
-                                  searchByFilter(hotelTypeList[index].titleTxt);
                                   setState(() {
+                                   if( hotelTypeList[index].isSelected){
+                                      // finalList.clear();
+                                      // fetchRestaurant();
+                                     removeByFilter(hotelTypeList[index].titleTxt);
+                                    }else{
+                                     searchByFilter(
+                                         hotelTypeList[index].titleTxt);
+                                   }
                                     hotelTypeList[index].isSelected =
-                                    !hotelTypeList[index].isSelected;
+                                        !hotelTypeList[index].isSelected;
                                   });
                                 },
                                 child: Opacity(
@@ -363,7 +397,7 @@ class _SearchScreenState extends State<SearchScreen>
                                         child: Icon(
                                           FontAwesomeIcons.check,
                                           color:
-                                          Theme.of(context).backgroundColor,
+                                              Theme.of(context).backgroundColor,
                                         ),
                                       ),
                                     ),

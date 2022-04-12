@@ -13,15 +13,14 @@ import 'package:provider/provider.dart';
 import '../../models/setting_list_data.dart';
 
 class ProfileScreen extends StatefulWidget {
-  final AnimationController animationController;
 
-  const ProfileScreen({Key? key, required this.animationController})
+  const ProfileScreen({Key? key,})
       : super(key: key);
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateMixin{
   List<SettingsListData> userSettingsList = SettingsListData.userSettingsList;
   String url='';
   String fname='';
@@ -50,6 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   //
   // }
 
+  late AnimationController _animationController;
 
   fetchUserDetails()async{
 
@@ -67,32 +67,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
    // fetchUser();
-    fetchUserDetails();
-    widget.animationController.forward();
+   // fetchUserDetails();
+    _animationController =
+        AnimationController(duration: Duration(milliseconds: 0), vsync: this);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BottomTopMoveAnimationView(
-        animationController: widget.animationController,
-        child: Consumer<ThemeProvider>(
-          builder: (context, provider, child) => Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding:
-                    EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-                child: Container(child: appBar()),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  padding: EdgeInsets.all(0.0),
-                  itemCount: userSettingsList.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
+    return Scaffold(
+      body: Consumer<ThemeProvider>(
+        builder: (context, provider, child) => Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding:
+                  EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+              child: Container(child: appBar()),
+            ),
+            Expanded(
+              child: ListView.builder(
+                physics: BouncingScrollPhysics(),
+                padding: EdgeInsets.all(0.0),
+                itemCount: userSettingsList.length,
+                itemBuilder: (context, index) {
+                  return Material(
+                    child: InkWell(
                       onTap: () async {
                         //setting screen view
                         if (index == 5) {
@@ -158,62 +159,66 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           )
                         ],
                       ),
-                    );
-                  },
-                ),
-              )
-            ],
-          ),
-        ));
+                    ),
+                  );
+                },
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   Widget appBar() {
-    return InkWell(
-      onTap: () {
-        NavigationServices(context).gotoEditProfile(user);
-      },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 24, right: 24),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    _isLoading?user.first_name:AppLocalizations(context).of("amanda_text"),
-                    style: new TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700,
+    return Material(
+      child: InkWell(
+        onTap: () {
+          NavigationServices(context).gotoEditProfile();
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 24, right: 24),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      AppLocalizations(context).of("amanda_text"),
+                      style: new TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                  Text(
-                    AppLocalizations(context).of("view_edit"),
-                    style: new TextStyle(
-                      fontSize: 18,
-                      color: Theme.of(context).disabledColor,
+                    Text(
+                      AppLocalizations(context).of("view_edit"),
+                      style: new TextStyle(
+                        fontSize: 18,
+                        color: Theme.of(context).disabledColor,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding:
-                const EdgeInsets.only(right: 24, top: 16, bottom: 16, left: 24),
-            child: Container(
-              width: 70,
-              height: 70,
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(40.0)),
-                child:show?Image.network(url,fit: BoxFit.cover,):Image.asset(Localfiles.userImage),
+            Padding(
+              padding:
+                  const EdgeInsets.only(right: 24, top: 16, bottom: 16, left: 24),
+              child: Container(
+                width: 70,
+                height: 70,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                  child:show?Image.network(url,fit: BoxFit.cover,):Image.asset(Localfiles.userImage),
+                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
